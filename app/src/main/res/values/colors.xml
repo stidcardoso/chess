@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#20C9C3</color>
+    <color name="colorPrimaryDark">#00C9C3</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#90ffffff</color>
+    <color name="highlight">#5036987f</color>
+    <color name="chessBoard">#dd3F51B5</color>
+    <color name="transparent">#003F51B5</color>
+    <color name="greenSuccess">#8BC34A</color>
+    <color name="blackAlpha">#30000000</color>
+</resources>

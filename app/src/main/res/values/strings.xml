@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Chess Tactics</string>
+
+    <!--TextView-->
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+    <string name="play">Play</string>
+
+    <!--Menu-->
+    <string name="categories">Categories</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+
+</resources>
