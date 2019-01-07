@@ -1,7 +1,5 @@
 package com.teda.chesstactics.ui.chess
 
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -17,6 +15,7 @@ import com.teda.chesstactics.ui.Piece
 class ChessPieces : View {
 
     private var pieces = ArrayList<Piece>()
+    private var lastValidPieces = ArrayList<Piece>()
     private var highlights = ArrayList<Pair<Int, Int>>()
     private var squareWidth: Int? = 0
     private val paint by lazy { Paint() }
@@ -59,7 +58,6 @@ class ChessPieces : View {
     }
 
     private fun drawPieces(canvas: Canvas?) {
-        var t = true
         pieces.forEach {
             val left = (squareWidth!! * (it.position!!.first)) + padding
             val top = (squareWidth!! * (it.position!!.second)) + padding
@@ -67,8 +65,8 @@ class ChessPieces : View {
             val bottom = (top + squareWidth!!) - (padding * 2)
             val drawable = ContextCompat.getDrawable(context, it.drawable!!)
             drawable?.setBounds(left, top, right, bottom)
-            /*drawable?.draw(canvas)
-                var anim = ObjectAnimator.ofPropertyValuesHolder(drawable, PropertyValuesHolder.ofInt("alpha", 255))
+            drawable?.draw(canvas)
+            /*    var anim = ObjectAnimator.ofPropertyValuesHolder(drawable, PropertyValuesHolder.ofInt("alpha", 255))
                 anim.target = drawable
                 anim.duration = 10000
                 anim.start()
@@ -129,10 +127,13 @@ class ChessPieces : View {
                 selectedPiece = null
                 highlights.clear()
                 invalidate()
+                saveLastPosition()
                 moveAnswer()
             } else {
-                if (highlights.filter { it == position }.isNotEmpty())
+                if (highlights.filter { it == position }.isNotEmpty()) {
+                    Movements.movePiece(position)
                     chessCallback?.onMoveError()
+                }
                 selectedPiece = null
                 highlights.clear()
                 invalidate()
@@ -158,6 +159,7 @@ class ChessPieces : View {
                     break
                 }
             }
+            saveLastPosition()
         } else {
             chessCallback?.onProblemSolved()
         }
@@ -193,28 +195,63 @@ class ChessPieces : View {
             if (selectedPiece?.position != getChessPosition(event.x, event.y))
                 getPiece(event.x, event.y)
         } else if (event?.action == MotionEvent.ACTION_UP) {
-            if (selectedPiece?.position != getChessPosition(event.x, event.y))
+            if (selectedPiece?.position != getChessPosition(event.x, event.y) && selectedPiece != null)
                 getPiece(event.x, event.y)
         }
         return true
     }
 
     fun setChessPieces(pieces: ArrayList<Piece>) {
-        this.pieces = pieces
+        this.pieces = ArrayList(pieces)
         Movements.pieces = this.pieces
         invalidate()
     }
 
     fun setChessProblem(problem: Problem) {
         this.problem = problem
-        setChessPieces(Utilities.getPieces(problem.initialPosition))
+        val pieces = Utilities.getPieces(problem.initialPosition)
+        if (!problem.whiteToPlay) {
+            pieces.forEach {
+                //                it.isWhite = !it.isWhite
+                it.position = Pair(Math.abs(it.position!!.first - 7), Math.abs(it.position!!.second - 7))
+            }
+        }
+        setChessPieces(pieces)
+        saveLastPosition()
         highlights.clear()
         selectedPiece = null
         move = 0
     }
 
+    fun retryProblem() {
+        pieces.clear()
+        lastValidPieces.forEach {
+            val piece = Piece()
+            piece.copy(it)
+            pieces.add(piece)
+        }
+        setChessPieces(pieces)
+        highlights.clear()
+        selectedPiece = null
+    }
+
     fun setChessCallbackListener(chessCallback: ChessCallback) {
         this.chessCallback = chessCallback
+    }
+
+    fun saveLastPosition() {
+        /*lastValidPieces = ArrayList(pieces)
+        var pos = lastValidPieces.filter {
+            it.position == selectedPiece!!.position
+        }
+        val piece = Piece()
+        piece.copy(pos.first())*/
+        lastValidPieces.clear()
+        pieces.forEach {
+            val piece = Piece()
+            piece.copy(it)
+            lastValidPieces.add(piece)
+        }
     }
 
     interface ChessCallback {

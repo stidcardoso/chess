@@ -60,7 +60,7 @@ object Movements {
         val pos = selectedPiece?.position
                 ?: run { Pair(0, 0) }
 
-        if (selectedPiece!!.isWhite) {
+        if (selectedPiece!!.isWhite || true ) {
             if (!getSinglePiece(pos.first, pos.second - 1)) {
                 highlights.add(Pair(pos.first, pos.second - 1))
                 if (pos.second == 6 && !getSinglePiece(pos.first, pos.second - 2)) {

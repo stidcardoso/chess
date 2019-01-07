@@ -24,6 +24,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
     }
 
     var timeStopped: Long = 0
+    var problemStarted = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -45,7 +46,12 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
     private fun startProblem() {
         groupResult.visibility = View.GONE
         cardView2.visibility = View.VISIBLE
-        chessPieces.setChessProblem(problem())
+        if (problemStarted)
+            chessPieces.retryProblem()
+        else {
+            chessPieces.setChessProblem(problem())
+            problemStarted = true
+        }
     }
 
     fun problem(): Problem {
