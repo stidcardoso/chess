@@ -19,11 +19,13 @@ class ChessPieces : View {
     private var highlights = ArrayList<Pair<Int, Int>>()
     private var squareWidth: Int? = 0
     private val paint by lazy { Paint() }
+    private val squarePaint by lazy { Paint() }
     private var selectedPiece: Piece? = null
     private var padding: Int = 0
     private lateinit var problem: Problem
     private var move = 0
     private var chessCallback: ChessCallback? = null
+    private var movementPosition: Pair<Int, Int>? = null
 
     constructor(context: Context?) : super(context) {
         init()
@@ -40,6 +42,7 @@ class ChessPieces : View {
     fun init() {
         Movements.highlights = highlights
         paint.color = ContextCompat.getColor(context, R.color.blackAlpha)
+        squarePaint.color = ContextCompat.getColor(context, R.color.squareHighlight)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -52,6 +55,9 @@ class ChessPieces : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 //        squareWidth = width / 8
+        if (movementPosition != null) {
+            drawMovementCircle(canvas)
+        }
         if (selectedPiece != null)
             drawHighLights(canvas)
         drawPieces(canvas)
@@ -85,10 +91,25 @@ class ChessPieces : View {
             val top = squareWidth!! * (it.second).toFloat()
             val right = left + squareWidth!!
             val bottom = top + squareWidth!!
-//            canvas?.drawRect(left, top, right, bottom, paint)
             canvas?.drawCircle(left + squareWidth!! / 2, top + squareWidth!! / 2, squareWidth!! * 0.2F, paint)
         }
+        drawSquarehighlight(canvas)
     }
+
+    fun drawSquarehighlight(canvas: Canvas?) {
+        val left = squareWidth!! * (selectedPiece!!.position!!.first).toFloat()
+        val top = squareWidth!! * (selectedPiece!!.position!!.second).toFloat()
+        val right = left + squareWidth!!
+        val bottom = top + squareWidth!!
+        canvas?.drawRect(left, top, right, bottom, squarePaint)
+    }
+
+    private fun drawMovementCircle(canvas: Canvas?) {
+        val left = squareWidth!! * (movementPosition!!.first).toFloat()
+        val top = squareWidth!! * (movementPosition!!.second).toFloat()
+        canvas?.drawCircle(left + squareWidth!! / 2, top + squareWidth!! / 2, squareWidth!!.toFloat(), paint)
+    }
+
 
     private fun getPiece(x: Float, y: Float) {
         selectedPiece?.let {
@@ -195,8 +216,23 @@ class ChessPieces : View {
             if (selectedPiece?.position != getChessPosition(event.x, event.y))
                 getPiece(event.x, event.y)
         } else if (event?.action == MotionEvent.ACTION_UP) {
+            movementPosition = null
             if (selectedPiece?.position != getChessPosition(event.x, event.y) && selectedPiece != null)
                 getPiece(event.x, event.y)
+        } else if (event?.action == MotionEvent.ACTION_MOVE) {
+            if (selectedPiece != null && highlights.isNotEmpty()) {
+                val position = getChessPosition(event.x, event.y)
+                val check = highlights.filter {
+                    it == position
+                }
+                if (check.isEmpty() && movementPosition != null) {
+                    movementPosition = null
+                    invalidate()
+                } else if (check.isNotEmpty() && position != movementPosition) {
+                    movementPosition = position
+                    invalidate()
+                }
+            }
         }
         return true
     }
