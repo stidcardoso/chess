@@ -3,6 +3,8 @@ package com.teda.chesstactics
 import com.teda.chesstactics.ui.Piece
 import com.teda.chesstactics.ui.chess.PieceFEN
 import com.teda.chesstactics.ui.chess.PieceType
+import java.text.SimpleDateFormat
+import java.util.*
 
 object Utilities {
 
@@ -91,5 +93,10 @@ object Utilities {
         return piece
     }
 
+
+    fun getStringDate(): String {
+        val format = SimpleDateFormat("dd/MM/yyyy")
+        return format.format(Date())
+    }
 
 }

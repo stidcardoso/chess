@@ -1,4 +1,4 @@
-package com.teda.chesstactics.data
+package com.teda.chesstactics.data.entity
 
 class Solution() {
 

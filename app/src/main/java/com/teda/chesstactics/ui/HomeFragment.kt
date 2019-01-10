@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.teda.chesstactics.R
-import com.teda.chesstactics.data.Problem
+import com.teda.chesstactics.data.entity.Position
 import com.teda.chesstactics.ui.chess.ChessPieces
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -54,8 +54,8 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         }
     }
 
-    fun problem(): Problem {
-        var problem = Problem()
+    fun problem(): Position {
+        var problem = Position()
         problem.whiteToPlay = true
         problem.initialPosition = "2k5/ppp4p/2n5/3N2B1/3P4/2n2PPK/P1r5/4R3"
         problem.pgn = "30. Re8+ Kd7 31. Nf6+ Kd6 32. Bf4+"

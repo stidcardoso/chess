@@ -1,0 +1,83 @@
+package com.teda.chesstactics.data
+
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import com.teda.chesstactics.Utilities
+import com.teda.chesstactics.data.entity.Elo
+import com.teda.chesstactics.data.entity.Position
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.concurrent.thread
+
+class DataRepository(db: CDatabase) {
+
+    var db: CDatabase? = null
+
+    init {
+        this.db = db
+    }
+
+    companion object {
+        private var INSTANCE: DataRepository? = null
+        fun getInstance(db: CDatabase): DataRepository? {
+            if (INSTANCE == null) {
+                synchronized(DataRepository::class) {
+                    INSTANCE = DataRepository(db)
+                }
+            }
+            return INSTANCE
+        }
+    }
+
+    fun getPosition(minElo: Int, maxElo: Int, livePosition: MutableLiveData<Position>) {
+        thread {
+            //            livePosition.postValue(db?.positionDao()?.getPosition(minElo, maxElo))
+            var format = SimpleDateFormat("dd/MM/yyyy")
+            var date = format.parse(format.format(Date()))
+            var iDate = date.time
+
+            var calendar = Calendar.getInstance()
+            calendar.time = date
+            calendar.add(Calendar.DATE, 1)
+            var lDate = calendar.time.time
+            livePosition.postValue(db?.positionDao()?.getPositionDate(iDate, lDate))
+        }
+    }
+
+    fun updatePosition(position: Position) {
+        thread(start = true) {
+            db?.positionDao()?.update(position)
+        }
+    }
+
+    fun getPositions(): List<Position>? {
+        return db?.positionDao()?.getPositions()
+    }
+
+    fun getLikedPositions(): LiveData<List<Position>>? {
+        return db?.positionDao()?.getLikedPositions()
+    }
+
+    fun resetPositions() {
+        thread {
+            db?.positionDao()?.resetLastSolution()
+        }
+    }
+
+    fun getElo(): LiveData<Elo>? {
+        return db?.eloDao()?.getCurrentElo()
+    }
+
+    fun insertElo(elo: Elo) {
+        elo.sDate = Utilities.getStringDate()
+        elo.date = Date()
+        thread(start = true) {
+            db?.eloDao()?.insert(elo)
+        }
+    }
+
+    fun getElos(): LiveData<List<Elo>>? {
+        return db?.eloDao()?.getElos()
+    }
+
+}

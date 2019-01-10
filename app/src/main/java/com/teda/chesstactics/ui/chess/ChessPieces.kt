@@ -9,7 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import com.teda.chesstactics.R
 import com.teda.chesstactics.Utilities
-import com.teda.chesstactics.data.Problem
+import com.teda.chesstactics.data.entity.Position
 import com.teda.chesstactics.ui.Piece
 
 class ChessPieces : View {
@@ -22,7 +22,7 @@ class ChessPieces : View {
     private val squarePaint by lazy { Paint() }
     private var selectedPiece: Piece? = null
     private var padding: Int = 0
-    private lateinit var problem: Problem
+    private lateinit var problem: Position
     private var move = 0
     private var chessCallback: ChessCallback? = null
     private var movementPosition: Pair<Int, Int>? = null
@@ -243,7 +243,7 @@ class ChessPieces : View {
         invalidate()
     }
 
-    fun setChessProblem(problem: Problem) {
+    fun setChessProblem(problem: Position) {
         this.problem = problem
         val pieces = Utilities.getPieces(problem.initialPosition)
         if (!problem.whiteToPlay) {
