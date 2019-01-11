@@ -1,5 +1,6 @@
 package com.teda.chesstactics.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -22,8 +23,11 @@ class CategoriesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cardEasy.setOnClickListener { }
+        /*cardEasy.setOnClickListener { }
         cardMedium.setOnClickListener { }
-        cardHard.setOnClickListener { }
+        cardHard.setOnClickListener { }*/
+        btnOneMinute.setOnClickListener {
+            startActivity(Intent(activity!!, CountDownActivity::class.java))
+        }
     }
 }

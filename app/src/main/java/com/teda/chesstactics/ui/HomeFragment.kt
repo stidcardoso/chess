@@ -2,6 +2,8 @@ package com.teda.chesstactics.ui
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.SystemClock
 import android.support.v4.app.Fragment
@@ -12,6 +14,7 @@ import android.view.ViewGroup
 import com.teda.chesstactics.R
 import com.teda.chesstactics.data.entity.Position
 import com.teda.chesstactics.ui.chess.ChessPieces
+import com.teda.chesstactics.ui.viewmodel.PositionViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -25,6 +28,8 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
 
     var timeStopped: Long = 0
     var problemStarted = false
+    lateinit var positionViewModel: PositionViewModel
+    var currentPosition: Position? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -32,24 +37,33 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val pieces = Utilities.getPieces("3r1rk1/ppp2ppp/2qb1n2/6Rb/3p4/N2B1PB1/PPP3PP/R1Q4K")
+        positionViewModel = ViewModelProviders.of(this).get(PositionViewModel::class.java)
+        positionViewModel.getPosition().observe(this, Observer { position ->
+            position?.let {
+                it.setMovements()
+                currentPosition = it
+                startProblem(it)
+            }
+        })
+/*//        val pieces = Utilities.getPieces("3r1rk1/ppp2ppp/2qb1n2/6Rb/3p4/N2B1PB1/PPP3PP/R1Q4K")
 //        val pieces = Utilities.getPieces("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
-//        chessPieces.setChessPieces(pieces)
+//        chessPieces.setChessPieces(pieces)*/
         chessPieces.setChessCallbackListener(this)
         imageRetry.setOnClickListener {
-            startProblem()
+            //            startProblem()
+            positionViewModel.getNewPosition(1500, 2000)
             chronometer.base = SystemClock.elapsedRealtime() + timeStopped
             chronometer.start()
         }
     }
 
-    private fun startProblem() {
+    private fun startProblem(position: Position) {
         groupResult.visibility = View.GONE
         cardView2.visibility = View.VISIBLE
         if (problemStarted)
             chessPieces.retryProblem()
         else {
-            chessPieces.setChessProblem(problem())
+            chessPieces.setChessProblem(position)
             problemStarted = true
         }
     }
@@ -77,6 +91,11 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         colorAnimation.start()
     }
 
+    fun stopTimer() {
+        timeStopped = chronometer.base - SystemClock.elapsedRealtime()
+        chronometer.stop()
+    }
+
     override fun onMoveError() {
         groupResult.visibility = View.VISIBLE
         cardView2.visibility = View.INVISIBLE
@@ -91,11 +110,6 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         chronometer.stop()
         imageResult.setImageResource(R.drawable.ic_check_24dp)
         animateColor(R.color.greenSuccess)
-    }
-
-    fun stopTimer() {
-        timeStopped = chronometer.base - SystemClock.elapsedRealtime()
-        chronometer.stop()
     }
 
 }

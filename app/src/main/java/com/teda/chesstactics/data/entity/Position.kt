@@ -1,6 +1,7 @@
 package com.teda.chesstactics.data.entity
 
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 import java.util.*
 
@@ -14,9 +15,10 @@ class Position {
     var elo: Int = 0
     var difficulty: String = ""
     var whiteToPlay: Boolean = true
-    var movements = arrayListOf<String>()
     var lastSolution: Date? = null
     var liked: Boolean = false
+    @Ignore
+    var movements = arrayListOf<String>()
 //    var solutions: ArrayList<Solution> = arrayListOf()
 
     fun setMovements() {
