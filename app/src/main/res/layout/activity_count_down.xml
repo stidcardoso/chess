@@ -6,9 +6,10 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:max="1000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,6 +27,68 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/chess_background"
+        app:layout_constraintBottom_toBottomOf="@+id/chessBoard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/chessBoard" />
+
+    <com.teda.chesstactics.ui.chess.ChessBoard
+        android:id="@+id/chessBoard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/textCountDown" />
+
+    <com.teda.chesstactics.ui.chess.ChessPieces
+        android:id="@+id/chessPieces"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/chessBoard"
+        app:layout_constraintTop_toTopOf="@id/chessBoard" />
+
+    <View
+        android:id="@+id/viewOver"
+        android:background="#66000000"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/chessBoard"
+        app:layout_constraintEnd_toEndOf="@id/chessBoard"
+        app:layout_constraintStart_toStartOf="@id/chessBoard"
+        app:layout_constraintTop_toTopOf="@id/chessBoard" />
+
+    <ImageView
+        android:id="@+id/imageCircle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_circle"
+        app:layout_constraintBottom_toBottomOf="@id/chessBoard"
+        app:layout_constraintEnd_toEndOf="@id/chessBoard"
+        app:layout_constraintStart_toStartOf="@id/chessBoard"
+        app:layout_constraintTop_toTopOf="@id/chessBoard" />
+
+    <ImageView
+        android:id="@+id/imageResult"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_circle"
+        app:layout_constraintBottom_toBottomOf="@id/imageCircle"
+        app:layout_constraintEnd_toEndOf="@id/imageCircle"
+        app:layout_constraintStart_toStartOf="@id/imageCircle"
+        app:layout_constraintTop_toTopOf="@id/imageCircle" />
+
+    <android.support.constraint.Group
+        android:id="@+id/groupResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="imageCircle, imageResult, viewOver" />
 
 
 </android.support.constraint.ConstraintLayout>

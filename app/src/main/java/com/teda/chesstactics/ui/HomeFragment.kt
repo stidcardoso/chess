@@ -26,10 +26,10 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         }
     }
 
-    var timeStopped: Long = 0
-    var problemStarted = false
-    lateinit var positionViewModel: PositionViewModel
-    var currentPosition: Position? = null
+    private var timeStopped: Long = 0
+    private var problemStarted = false
+    private lateinit var positionViewModel: PositionViewModel
+    private var currentPosition: Position? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
 import kotlinx.android.synthetic.main.fragment_categories.*
 
@@ -27,7 +28,19 @@ class CategoriesFragment : Fragment() {
         cardMedium.setOnClickListener { }
         cardHard.setOnClickListener { }*/
         btnOneMinute.setOnClickListener {
-            startActivity(Intent(activity!!, CountDownActivity::class.java))
+            startCountDownActivity(1)
         }
+        btnThreeMinute.setOnClickListener {
+            startCountDownActivity(3)
+        }
+        btnFiveMinute.setOnClickListener {
+            startCountDownActivity(5)
+        }
+    }
+
+    private fun startCountDownActivity(minutes: Int) {
+        val i = Intent(activity!!, CountDownActivity::class.java)
+        i.putExtra(Constants.EXTRAS_TIME_COUNT_DOWN, minutes)
+        startActivity(i)
     }
 }
