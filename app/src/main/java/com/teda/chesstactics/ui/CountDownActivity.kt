@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
+import com.teda.chesstactics.data.model.Result
 import com.teda.chesstactics.ui.chess.ChessPieces
 import com.teda.chesstactics.ui.viewmodel.CountDownViewModel
 import kotlinx.android.synthetic.main.activity_count_down.*
@@ -42,7 +44,7 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
                 it.setMovements()
                 chessPieces.setChessProblem(it)
                 countPositions += 1
-                averageElo = ((averageElo * (countPositions - 1)) +  it.elo) /  countPositions
+                averageElo = ((averageElo * (countPositions - 1)) + it.elo) / countPositions
             } ?: run {
                 countDownViewModel.getNewPosition(1600, 2000)
             }
@@ -81,6 +83,9 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
             }
 
             override fun onFinish() {
+                val i = Intent(this@CountDownActivity, ResultActivity::class.java)
+                i.putExtra(Constants.EXTRAS_RESULT, Result(averageElo.toDouble(), countPositions, countSuccess, countError))
+                startActivity(i)
             }
 
         }.start()

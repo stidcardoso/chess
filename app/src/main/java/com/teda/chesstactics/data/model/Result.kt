@@ -1,6 +1,9 @@
 package com.teda.chesstactics.data.model
 
-class Result {
+import android.os.Parcelable
+import java.io.Serializable
+
+class Result: Serializable {
 
     var averageElo: Double = 0.0
     var positions = 0

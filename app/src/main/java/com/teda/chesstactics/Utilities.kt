@@ -93,10 +93,11 @@ object Utilities {
         return piece
     }
 
-
     fun getStringDate(): String {
         val format = SimpleDateFormat("dd/MM/yyyy")
         return format.format(Date())
     }
+
+
 
 }

@@ -10,4 +10,6 @@
     <color name="greenSuccess">#8BC34A</color>
     <color name="blackAlpha">#30000000</color>
     <color name="squareHighlight">#FFF59D</color>
+
+    <color name="textPrimary">#da000000</color>
 </resources>

@@ -6,10 +6,17 @@
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
     <string name="play">Play</string>
+    <string name="time_out">Time out</string>
+    <string name="results">Results</string>
 
     <!--Menu-->
     <string name="categories">Categories</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
+
+    <!--Pie-->
+    <string name="failed">Failed</string>
+    <string name="solved">Solved</string>
+
 
 </resources>
