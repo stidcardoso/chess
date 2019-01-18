@@ -25,6 +25,9 @@ class ResultActivity : AppCompatActivity() {
         setContentView(R.layout.activity_result)
         result = intent.getSerializableExtra(Constants.EXTRAS_RESULT) as Result
         showPie()
+        btnContinue.setOnClickListener {
+            finish()
+        }
     }
 
     private fun showPie() {

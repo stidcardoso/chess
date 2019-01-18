@@ -86,6 +86,7 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
                 val i = Intent(this@CountDownActivity, ResultActivity::class.java)
                 i.putExtra(Constants.EXTRAS_RESULT, Result(averageElo.toDouble(), countPositions, countSuccess, countError))
                 startActivity(i)
+                finish()
             }
 
         }.start()

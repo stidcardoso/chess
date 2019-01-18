@@ -18,16 +18,14 @@ class ChessBoardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun evenFile() {
         if ((adapterPosition % 2) == 0) {
             itemView.imageSquare.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAccent))
-        }
-        else
+        } else
             itemView.imageSquare.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorPrimary))
     }
 
     fun oddFile() {
         if ((adapterPosition % 2) == 0) {
             itemView.imageSquare.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorPrimary))
-        }
-        else
+        } else
             itemView.imageSquare.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAccent))
     }
 

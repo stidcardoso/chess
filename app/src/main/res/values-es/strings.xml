@@ -18,4 +18,7 @@
     <string name="failed">Fallados</string>
     <string name="solved">Solucionados</string>
 
+    <!--Buttons-->
+    <string name="btn_continue">Continuar</string>
+
 </resources>

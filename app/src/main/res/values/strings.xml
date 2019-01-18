@@ -18,5 +18,8 @@
     <string name="failed">Failed</string>
     <string name="solved">Solved</string>
 
+    <!--Buttons-->
+    <string name="btn_continue">Continue</string>
+
 
 </resources>
