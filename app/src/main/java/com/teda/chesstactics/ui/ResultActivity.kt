@@ -28,6 +28,9 @@ class ResultActivity : AppCompatActivity() {
         result = intent.getSerializableExtra(Constants.EXTRAS_RESULT) as Result
         showPie()
         textAverage.text = result.averageElo.toString()
+        btnContinue.setOnClickListener {
+            finish()
+        }
     }
 
     private fun showPie() {

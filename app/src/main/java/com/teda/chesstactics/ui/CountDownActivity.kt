@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.view.View
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
@@ -33,10 +34,16 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
     private lateinit var countDown: CountDownTimer
     private val animation by lazy { ObjectAnimator.ofInt(progressBar, "progress", 1000, 0) }
     private lateinit var countDownViewModel: CountDownViewModel
+    lateinit var mToolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_count_down)
+        mToolbar = toolbar as Toolbar
+        mToolbar.setTitle(R.string.count_down)
+        setSupportActionBar(mToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
         time = intent.getIntExtra(Constants.EXTRAS_TIME_COUNT_DOWN, 1) * 60
         countDownViewModel = ViewModelProviders.of(this).get(CountDownViewModel::class.java)
         countDownViewModel.getPosition().observe(this, Observer { position ->
@@ -86,6 +93,7 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
                 val i = Intent(this@CountDownActivity, ResultActivity::class.java)
                 i.putExtra(Constants.EXTRAS_RESULT, Result(averageElo.toDouble(), countPositions, countSuccess, countError))
                 startActivity(i)
+                finish()
             }
 
         }.start()
@@ -143,5 +151,10 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
                 countDownViewModel.getNewPosition(1600, 2000)
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

@@ -3,11 +3,14 @@ package com.teda.chesstactics.ui
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.teda.chesstactics.Constants
+import com.teda.chesstactics.GridSpace
 import com.teda.chesstactics.R
+import com.teda.chesstactics.ui.adapter.MAdapter
 import kotlinx.android.synthetic.main.fragment_categories.*
 
 class CategoriesFragment : Fragment() {
@@ -36,6 +39,9 @@ class CategoriesFragment : Fragment() {
         btnFiveMinute.setOnClickListener {
             startCountDownActivity(5)
         }
+        recyclerPackages.layoutManager = GridLayoutManager(activity, 3)
+        recyclerPackages.addItemDecoration(GridSpace(8))
+        recyclerPackages.adapter = MAdapter(arrayListOf())
     }
 
     private fun startCountDownActivity(minutes: Int) {

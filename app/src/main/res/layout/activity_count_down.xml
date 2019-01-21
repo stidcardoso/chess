@@ -20,8 +20,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/chessBoard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:srcCompat="@drawable/clock_background" />
+
     <TextView
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:id="@+id/textCountDown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,8 +40,10 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:textColor="@color/textPrimary"
+        android:fontFamily="@font/roboto_regular"
         android:text="0:00"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
@@ -97,6 +109,5 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:constraint_referenced_ids="imageCircle, imageResult, viewOver" />
-
 
 </android.support.constraint.ConstraintLayout>

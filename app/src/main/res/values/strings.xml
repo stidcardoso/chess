@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Chess Tactics</string>
 
+    <!--Titles-->
+    <string name="count_down">Count down</string>
+
     <!--TextView-->
     <string name="easy">Easy</string>
     <string name="medium">Medium</string>
@@ -9,6 +12,7 @@
     <string name="time_out">Time out</string>
     <string name="results">Results</string>
     <string name="average_elo">Average elo</string>
+    <string name="packages">Packages</string>
 
     <!--Menu-->
     <string name="categories">Categories</string>
@@ -18,6 +22,9 @@
     <!--Pie-->
     <string name="failed">Failed</string>
     <string name="solved">Solved</string>
+
+    <!--Buttons-->
+    <string name="btn_continue">Continue</string>
 
 
 </resources>
