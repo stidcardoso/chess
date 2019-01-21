@@ -8,6 +8,7 @@
     <string name="play">Play</string>
     <string name="time_out">Time out</string>
     <string name="results">Results</string>
+    <string name="average_elo">Average elo</string>
 
     <!--Menu-->
     <string name="categories">Categories</string>

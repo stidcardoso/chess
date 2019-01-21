@@ -1,5 +1,6 @@
 package com.teda.chesstactics.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -9,6 +10,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
 import com.teda.chesstactics.data.model.Result
+import com.teda.chesstactics.util.ValueFormatter
 import kotlinx.android.synthetic.main.activity_result.*
 
 class ResultActivity : AppCompatActivity() {
@@ -25,6 +27,7 @@ class ResultActivity : AppCompatActivity() {
         setContentView(R.layout.activity_result)
         result = intent.getSerializableExtra(Constants.EXTRAS_RESULT) as Result
         showPie()
+        textAverage.text = result.averageElo.toString()
     }
 
     private fun showPie() {
@@ -35,6 +38,9 @@ class ResultActivity : AppCompatActivity() {
         val dataSet = PieDataSet(pieEntry, getString(R.string.results))
         dataSet.colors = colors
         val pieData = PieData(dataSet)
+        pieData.setValueTextColor(Color.WHITE)
+        pieData.setValueTextSize(12f)
+        pieData.setValueFormatter(ValueFormatter())
         pieChart.data = pieData
         pieChart.legend.isEnabled = false
         pieChart.description.isEnabled = false
