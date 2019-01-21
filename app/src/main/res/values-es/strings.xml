@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Chess Tactics</string>
 
+    <!--Titles-->
+    <string name="count_down">Contrareloj</string>
+
     <!--TextView-->
     <string name="easy">Fácil</string>
     <string name="medium">Normal</string>
@@ -8,6 +11,7 @@
     <string name="play">Juega</string>
     <string name="time_out">Se acabó el tiempo</string>
     <string name="results">Resultados</string>
+    <string name="packages">Paquetes</string>
 
     <!--Menu-->
     <string name="categories">Categorías</string>

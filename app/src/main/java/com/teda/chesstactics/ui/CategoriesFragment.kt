@@ -39,7 +39,7 @@ class CategoriesFragment : Fragment() {
         btnFiveMinute.setOnClickListener {
             startCountDownActivity(5)
         }
-        recyclerPackages.layoutManager = GridLayoutManager(activity, 2)
+        recyclerPackages.layoutManager = GridLayoutManager(activity, 3)
         recyclerPackages.addItemDecoration(GridSpace(8))
         recyclerPackages.adapter = MAdapter(arrayListOf())
     }

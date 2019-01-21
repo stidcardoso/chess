@@ -8,7 +8,7 @@ import java.util.*
 @Entity(tableName = "position")
 class Position {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id: Int = 0
     var pgn = ""
     var initialPosition: String = ""
