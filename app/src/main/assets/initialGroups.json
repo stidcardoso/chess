@@ -1,0 +1,19 @@
+{
+  "name": "name",
+  "image": 0,
+  "available": false,
+  "positions": [
+    {
+      "initialPosition": "2nk1r1q/8/1p1b1N2/8/2QN3B/8/K7/4R3",
+      "pgn": "1. Re7 Nxe7 2. Ne6",
+      "elo": 1750,
+      "whiteToPlay": true
+    },
+    {
+      "initialPosition": "4rn1q/b1pbp2p/2RB4/1p3R1p/nN1k3N/3ppP1K/1P6/6Q1",
+      "pgn": "1. Qg8 Qxg8 2. Be5",
+      "elo": 1850,
+      "whiteToPlay": true
+    }
+  ]
+}

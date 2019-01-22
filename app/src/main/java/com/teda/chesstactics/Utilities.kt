@@ -1,8 +1,10 @@
 package com.teda.chesstactics
 
+import android.content.Context
 import com.teda.chesstactics.ui.Piece
 import com.teda.chesstactics.ui.chess.PieceFEN
 import com.teda.chesstactics.ui.chess.PieceType
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -98,6 +100,21 @@ object Utilities {
         return format.format(Date())
     }
 
+    fun loadJSONFromAsset(context: Context, jsonName: String): String? {
+        val json: String?
+        try {
+            val exist = context.assets.open(jsonName)
+            val size = exist.available()
+            val buffer = ByteArray(size)
+            exist.read(buffer)
+            exist.close()
+            json = String(buffer, Charsets.UTF_8)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            return null
+        }
+        return json
+    }
 
 
 }

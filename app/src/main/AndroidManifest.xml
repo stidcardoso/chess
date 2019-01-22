@@ -22,6 +22,8 @@
 
         <activity android:name=".ui.ResultActivity" />
 
+        <activity android:name=".ui.GroupListActivity" />
+
     </application>
 
 </manifest>

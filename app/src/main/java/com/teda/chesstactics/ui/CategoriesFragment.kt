@@ -1,5 +1,7 @@
 package com.teda.chesstactics.ui
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,6 +13,7 @@ import com.teda.chesstactics.Constants
 import com.teda.chesstactics.GridSpace
 import com.teda.chesstactics.R
 import com.teda.chesstactics.ui.adapter.MAdapter
+import com.teda.chesstactics.ui.viewmodel.CategoriesViewModel
 import kotlinx.android.synthetic.main.fragment_categories.*
 
 class CategoriesFragment : Fragment() {
@@ -21,6 +24,9 @@ class CategoriesFragment : Fragment() {
         }
     }
 
+    private lateinit var categoriesViewModel: CategoriesViewModel
+    private lateinit var mAdapter: MAdapter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_categories, container, false)
     }
@@ -30,6 +36,15 @@ class CategoriesFragment : Fragment() {
         /*cardEasy.setOnClickListener { }
         cardMedium.setOnClickListener { }
         cardHard.setOnClickListener { }*/
+        recyclerPackages.layoutManager = GridLayoutManager(activity, 3)
+        recyclerPackages.addItemDecoration(GridSpace(8))
+        mAdapter = MAdapter(arrayListOf())
+        recyclerPackages.adapter = mAdapter
+        categoriesViewModel = ViewModelProviders.of(this).get(CategoriesViewModel::class.java)
+        categoriesViewModel.groups?.observe(this, Observer {
+            mAdapter.list = ArrayList(it)
+            mAdapter.notifyDataSetChanged()
+        })
         btnOneMinute.setOnClickListener {
             startCountDownActivity(1)
         }
@@ -39,9 +54,7 @@ class CategoriesFragment : Fragment() {
         btnFiveMinute.setOnClickListener {
             startCountDownActivity(5)
         }
-        recyclerPackages.layoutManager = GridLayoutManager(activity, 3)
-        recyclerPackages.addItemDecoration(GridSpace(8))
-        recyclerPackages.adapter = MAdapter(arrayListOf())
+
     }
 
     private fun startCountDownActivity(minutes: Int) {

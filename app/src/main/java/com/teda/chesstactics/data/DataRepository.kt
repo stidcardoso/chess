@@ -4,6 +4,8 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.teda.chesstactics.Utilities
 import com.teda.chesstactics.data.entity.Elo
+import com.teda.chesstactics.data.entity.Group
+import com.teda.chesstactics.data.entity.GroupPositions
 import com.teda.chesstactics.data.entity.Position
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,14 +34,14 @@ class DataRepository(db: CDatabase) {
     fun getPosition(minElo: Int, maxElo: Int, livePosition: MutableLiveData<Position>) {
         thread {
             //            livePosition.postValue(db?.positionDao()?.getPosition(minElo, maxElo))
-            var format = SimpleDateFormat("dd/MM/yyyy")
-            var date = format.parse(format.format(Date()))
-            var iDate = date.time
+            val format = SimpleDateFormat("dd/MM/yyyy")
+            val date = format.parse(format.format(Date()))
+            val iDate = date.time
 
-            var calendar = Calendar.getInstance()
+            val calendar = Calendar.getInstance()
             calendar.time = date
             calendar.add(Calendar.DATE, 1)
-            var lDate = calendar.time.time
+            val lDate = calendar.time.time
             livePosition.postValue(db?.positionDao()?.getPositionDate(iDate, lDate))
         }
     }
@@ -78,6 +80,14 @@ class DataRepository(db: CDatabase) {
 
     fun getElos(): LiveData<List<Elo>>? {
         return db?.eloDao()?.getElos()
+    }
+
+    fun getGroups(): LiveData<List<Group>>? {
+        return db?.groupDao()?.getGroups()
+    }
+
+    fun getGroupDetails(id: Int): LiveData<GroupPositions>? {
+        return db?.groupDao()?.getGroupDetails(id)
     }
 
 }

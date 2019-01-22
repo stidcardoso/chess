@@ -10,14 +10,14 @@ class Position {
 
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-    var pgn = ""
     var initialPosition: String = ""
+    var pgn = ""
     var elo: Int = 0
     var difficulty: String = ""
     var whiteToPlay: Boolean = true
     var lastSolution: Date? = null
     var liked: Boolean = false
-    var packageId: Int? = null
+    var groupId: Int? = null
     @Ignore
     var movements = arrayListOf<String>()
 //    var solutions: ArrayList<Solution> = arrayListOf()

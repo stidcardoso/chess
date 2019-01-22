@@ -10,12 +10,8 @@ import com.teda.chesstactics.data.entity.Position
 
 class CountDownViewModel(application: Application) : AndroidViewModel(application) {
 
-    var dataRepository: DataRepository
+    private val dataRepository: DataRepository by lazy { (application as App).getRepository() }
     val position: MutableLiveData<Position> = MutableLiveData()
-
-    init {
-        dataRepository = (application as App).getRepository()
-    }
 
     fun getPosition(): LiveData<Position> {
         return position

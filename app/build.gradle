@@ -36,6 +36,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.github.PhilJay:MPAndroidChart:3.1.0-alpha'
+    implementation "com.google.code.gson:gson:$gsonVersion"
 
     // Room components
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
