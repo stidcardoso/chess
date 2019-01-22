@@ -1,12 +1,14 @@
 package com.teda.chesstactics.data.entity
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import android.arch.persistence.room.Embedded
+import android.arch.persistence.room.Relation
 
-@Entity(tableName = "packagePosition")
 class PackagePositions {
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
 
+    @Embedded
+    var group: Package? = null
+
+    @Relation(parentColumn = "id", entityColumn = "packageId", entity = Position::class)
+    var positions: List<Position>? = null
 
 }

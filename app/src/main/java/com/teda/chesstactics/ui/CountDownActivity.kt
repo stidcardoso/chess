@@ -78,7 +78,7 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
     }
 
     private fun startCountDown() {
-        val countTime = if (millisLeft != 0L) millisLeft else time * 100L
+        val countTime = if (millisLeft != 0L) millisLeft else time * 1000L
         countDown = object : CountDownTimer(countTime, 1000) {
             override fun onTick(p0: Long) {
                 millisLeft = p0

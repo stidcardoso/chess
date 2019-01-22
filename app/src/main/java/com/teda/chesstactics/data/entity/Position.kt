@@ -17,6 +17,7 @@ class Position {
     var whiteToPlay: Boolean = true
     var lastSolution: Date? = null
     var liked: Boolean = false
+    var packageId: Int? = null
     @Ignore
     var movements = arrayListOf<String>()
 //    var solutions: ArrayList<Solution> = arrayListOf()

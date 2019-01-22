@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -21,10 +22,12 @@ class ResultActivity : AppCompatActivity() {
         arrayListOf<Int>(ContextCompat.getColor(this, R.color.colorAccent),
                 ContextCompat.getColor(this, R.color.greenSuccess))
     }
+    lateinit var mToolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
+        setupToolbar()
         result = intent.getSerializableExtra(Constants.EXTRAS_RESULT) as Result
         showPie()
         textAverage.text = result.averageElo.toString()
@@ -50,6 +53,19 @@ class ResultActivity : AppCompatActivity() {
         pieChart.setDrawEntryLabels(false)
         pieChart.setEntryLabelColor(R.color.white)
         pieChart.invalidate()
+    }
+
+    private fun setupToolbar() {
+        mToolbar = toolbar as Toolbar
+        mToolbar.setTitle(R.string.results)
+        setSupportActionBar(mToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close_24dp)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
 }

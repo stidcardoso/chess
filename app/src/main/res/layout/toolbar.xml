@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="@color/colorPrimary"
-    app:titleTextColor="@color/white"
     app:contentInsetEnd="0dp"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark"
     app:contentInsetStart="0dp">
 
 </android.support.v7.widget.Toolbar>
