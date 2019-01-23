@@ -4,16 +4,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.teda.chesstactics.R
+import com.teda.chesstactics.data.entity.Position
 
-class NumberAdapter: RecyclerView.Adapter<NumberViewHolder>() {
+class NumberAdapter(var positions: List<Position>) : RecyclerView.Adapter<NumberViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumberViewHolder {
-        var v = LayoutInflater.from(parent.context).inflate(R.layout.item, parent)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
         return NumberViewHolder(v)
     }
 
     override fun getItemCount(): Int {
-
+        return positions.size
     }
 
     override fun onBindViewHolder(holder: NumberViewHolder, position: Int) {

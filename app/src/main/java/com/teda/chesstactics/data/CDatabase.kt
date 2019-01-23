@@ -86,8 +86,8 @@ abstract class CDatabase : RoomDatabase() {
             group.positions?.let {
                 for (position in it) {
                     position.groupId = id
-                    getInstance(context)?.positionDao()?.insertAll(group.positions!!)
                 }
+                getInstance(context)?.positionDao()?.insertAll(group.positions!!)
             }
         }
 
