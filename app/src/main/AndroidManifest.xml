@@ -24,6 +24,8 @@
 
         <activity android:name=".ui.GroupListActivity" />
 
+        <activity android:name=".ui.PositionActivity" />
+
     </application>
 
 </manifest>

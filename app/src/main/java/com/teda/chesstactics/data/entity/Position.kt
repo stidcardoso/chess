@@ -3,10 +3,11 @@ package com.teda.chesstactics.data.entity
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
+import java.io.Serializable
 import java.util.*
 
 @Entity(tableName = "position")
-class Position {
+class Position: Serializable {
 
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
@@ -18,6 +19,7 @@ class Position {
     var lastSolution: Date? = null
     var liked: Boolean = false
     var groupId: Int? = null
+    var groupSolved = false
     @Ignore
     var movements = arrayListOf<String>()
 //    var solutions: ArrayList<Solution> = arrayListOf()
