@@ -33,6 +33,9 @@ class GroupListActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
             mToolbar.title = it.group?.name
         })
+        groupListViewModel.currentPosition.observe(this, Observer {
+            setSubtitle(it)
+        })
         groupListViewModel.getGroup(groupId)
         recyclerNumbers.layoutManager = GridLayoutManager(this, 6)
 //        recyclerNumbers.addItemDecoration(GridSpace(4))
@@ -40,6 +43,7 @@ class GroupListActivity : AppCompatActivity() {
         adapter.clickSubject.subscribe {
             val ft = supportFragmentManager.beginTransaction()
             positionFragment = PositionFragment.newInstance(it)
+            groupListViewModel.setCurrentPosition(it)
             ft.replace(R.id.frameContainer, positionFragment)
             ft.addToBackStack(null)
             ft.commit()
@@ -52,6 +56,11 @@ class GroupListActivity : AppCompatActivity() {
         mToolbar = toolbar as Toolbar
         setSupportActionBar(mToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun setSubtitle(position: Int) {
+        val subtitle = (position + 1).toString() + "/" + groupPositions?.positions?.size.toString()
+        mToolbar.subtitle = subtitle
     }
 
     override fun onSupportNavigateUp(): Boolean {

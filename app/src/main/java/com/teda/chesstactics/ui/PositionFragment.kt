@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +29,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
     private var groupListViewModel: GroupListViewModel? = null
     private var problemStarted = false
     private var currentPosition = 0
+    private var positions: List<Position>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.activity_position, container, false)
@@ -47,11 +47,24 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         } ?: throw Exception("Invalid activity")
 
         groupListViewModel?.group?.observe(this, Observer {
+            positions = it?.positions
             startProblem(it?.positions!![currentPosition])
         })
+
+        imagePrevious.setOnClickListener {
+            currentPosition -= 1
+            groupListViewModel?.setCurrentPosition(currentPosition + 1)
+            chessPieces.setChessProblem(positions!![currentPosition])
+        }
+
+        imageNext.setOnClickListener {
+            currentPosition += 1
+            groupListViewModel?.setCurrentPosition(currentPosition + 1)
+            chessPieces.setChessProblem(positions!![currentPosition])
+        }
     }
 
-    fun startProblem(position: Position) {
+    private fun startProblem(position: Position) {
         groupResult.visibility = View.GONE
         cardView2.visibility = View.VISIBLE
         if (problemStarted)
