@@ -13,7 +13,8 @@ class GroupListViewModel(application: Application) : AndroidViewModel(applicatio
     var group: LiveData<GroupPositions>? = null
 
     fun getGroup(id: Int): LiveData<GroupPositions>? {
-        return dataRepository.getGroupDetails(id)
+        group = dataRepository.getGroupDetails(id)
+        return group
     }
 }
 

@@ -245,6 +245,7 @@ class ChessPieces : View {
 
     fun setChessProblem(problem: Position) {
         this.problem = problem
+        problem.setMovements()
         val pieces = Utilities.getPieces(problem.initialPosition)
         if (!problem.whiteToPlay) {
             pieces.forEach {

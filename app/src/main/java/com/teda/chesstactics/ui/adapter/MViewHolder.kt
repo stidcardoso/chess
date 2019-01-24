@@ -13,7 +13,7 @@ class MViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     lateinit var group: Group
 
     init {
-        itemView.textGroupName.setOnClickListener {
+        itemView.setOnClickListener {
             val i = Intent(view.context, GroupListActivity::class.java)
             i.putExtra(Constants.EXTRAS_GROUP_ID, group.id)
             view.context.startActivity(i)
