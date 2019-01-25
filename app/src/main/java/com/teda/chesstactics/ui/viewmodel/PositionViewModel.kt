@@ -14,7 +14,7 @@ class PositionViewModel(application: Application) : AndroidViewModel(application
     var dataRepository: DataRepository
     val position: MutableLiveData<Position> = MutableLiveData()
     var elo: LiveData<Elo>?
-    var listElo: LiveData<List<Elo>>?
+    private var listElo: LiveData<List<Elo>>?
 
     init {
         dataRepository = (application as App).getRepository()

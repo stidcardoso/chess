@@ -1,5 +1,6 @@
 package com.teda.chesstactics.ui
 
+import android.animation.LayoutTransition
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -33,8 +34,8 @@ class GroupListActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
             mToolbar.title = it.group?.name
         })
-        groupListViewModel.currentPosition.observe(this, Observer {
-            setSubtitle(it)
+        groupListViewModel.currentPosition.observe(this, Observer { position ->
+            position?.let { setSubtitle(it) }
         })
         groupListViewModel.getGroup(groupId)
         recyclerNumbers.layoutManager = GridLayoutManager(this, 6)
@@ -58,13 +59,30 @@ class GroupListActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    private fun setTitle() {
+        val title = groupPositions?.group?.name
+        title?.let { mToolbar.title = it }
+        mToolbar.layoutTransition = null
+        mToolbar.subtitle = null
+    }
+
     private fun setSubtitle(position: Int) {
         val subtitle = (position + 1).toString() + "/" + groupPositions?.positions?.size.toString()
-        mToolbar.subtitle = subtitle
+        mToolbar.layoutTransition = LayoutTransition()
+        mToolbar.title = subtitle
+        mToolbar.subtitle = groupPositions?.group?.name
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onBackPressed() {
+        val f = supportFragmentManager.findFragmentById(R.id.frameContainer)
+        if (f != null && f is PositionFragment) {
+            setTitle()
+        }
+        super.onBackPressed()
     }
 }

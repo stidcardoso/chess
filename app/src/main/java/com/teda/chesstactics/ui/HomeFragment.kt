@@ -43,6 +43,8 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
                 it.setMovements()
                 currentPosition = it
                 startProblem(it)
+            } ?: run {
+                positionViewModel.getNewPosition(1500, 2000)
             }
         })
 /*//        val pieces = Utilities.getPieces("3r1rk1/ppp2ppp/2qb1n2/6Rb/3p4/N2B1PB1/PPP3PP/R1Q4K")
@@ -54,6 +56,10 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
             positionViewModel.getNewPosition(1500, 2000)
             chronometer.base = SystemClock.elapsedRealtime() + timeStopped
             chronometer.start()
+        }
+        imageNext.setOnClickListener {
+            problemStarted = false
+            positionViewModel.getNewPosition(1500, 2000)
         }
     }
 
@@ -80,7 +86,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         return problem
     }
 
-    fun animateColor(newColor: Int) {
+    private fun animateColor(newColor: Int) {
         val colorFrom = ContextCompat.getColor(activity!!, R.color.transparent)
         val colorTo = ContextCompat.getColor(activity!!, newColor)
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo)

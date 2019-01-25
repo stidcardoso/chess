@@ -52,15 +52,19 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         })
 
         imagePrevious.setOnClickListener {
-            currentPosition -= 1
-            groupListViewModel?.setCurrentPosition(currentPosition + 1)
-            chessPieces.setChessProblem(positions!![currentPosition])
+            if (currentPosition > 0) {
+                currentPosition -= 1
+                groupListViewModel?.setCurrentPosition(currentPosition)
+                chessPieces.setChessProblem(positions!![currentPosition])
+            }
         }
 
         imageNext.setOnClickListener {
-            currentPosition += 1
-            groupListViewModel?.setCurrentPosition(currentPosition + 1)
-            chessPieces.setChessProblem(positions!![currentPosition])
+            if (currentPosition < positions!!.size - 1) {
+                currentPosition += 1
+                groupListViewModel?.setCurrentPosition(currentPosition)
+                chessPieces.setChessProblem(positions!![currentPosition])
+            }
         }
     }
 

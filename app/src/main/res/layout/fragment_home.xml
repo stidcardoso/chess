@@ -212,10 +212,10 @@
 
         <ImageView
             android:id="@+id/imageRetry"
-            android:visibility="visible"
-            android:padding="6dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:padding="6dp"
+            android:visibility="visible"
             app:layout_constraintEnd_toStartOf="@+id/imageNext"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imageHint"
@@ -224,8 +224,8 @@
         <ImageView
             android:id="@+id/imageNext"
             android:layout_width="40dp"
-            android:padding="6dp"
             android:layout_height="40dp"
+            android:padding="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imageRetry"
