@@ -24,8 +24,13 @@ class NumberViewHolder(view: View, clickSubject: PublishSubject<Int>) : Recycler
     fun bind(position: Position) {
         this.position = position
         itemView.textNumber.text = (adapterPosition + 1).toString()
-        if (position.groupSolved)
-            itemView.cardNumber.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.greenSuccess))
+        val color =
+                if (position.groupSolved)
+                    ContextCompat.getColor(itemView.context, R.color.greenSuccess)
+                else
+                    ContextCompat.getColor(itemView.context, R.color.white)
+        itemView.cardNumber.setCardBackgroundColor(color)
+
     }
 
 }

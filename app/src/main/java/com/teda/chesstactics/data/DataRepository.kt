@@ -60,9 +60,10 @@ class DataRepository(db: CDatabase) {
         return db?.positionDao()?.getLikedPositions()
     }
 
-    fun resetPositions() {
+    fun resetPositions(livePosition: MutableLiveData<Position>) {
         thread {
             db?.positionDao()?.resetLastSolution()
+            getPosition(1500, 2000, livePosition)
         }
     }
 

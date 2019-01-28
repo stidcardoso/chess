@@ -35,7 +35,7 @@ class PositionViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun resetLastSolution() {
-        dataRepository.resetPositions()
+        dataRepository.resetPositions(position)
     }
 
     fun insertOrUpdateElo(elo: Elo) {

@@ -237,7 +237,7 @@ class ChessPieces : View {
         return true
     }
 
-    fun setChessPieces(pieces: ArrayList<Piece>) {
+    private fun setChessPieces(pieces: ArrayList<Piece>) {
         this.pieces = ArrayList(pieces)
         Movements.pieces = this.pieces
         invalidate()
@@ -276,7 +276,7 @@ class ChessPieces : View {
         this.chessCallback = chessCallback
     }
 
-    fun saveLastPosition() {
+    private fun saveLastPosition() {
         /*lastValidPieces = ArrayList(pieces)
         var pos = lastValidPieces.filter {
             it.position == selectedPiece!!.position

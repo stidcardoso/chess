@@ -11,10 +11,11 @@ import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
 import com.teda.chesstactics.data.entity.GroupPositions
 import com.teda.chesstactics.ui.adapter.NumberAdapter
+import com.teda.chesstactics.ui.chess.ChessPieces
 import com.teda.chesstactics.ui.viewmodel.GroupListViewModel
 import kotlinx.android.synthetic.main.activity_group_list.*
 
-class GroupListActivity : AppCompatActivity() {
+class GroupListActivity : AppCompatActivity(), ChessPieces.ChessCallback {
 
     private lateinit var groupListViewModel: GroupListViewModel
     private val adapter by lazy { NumberAdapter(arrayListOf()) }
@@ -71,6 +72,13 @@ class GroupListActivity : AppCompatActivity() {
         mToolbar.layoutTransition = LayoutTransition()
         mToolbar.title = subtitle
         mToolbar.subtitle = groupPositions?.group?.name
+    }
+
+    override fun onMoveError() {
+    }
+
+    override fun onProblemSolved() {
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

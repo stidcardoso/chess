@@ -51,7 +51,7 @@ class ResultActivity : AppCompatActivity() {
         pieChart.legend.isEnabled = false
         pieChart.description.isEnabled = false
         pieChart.setDrawEntryLabels(false)
-        pieChart.setEntryLabelColor(R.color.white)
+        pieChart.setEntryLabelColor(R.color.alphaWhite)
         pieChart.invalidate()
     }
 

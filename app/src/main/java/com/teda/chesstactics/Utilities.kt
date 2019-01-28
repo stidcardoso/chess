@@ -1,6 +1,7 @@
 package com.teda.chesstactics
 
 import android.content.Context
+import com.teda.chesstactics.data.entity.Elo
 import com.teda.chesstactics.ui.Piece
 import com.teda.chesstactics.ui.chess.PieceFEN
 import com.teda.chesstactics.ui.chess.PieceType
@@ -114,6 +115,17 @@ object Utilities {
             return null
         }
         return json
+    }
+
+    fun calculateNewElo(elo: Elo, problemElo: Double, result: Double): Elo {
+        val currentElo = elo.elo
+        val eA = 1 / (1 + (Math.pow(10.0, (currentElo - problemElo) / 400)))
+        val rA = currentElo + (20 * (result - eA))
+        elo.let {
+            it.elo = rA
+            it.id = null
+        }
+        return elo
     }
 
 

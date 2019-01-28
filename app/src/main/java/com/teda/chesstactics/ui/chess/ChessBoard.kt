@@ -25,7 +25,7 @@ class ChessBoard : View {
     }
 
     fun init(set: AttributeSet?) {
-        paint.color = ContextCompat.getColor(context, R.color.white)
+        paint.color = ContextCompat.getColor(context, R.color.alphaWhite)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

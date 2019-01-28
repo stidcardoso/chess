@@ -12,10 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.teda.chesstactics.R
+import com.teda.chesstactics.Utilities
+import com.teda.chesstactics.data.entity.Elo
 import com.teda.chesstactics.data.entity.Position
 import com.teda.chesstactics.ui.chess.ChessPieces
 import com.teda.chesstactics.ui.viewmodel.PositionViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
+import java.util.*
 
 
 class HomeFragment : Fragment(), ChessPieces.ChessCallback {
@@ -30,6 +33,8 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
     private var problemStarted = false
     private lateinit var positionViewModel: PositionViewModel
     private var currentPosition: Position? = null
+    private var currentElo: Elo? = null
+    private var calculateElo = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -40,12 +45,18 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         positionViewModel = ViewModelProviders.of(this).get(PositionViewModel::class.java)
         positionViewModel.getPosition().observe(this, Observer { position ->
             position?.let {
-                it.setMovements()
+                calculateElo = true
                 currentPosition = it
                 startProblem(it)
             } ?: run {
-                positionViewModel.getNewPosition(1500, 2000)
+                //                Log.d("1234", "1234")
+                positionViewModel.resetLastSolution()
+//                positionViewModel.getNewPosition(1500, 2000)
             }
+        })
+        positionViewModel.elo?.observe(this, Observer {
+            currentElo = it
+            textElo.text = currentElo?.elo?.toInt().toString()
         })
 /*//        val pieces = Utilities.getPieces("3r1rk1/ppp2ppp/2qb1n2/6Rb/3p4/N2B1PB1/PPP3PP/R1Q4K")
 //        val pieces = Utilities.getPieces("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
@@ -74,6 +85,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         }
     }
 
+/*
     fun problem(): Position {
         var problem = Position()
         problem.whiteToPlay = true
@@ -85,6 +97,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
 //        problem.solutions
         return problem
     }
+*/
 
     private fun animateColor(newColor: Int) {
         val colorFrom = ContextCompat.getColor(activity!!, R.color.transparent)
@@ -97,12 +110,17 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         colorAnimation.start()
     }
 
-    fun stopTimer() {
+    private fun stopTimer() {
         timeStopped = chronometer.base - SystemClock.elapsedRealtime()
         chronometer.stop()
     }
 
     override fun onMoveError() {
+        if (calculateElo) {
+            calculateElo = false
+            val elo = Utilities.calculateNewElo(currentElo!!, currentPosition!!.elo.toDouble(), 0.0)
+            positionViewModel.insertOrUpdateElo(elo)
+        }
         groupResult.visibility = View.VISIBLE
         cardView2.visibility = View.INVISIBLE
         stopTimer()
@@ -111,11 +129,18 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
     }
 
     override fun onProblemSolved() {
+        if (calculateElo) {
+            calculateElo = false
+            val elo = Utilities.calculateNewElo(currentElo!!, currentPosition!!.elo.toDouble(), 1.0)
+            positionViewModel.insertOrUpdateElo(elo)
+        }
+        currentPosition?.lastSolution = Date()
+        positionViewModel.updatePosition(currentPosition!!)
+        animateColor(R.color.greenSuccess)
         groupResult.visibility = View.VISIBLE
         cardView2.visibility = View.INVISIBLE
         chronometer.stop()
         imageResult.setImageResource(R.drawable.ic_check_24dp)
-        animateColor(R.color.greenSuccess)
     }
 
 }

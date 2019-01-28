@@ -7,12 +7,13 @@ import android.arch.lifecycle.MutableLiveData
 import com.teda.chesstactics.App
 import com.teda.chesstactics.data.DataRepository
 import com.teda.chesstactics.data.entity.GroupPositions
+import com.teda.chesstactics.data.entity.Position
 
 class GroupListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val dataRepository: DataRepository by lazy { (application as App).getRepository() }
     var group: LiveData<GroupPositions>? = null
-     var currentPosition: MutableLiveData<Int> = MutableLiveData()
+    var currentPosition: MutableLiveData<Int> = MutableLiveData()
 
     fun getGroup(id: Int): LiveData<GroupPositions>? {
         group = dataRepository.getGroupDetails(id)
@@ -21,6 +22,10 @@ class GroupListViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun setCurrentPosition(position: Int) {
         currentPosition.postValue(position)
+    }
+
+    fun updatePosition(position: Position) {
+        dataRepository.updatePosition(position)
     }
 }
 
