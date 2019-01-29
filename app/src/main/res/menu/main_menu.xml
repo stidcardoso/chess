@@ -3,21 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_categories"
-        android:title="@string/categories"
-        android:icon="@drawable/ic_categories_24dp"
-        app:showAsAction="ifRoom"/>
+        android:id="@+id/action_home"
+        android:icon="@drawable/ic_home_24dp"
+        android:title="@string/home"
+        app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_home"
-        android:title="@string/home"
-        android:icon="@drawable/ic_home_24dp"
+        android:id="@+id/action_categories"
+        android:icon="@drawable/ic_categories_24dp"
+        android:title="@string/categories"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_progress"
+        android:icon="@drawable/ic_chart_24dp"
+        android:title="@string/progress"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_profile"
-        android:title="@string/profile"
         android:icon="@drawable/ic_person_24dp"
+        android:title="@string/profile"
         app:showAsAction="ifRoom" />
 
 </menu>

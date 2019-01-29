@@ -14,15 +14,18 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
+                R.id.action_home -> {
+                    val ft = supportFragmentManager.beginTransaction()
+                    ft.replace(R.id.container, HomeFragment.newInstance())
+                    ft.commit()
+                }
                 R.id.action_categories -> {
                     var ft = supportFragmentManager.beginTransaction()
                     ft.replace(R.id.container, CategoriesFragment.newInstance())
                     ft.commit()
                 }
-                R.id.action_home -> {
-                    val ft = supportFragmentManager.beginTransaction()
-                    ft.replace(R.id.container, HomeFragment.newInstance())
-                    ft.commit()
+                R.id.action_progress -> {
+
                 }
                 R.id.action_profile -> {
                 }

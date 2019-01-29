@@ -3,6 +3,7 @@ package com.teda.chesstactics.data.dao
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import com.teda.chesstactics.data.entity.Elo
+import java.util.*
 
 @Dao
 interface EloDao {
@@ -18,5 +19,8 @@ interface EloDao {
 
     @Query("SELECT * FROM elo")
     fun getElos(): LiveData<List<Elo>>
+
+    @Query("SELECT * from elo where date >= :minDate")
+    fun getElosDate(minDate: Date): LiveData<List<Elo>>
 
 }

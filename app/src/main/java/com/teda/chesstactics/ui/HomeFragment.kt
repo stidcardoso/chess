@@ -45,7 +45,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         positionViewModel = ViewModelProviders.of(this).get(PositionViewModel::class.java)
         positionViewModel.getPosition().observe(this, Observer { position ->
             position?.let {
-                calculateElo = true
+                problemStarted = false
                 currentPosition = it
                 startProblem(it)
             } ?: run {
@@ -62,14 +62,14 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
 //        val pieces = Utilities.getPieces("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
 //        chessPieces.setChessPieces(pieces)*/
         chessPieces.setChessCallbackListener(this)
-        imageRetry.setOnClickListener {
+        imageRetry.setOnClickListener { v ->
             //            startProblem()
-            positionViewModel.getNewPosition(1500, 2000)
+//            positionViewModel.getNewPosition(1500, 2000)
+            currentPosition?.let { startProblem(it) }
             chronometer.base = SystemClock.elapsedRealtime() + timeStopped
             chronometer.start()
         }
         imageNext.setOnClickListener {
-            problemStarted = false
             positionViewModel.getNewPosition(1500, 2000)
         }
     }
@@ -80,6 +80,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         if (problemStarted)
             chessPieces.retryProblem()
         else {
+            calculateElo = true
             chessPieces.setChessProblem(position)
             problemStarted = true
         }

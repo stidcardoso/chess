@@ -15,8 +15,9 @@
     <string name="packages">Paquetes</string>
 
     <!--Menu-->
-    <string name="categories">Categorías</string>
     <string name="home">Inicio</string>
+    <string name="categories">Categorías</string>
+    <string name="progress">Progress</string>
     <string name="profile">Perfil</string>
 
     <!--Pie-->
