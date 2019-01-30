@@ -13,6 +13,9 @@
     <string name="results">Resultados</string>
     <string name="average_elo">Elo promedio</string>
     <string name="packages">Paquetes</string>
+    <string name="time_week">7 días</string>
+    <string name="time_month">30 días</string>
+    <string name="time_all">Todo</string>
 
     <!--Menu-->
     <string name="home">Inicio</string>

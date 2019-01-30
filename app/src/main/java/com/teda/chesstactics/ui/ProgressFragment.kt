@@ -37,11 +37,27 @@ class ProgressFragment : Fragment() {
                 Log.d("elo", elo.elo.toString())
                 Log.d("date", elo.sDate)
             }
+            styleLineChart()
             setupData(it)
         })
     }
 
-    fun setupData(elos: List<Elo>) {
+    private fun styleLineChart() {
+        lineChart.description = null
+        lineChart.xAxis.setDrawLabels(false)
+        lineChart.axisRight.setDrawLabels(false)
+//        lineChart.xAxis.gridColor = ContextCompat.getColor(activity!!, R.color.gridColor)
+        lineChart.axisLeft.gridColor = ContextCompat.getColor(activity!!, R.color.gridColor)
+//        lineChart.axisRight.gridColor = ContextCompat.getColor(activity!!, R.color.gridColor)
+        lineChart.setDrawBorders(false)
+        lineChart.xAxis.setDrawGridLines(false)
+        lineChart.xAxis.setDrawAxisLine(false)
+        lineChart.axisLeft.setDrawAxisLine(false)
+        lineChart.axisRight.setDrawAxisLine(false)
+        lineChart.legend.isEnabled = false
+    }
+
+    private fun setupData(elos: List<Elo>) {
         val format = SimpleDateFormat("dd/MM/yyyy")
         val date = format.parse(format.format(Date()))
 
@@ -52,16 +68,21 @@ class ProgressFragment : Fragment() {
 
         val entries = arrayListOf<Entry>()
         for (elo in elos) {
-            var x = ((elo.date?.time!! - iDate) / (60 * 60 * 24 * 1000))
+            val x = ((elo.date?.time!! - iDate) / (60 * 60 * 24 * 1000))
 //            val date = format.parse(format.format(Date(x)))
 //            x = date.time
             entries.add(Entry(x.toFloat(), elo.elo.toFloat()))
         }
         val line = LineDataSet(entries, "")
-        line.color = ContextCompat.getColor(activity!!, R.color.colorAccent)
+        line.setDrawValues(false)
+        line.lineWidth = 3F
+        line.color = ContextCompat.getColor(activity!!, R.color.lineColor)
+        line.setDrawCircleHole(false)
+        line.circleRadius = 5F
+        line.setCircleColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
         val lines = arrayListOf<ILineDataSet>()
         lines.add(line)
-        var data = LineData(lines)
+        val data = LineData(lines)
         lineChart.data = data
         lineChart.invalidate()
 

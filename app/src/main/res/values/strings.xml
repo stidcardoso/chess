@@ -13,6 +13,9 @@
     <string name="results">Results</string>
     <string name="average_elo">Average elo</string>
     <string name="packages">Packages</string>
+    <string name="time_week">7 days</string>
+    <string name="time_month">30 days</string>
+    <string name="time_all">All time</string>
 
     <!--Menu-->
     <string name="home">Home</string>

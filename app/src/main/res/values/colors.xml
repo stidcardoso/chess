@@ -12,5 +12,8 @@
     <color name="blackAlpha">#30000000</color>
     <color name="squareHighlight">#FFF59D</color>
 
+    <color name="lineColor">#171717</color>
+    <color name="gridColor">#20000000</color>
+
     <color name="textPrimary">#da000000</color>
 </resources>
