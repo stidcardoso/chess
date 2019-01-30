@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.teda.chesstactics.ui.CategoriesFragment
 import com.teda.chesstactics.ui.HomeFragment
+import com.teda.chesstactics.ui.ProgressFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +26,9 @@ class MainActivity : AppCompatActivity() {
                     ft.commit()
                 }
                 R.id.action_progress -> {
-
+                    val ft = supportFragmentManager.beginTransaction()
+                    ft.replace(R.id.container, ProgressFragment())
+                    ft.commit()
                 }
                 R.id.action_profile -> {
                 }
