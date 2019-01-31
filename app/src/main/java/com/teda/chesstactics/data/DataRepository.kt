@@ -83,15 +83,21 @@ class DataRepository(db: CDatabase) {
         return db?.eloDao()?.getElos()
     }
 
-    fun getElosByDate(days: Int): LiveData<List<Elo>>? {
+    fun getElosByDate(days: Int?, mutableElo: MutableLiveData<List<Elo>>) {
         val format = SimpleDateFormat("dd/MM/yyyy")
         val date = format.parse(format.format(Date()))
 
         val calendar = Calendar.getInstance()
         calendar.time = date
-        calendar.add(Calendar.DATE, -30)
-        val lDate = calendar.time.time
-        return db?.eloDao()?.getElosDate(Date(lDate))
+        thread {
+            days?.let {
+                calendar.add(Calendar.DATE, -it)
+                val lDate = calendar.time.time
+                mutableElo.postValue(db?.eloDao()?.getElosDate(Date(lDate)))
+            } ?: run {
+                mutableElo.postValue(db?.eloDao()?.getListElo())
+            }
+        }
     }
 
     fun getGroups(): LiveData<List<Group>>? {

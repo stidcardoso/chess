@@ -20,7 +20,10 @@ interface EloDao {
     @Query("SELECT * FROM elo")
     fun getElos(): LiveData<List<Elo>>
 
+    @Query("SELECT * FROM elo")
+    fun getListElo(): List<Elo>
+
     @Query("SELECT * from elo where date >= :minDate")
-    fun getElosDate(minDate: Date): LiveData<List<Elo>>
+    fun getElosDate(minDate: Date?): List<Elo>
 
 }

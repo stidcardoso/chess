@@ -66,6 +66,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
                 chessPieces.setChessProblem(positions!![currentPosition])
                 groupResult.visibility = View.GONE
                 cardView2.visibility = View.VISIBLE
+                problemStarted = true
             }
         }
 
@@ -76,6 +77,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
                 chessPieces.setChessProblem(positions!![currentPosition])
                 groupResult.visibility = View.GONE
                 cardView2.visibility = View.VISIBLE
+                problemStarted = true
             }
         }
     }

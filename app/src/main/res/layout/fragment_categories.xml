@@ -16,11 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/btnOneMinute"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginRight="4dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="1 min"
@@ -33,10 +35,14 @@
 
 
     <!--<android.support.design.button.MaterialButton-->
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/btnThreeMinute"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
         android:text="3 min"
         android:textColor="#ffffff"
         app:backgroundTint="@color/colorPrimary"
@@ -47,12 +53,14 @@
 
 
     <!--<android.support.design.button.MaterialButton-->
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/btnFiveMinute"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:layout_marginLeft="4dp"
         android:layout_marginRight="16dp"
+        android:layout_marginStart="4dp"
         android:text="5 min"
         android:textColor="#ffffff"
         app:backgroundTint="@color/colorPrimary"

@@ -48,7 +48,6 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
         countDownViewModel = ViewModelProviders.of(this).get(CountDownViewModel::class.java)
         countDownViewModel.getPosition().observe(this, Observer { position ->
             position?.let {
-                it.setMovements()
                 chessPieces.setChessProblem(it)
                 countPositions += 1
                 averageElo = ((averageElo * (countPositions - 1)) + it.elo) / countPositions

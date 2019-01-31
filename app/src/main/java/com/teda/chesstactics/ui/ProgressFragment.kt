@@ -3,6 +3,7 @@ package com.teda.chesstactics.ui
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.chip.Chip
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.util.Log
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_progress.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class ProgressFragment : Fragment() {
 
     var model: ProgressViewModel? = null
@@ -32,7 +34,7 @@ class ProgressFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         model = ViewModelProviders.of(this).get(ProgressViewModel::class.java)
-        model?.elos?.observe(this, Observer {
+        model?.getElos()?.observe(this, Observer {
             for (elo in it!!) {
                 Log.d("elo", elo.elo.toString())
                 Log.d("date", elo.sDate)
@@ -40,6 +42,30 @@ class ProgressFragment : Fragment() {
             styleLineChart()
             setupData(it)
         })
+        model?.currentElo?.observe(this, Observer { elo ->
+            elo?.let { textElo.text = it.elo.toInt().toString() }
+        })
+        chipGroup.setOnCheckedChangeListener { chipGroup, _ ->
+            var chip = chipGroup.getChildAt(chipGroup.checkedChipId)
+            chip?.let {
+                chip = it as Chip
+            }
+            for (i in 0 until chipGroup.childCount) {
+                val chip = chipGroup.getChildAt(i)
+                chip.isClickable = chip.id != chipGroup.checkedChipId
+            }
+            chip?.isClickable = false
+        }
+
+        chipWeek.setOnClickListener {
+            model?.getElosByDate(7)
+        }
+        chipMonth.setOnClickListener {
+            model?.getElosByDate(30)
+        }
+        chipAll.setOnClickListener {
+            model?.getElosByDate(null)
+        }
     }
 
     private fun styleLineChart() {
