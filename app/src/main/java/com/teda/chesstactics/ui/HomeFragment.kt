@@ -57,6 +57,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         positionViewModel.elo?.observe(this, Observer {
             currentElo = it
             textElo.text = currentElo?.elo?.toInt().toString()
+            positionViewModel.getNewPosition(currentElo)
         })
 /*//        val pieces = Utilities.getPieces("3r1rk1/ppp2ppp/2qb1n2/6Rb/3p4/N2B1PB1/PPP3PP/R1Q4K")
 //        val pieces = Utilities.getPieces("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
@@ -70,7 +71,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
             chronometer.start()
         }
         imageNext.setOnClickListener {
-            positionViewModel.getNewPosition(1500, 2000)
+            positionViewModel.getNewPosition(currentElo)
         }
     }
 

@@ -26,6 +26,7 @@ class ChessPieces : View {
     private var move = 0
     private var chessCallback: ChessCallback? = null
     private var movementPosition: Pair<Int, Int>? = null
+    private var drawHighlight = false
 
     constructor(context: Context?) : super(context) {
         init()
@@ -96,7 +97,7 @@ class ChessPieces : View {
         drawSquarehighlight(canvas)
     }
 
-    fun drawSquarehighlight(canvas: Canvas?) {
+    private fun drawSquarehighlight(canvas: Canvas?) {
         val left = squareWidth!! * (selectedPiece!!.position!!.first).toFloat()
         val top = squareWidth!! * (selectedPiece!!.position!!.second).toFloat()
         val right = left + squareWidth!!
@@ -289,6 +290,10 @@ class ChessPieces : View {
             piece.copy(it)
             lastValidPieces.add(piece)
         }
+    }
+
+    fun showHighlight() {
+        drawHighlight = true
     }
 
     interface ChessCallback {

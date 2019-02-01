@@ -15,6 +15,7 @@ class PositionViewModel(application: Application) : AndroidViewModel(application
     val position: MutableLiveData<Position> = MutableLiveData()
     var elo: LiveData<Elo>?
     private var listElo: LiveData<List<Elo>>?
+    private var eloRange = 500
 
     init {
         dataRepository = (application as App).getRepository()
@@ -26,8 +27,10 @@ class PositionViewModel(application: Application) : AndroidViewModel(application
         return position
     }
 
-    fun getNewPosition(minElo: Int, maxElo: Int) {
-        dataRepository.getPosition(minElo, maxElo, position)
+    fun getNewPosition(currentElo: Elo?) {
+        currentElo?.let {
+            dataRepository.getPosition(it.elo.toInt() - eloRange, it.elo.toInt() + eloRange, position)
+        }
     }
 
     fun updatePosition(position: Position) {
