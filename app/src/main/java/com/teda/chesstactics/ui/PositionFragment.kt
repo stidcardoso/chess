@@ -63,10 +63,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
             if (currentPosition > 0) {
                 currentPosition -= 1
                 groupListViewModel?.setCurrentPosition(currentPosition)
-                chessPieces.setChessProblem(positions!![currentPosition])
-                groupResult.visibility = View.GONE
-                cardView2.visibility = View.VISIBLE
-                problemStarted = true
+                startProblem(positions!![currentPosition])
             }
         }
 
@@ -74,25 +71,31 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
             if (currentPosition < positions!!.size - 1) {
                 currentPosition += 1
                 groupListViewModel?.setCurrentPosition(currentPosition)
-                chessPieces.setChessProblem(positions!![currentPosition])
-                groupResult.visibility = View.GONE
-                cardView2.visibility = View.VISIBLE
-                problemStarted = true
+                startProblem(positions!![currentPosition])
             }
+        }
+
+        imageRetry.setOnClickListener {
+            restartProblem()
         }
     }
 
     private fun startProblem(position: Position) {
         groupResult.visibility = View.GONE
         cardView2.visibility = View.VISIBLE
-        if (problemStarted)
+        /*if (problemStarted)
             chessPieces.retryProblem()
-        else {
-            chronometer.stop()
-            chronometer.start()
-            chessPieces.setChessProblem(position)
-            problemStarted = true
-        }
+        else {*/
+        val copyPosition = Position()
+        copyPosition.copy(position)
+        chronometer.stop()
+        chronometer.start()
+        chessPieces.setChessProblem(copyPosition)
+        problemStarted = true
+    }
+
+    private fun restartProblem() {
+        chessPieces.retryProblem()
     }
 
     override fun onMoveError() {

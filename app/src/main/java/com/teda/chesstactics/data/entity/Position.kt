@@ -7,7 +7,7 @@ import java.io.Serializable
 import java.util.*
 
 @Entity(tableName = "position")
-class Position: Serializable {
+class Position : Serializable {
 
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
@@ -30,5 +30,18 @@ class Position: Serializable {
             if (!mov.toString().contains("""."""))
                 movements.add(mov.replace("x", ""))
         }
+    }
+
+    fun copy(position: Position) {
+        this.id = position.id
+        this.initialPosition = position.initialPosition
+        this.pgn = position.pgn
+        this.elo = position.elo
+        this.difficulty = position.difficulty
+        this.whiteToPlay = position.whiteToPlay
+        this.lastSolution = position.lastSolution
+        this.liked = position.liked
+        this.groupId = position.groupId
+        this.groupSolved = position.groupSolved
     }
 }

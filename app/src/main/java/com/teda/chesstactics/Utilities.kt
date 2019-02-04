@@ -128,5 +128,4 @@ object Utilities {
         return elo
     }
 
-
 }

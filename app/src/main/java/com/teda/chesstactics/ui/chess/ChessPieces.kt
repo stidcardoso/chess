@@ -14,19 +14,20 @@ import com.teda.chesstactics.ui.Piece
 
 class ChessPieces : View {
 
-    private var pieces = ArrayList<Piece>()
-    private var lastValidPieces = ArrayList<Piece>()
-    private var highlights = ArrayList<Pair<Int, Int>>()
     private var squareWidth: Int? = 0
     private val paint by lazy { Paint() }
     private val squarePaint by lazy { Paint() }
-    private var selectedPiece: Piece? = null
     private var padding: Int = 0
+    private var drawHighlight = false
+
+    private var pieces = ArrayList<Piece>()
+    private var lastValidPieces = ArrayList<Piece>()
+    private var highlights = ArrayList<Pair<Int, Int>>()
+    private var selectedPiece: Piece? = null
     private lateinit var problem: Position
     private var move = 0
     private var chessCallback: ChessCallback? = null
     private var movementPosition: Pair<Int, Int>? = null
-    private var drawHighlight = false
 
     constructor(context: Context?) : super(context) {
         init()
@@ -246,11 +247,10 @@ class ChessPieces : View {
 
     fun setChessProblem(problem: Position) {
         this.problem = problem
-        problem.setMovements()
+        this.problem.setMovements()
         val pieces = Utilities.getPieces(problem.initialPosition)
         if (!problem.whiteToPlay) {
             pieces.forEach {
-                //                it.isWhite = !it.isWhite
                 it.position = Pair(Math.abs(it.position!!.first - 7), Math.abs(it.position!!.second - 7))
             }
         }
