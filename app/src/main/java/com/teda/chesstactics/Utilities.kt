@@ -119,7 +119,7 @@ object Utilities {
 
     fun calculateNewElo(elo: Elo, problemElo: Double, result: Double): Elo {
         val currentElo = elo.elo
-        val eA = 1 / (1 + (Math.pow(10.0, (currentElo - problemElo) / 400)))
+        val eA = 1 / (1 + (Math.pow(10.0, (problemElo - currentElo) / 400)))
         val rA = currentElo + (20 * (result - eA))
         elo.let {
             it.elo = rA

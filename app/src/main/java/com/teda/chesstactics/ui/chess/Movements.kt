@@ -9,7 +9,7 @@ object Movements {
     private var selectedPiece: Piece? = null
     lateinit var pos: Pair<Int, Int>
     var king: Piece? = Piece()
-    var attackedSquares = ArrayList<Pair<Int, Int>>()
+    private var attackedSquares = ArrayList<Pair<Int, Int>>()
 
     fun getHighLights(selectedPiece: Piece?, check: Boolean) {
         this.pos = selectedPiece?.position
@@ -32,7 +32,6 @@ object Movements {
         if (selectedPiece.pieceType!! == PieceType.KING)
             getKingHighlights(check)
     }
-
 
     fun getAttackedSquares(selectedPiece: Piece?) {
         this.pos = selectedPiece?.position

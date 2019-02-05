@@ -62,6 +62,8 @@ class ChessPieces : View {
         }
         if (selectedPiece != null)
             drawHighLights(canvas)
+        if (drawHighlight)
+            drawMovementHighlight(canvas)
         drawPieces(canvas)
     }
 
@@ -95,12 +97,38 @@ class ChessPieces : View {
             val bottom = top + squareWidth!!
             canvas?.drawCircle(left + squareWidth!! / 2, top + squareWidth!! / 2, squareWidth!! * 0.2F, paint)
         }
-        drawSquarehighlight(canvas)
+        drawSquareHighlight(canvas)
     }
 
-    private fun drawSquarehighlight(canvas: Canvas?) {
+    private fun drawSquareHighlight(canvas: Canvas?) {
         val left = squareWidth!! * (selectedPiece!!.position!!.first).toFloat()
         val top = squareWidth!! * (selectedPiece!!.position!!.second).toFloat()
+        val right = left + squareWidth!!
+        val bottom = top + squareWidth!!
+        canvas?.drawRect(left, top, right, bottom, squarePaint)
+    }
+
+    private fun drawMovementHighlight(canvas: Canvas?) {
+        var resultPiece = Piece()
+        val hPiece = pgnToPiece(problem.movements[move])
+        val pieces = pieces.filter {
+            it.isWhite == problem.whiteToPlay
+        }.filter {
+            it.pieceType == hPiece.pieceType
+        }
+        for (piece in pieces) {
+            Movements.getHighLights(piece, false)
+            val highlights = Movements.highlights
+            val result = highlights.filter {
+                it == hPiece.position
+            }
+            if (result.isNotEmpty()) {
+                resultPiece = piece
+                break
+            }
+        }
+        val left = squareWidth!! * (resultPiece.position!!.first).toFloat()
+        val top = squareWidth!! * (resultPiece.position!!.second).toFloat()
         val right = left + squareWidth!!
         val bottom = top + squareWidth!!
         canvas?.drawRect(left, top, right, bottom, squarePaint)
@@ -111,7 +139,6 @@ class ChessPieces : View {
         val top = squareWidth!! * (movementPosition!!.second).toFloat()
         canvas?.drawCircle(left + squareWidth!! / 2, top + squareWidth!! / 2, squareWidth!!.toFloat(), paint)
     }
-
 
     private fun getPiece(x: Float, y: Float) {
         selectedPiece?.let {
@@ -215,8 +242,10 @@ class ChessPieces : View {
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         super.onTouchEvent(event)
         if (event?.action == MotionEvent.ACTION_DOWN) {
-            if (selectedPiece?.position != getChessPosition(event.x, event.y))
+            if (selectedPiece?.position != getChessPosition(event.x, event.y)) {
+                drawHighlight = false
                 getPiece(event.x, event.y)
+            }
         } else if (event?.action == MotionEvent.ACTION_UP) {
             movementPosition = null
             if (selectedPiece?.position != getChessPosition(event.x, event.y) && selectedPiece != null)
@@ -293,7 +322,12 @@ class ChessPieces : View {
     }
 
     fun showHighlight() {
-        drawHighlight = true
+        if (move < problem.movements.size) {
+            selectedPiece = null
+            highlights.clear()
+            drawHighlight = true
+            invalidate()
+        }
     }
 
     interface ChessCallback {

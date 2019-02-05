@@ -78,6 +78,10 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         imageRetry.setOnClickListener {
             restartProblem()
         }
+
+        imageHint.setOnClickListener {
+            chessPieces.showHighlight()
+        }
     }
 
     private fun startProblem(position: Position) {

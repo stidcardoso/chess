@@ -49,19 +49,16 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
                 currentPosition = it
                 startProblem(it)
             } ?: run {
-                //                Log.d("1234", "1234")
                 positionViewModel.resetLastSolution()
-//                positionViewModel.getNewPosition(1500, 2000)
             }
         })
         positionViewModel.elo?.observe(this, Observer {
+            if (currentElo == null)
+                positionViewModel.getNewPosition(it)
             currentElo = it
             textElo.text = currentElo?.elo?.toInt().toString()
-            positionViewModel.getNewPosition(currentElo)
+
         })
-/*//        val pieces = Utilities.getPieces("3r1rk1/ppp2ppp/2qb1n2/6Rb/3p4/N2B1PB1/PPP3PP/R1Q4K")
-//        val pieces = Utilities.getPieces("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
-//        chessPieces.setChessPieces(pieces)*/
         chessPieces.setChessCallbackListener(this)
         imageRetry.setOnClickListener { v ->
             //            startProblem()
@@ -72,6 +69,9 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         }
         imageNext.setOnClickListener {
             positionViewModel.getNewPosition(currentElo)
+        }
+        imageHint.setOnClickListener {
+            chessPieces.showHighlight()
         }
     }
 
