@@ -26,6 +26,8 @@
 
         <activity android:name=".ui.PositionActivity" />
 
+        <activity android:name=".ui.BuyGroupsActivity" />
+
     </application>
 
 </manifest>

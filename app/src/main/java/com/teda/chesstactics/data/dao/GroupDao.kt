@@ -13,8 +13,11 @@ interface GroupDao {
     @Insert
     fun insertGroup(group: Group): Long
 
-    @Query("select * from `group`")
+    @Query("select * from `group` where available = 1")
     fun getGroups(): LiveData<List<Group>>
+
+    @Query("select * from `group` where available = 0")
+    fun getNewGroups(): LiveData<List<Group>>
 
     @Query("select * from `group` where id = :id")
     fun getGroupDetails(id: Int): LiveData<GroupPositions>

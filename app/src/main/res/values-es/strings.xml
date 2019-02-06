@@ -3,6 +3,7 @@
 
     <!--Titles-->
     <string name="count_down">Contrareloj</string>
+    <string name="store">Tienda</string>
 
     <!--TextView-->
     <string name="easy">Fácil</string>

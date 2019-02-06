@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,11 +69,35 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
             chronometer.start()
         }
         imageNext.setOnClickListener {
-            positionViewModel.getNewPosition(currentElo)
+            if (problemStarted)
+                showDialogContinue()
+            else
+                positionViewModel.getNewPosition(currentElo)
         }
         imageHint.setOnClickListener {
             chessPieces.showHighlight()
         }
+        chronometer.start()
+    }
+
+    private fun showDialogContinue() {
+        val dialog = AlertDialog.Builder(context!!)
+        dialog.setTitle("Quieres cancelar ")
+                .setMessage("Si continua esté ejercicio se dará como perdido")
+                .setPositiveButton(
+                        getString(android.R.string.ok))
+                { _, _ ->
+                    calculateNewElo()
+                    currentPosition?.lastSolution = Date()
+                    positionViewModel.updatePosition(currentPosition!!)
+                    positionViewModel.getNewPosition(currentElo)
+                }
+                .setNegativeButton(
+                        android.R.string.cancel)
+                { d, _ ->
+                    d.dismiss()
+                }
+                .show()
     }
 
     private fun startProblem(position: Position) {
@@ -117,12 +142,17 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         chronometer.stop()
     }
 
-    override fun onMoveError() {
+    private fun calculateNewElo() {
         if (calculateElo) {
             calculateElo = false
             val elo = Utilities.calculateNewElo(currentElo!!, currentPosition!!.elo.toDouble(), 0.0)
             positionViewModel.insertOrUpdateElo(elo)
         }
+    }
+
+    override fun onMoveError() {
+        problemStarted = false
+        calculateNewElo()
         groupResult.visibility = View.VISIBLE
         cardView2.visibility = View.INVISIBLE
         stopTimer()
@@ -131,6 +161,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
     }
 
     override fun onProblemSolved() {
+        problemStarted = false
         if (calculateElo) {
             calculateElo = false
             val elo = Utilities.calculateNewElo(currentElo!!, currentPosition!!.elo.toDouble(), 1.0)

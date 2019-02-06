@@ -54,6 +54,9 @@ class CategoriesFragment : Fragment() {
         btnFiveMinute.setOnClickListener {
             startCountDownActivity(5)
         }
+        fabBuy.setOnClickListener {
+            startActivity(Intent(activity, BuyGroupsActivity::class.java))
+        }
 
     }
 

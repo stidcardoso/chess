@@ -104,6 +104,10 @@ class DataRepository(db: CDatabase) {
         return db?.groupDao()?.getGroups()
     }
 
+    fun getNewGroups(): LiveData<List<Group>>? {
+        return db?.groupDao()?.getNewGroups()
+    }
+
     fun getGroupDetails(id: Int): LiveData<GroupPositions>? {
         return db?.groupDao()?.getGroupDetails(id)
     }
