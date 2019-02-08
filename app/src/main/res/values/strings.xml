@@ -18,6 +18,8 @@
     <string name="time_month">30 days</string>
     <string name="time_all">All time</string>
     <string name="elo">Elo</string>
+    <string name="confirm">Confirm</string>
+    <string name="desc_quit_exercise">If you skip this puzzle it will count as lost</string>
 
     <!--Menu-->
     <string name="home">Home</string>

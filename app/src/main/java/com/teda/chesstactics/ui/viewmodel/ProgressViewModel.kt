@@ -16,7 +16,7 @@ class ProgressViewModel(application: Application) : AndroidViewModel(application
 
     init {
         currentElo = dataRepository.getElo()
-        dataRepository.getElosByDate(30, elos)
+        dataRepository.getElosByDate(7, elos)
     }
 
     fun getElos(): LiveData<List<Elo>> {

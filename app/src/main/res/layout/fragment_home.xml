@@ -49,6 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:fontFamily="@font/roboto_regular"
                     android:text="@string/play"
                     android:textColor="#000000"
@@ -202,48 +203,51 @@
         app:layout_constraintStart_toStartOf="@+id/chessBoard"
         app:layout_constraintTop_toTopOf="@id/chessBoard" />
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout5"
+    <android.support.design.button.MaterialButton
+        android:id="@+id/imageHint"
+        style="@style/buttonIcon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#47000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginStart="4dp"
+        app:icon="@drawable/ic_lightbulb"
+        app:layout_constraintEnd_toStartOf="@+id/imageRetry"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chessBoard">
+        app:layout_constraintTop_toBottomOf="@id/chessBoard" />
 
-        <ImageView
-            android:id="@+id/imageHint"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="6dp"
-            app:layout_constraintEnd_toStartOf="@+id/imageRetry"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_lightbulb" />
+    <android.support.design.button.MaterialButton
+        android:id="@+id/imageRetry"
+        style="@style/buttonIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginStart="2dp"
+        android:visibility="visible"
+        app:icon="@drawable/ic_replay"
+        app:layout_constraintEnd_toStartOf="@+id/imageNext"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageHint"
+        app:layout_constraintTop_toBottomOf="@id/chessBoard" />
 
-        <ImageView
-            android:id="@+id/imageRetry"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="6dp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toStartOf="@+id/imageNext"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageHint"
-            app:srcCompat="@drawable/ic_replay" />
-
-        <ImageView
-            android:id="@+id/imageNext"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="6dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageRetry"
-            app:srcCompat="@drawable/ic_next" />
-
-    </android.support.constraint.ConstraintLayout>
+    <android.support.design.button.MaterialButton
+        android:id="@+id/imageNext"
+        style="@style/buttonIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="2dp"
+        app:icon="@drawable/ic_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageRetry"
+        app:layout_constraintTop_toBottomOf="@id/chessBoard" />
 
 </android.support.constraint.ConstraintLayout>

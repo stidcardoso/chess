@@ -11,14 +11,13 @@ import com.teda.chesstactics.data.entity.Position
 
 class PositionViewModel(application: Application) : AndroidViewModel(application) {
 
-    var dataRepository: DataRepository
+    private var dataRepository: DataRepository = (application as App).getRepository()
     val position: MutableLiveData<Position> = MutableLiveData()
     var elo: LiveData<Elo>?
     private var listElo: LiveData<List<Elo>>?
     private var eloRange = 500
 
     init {
-        dataRepository = (application as App).getRepository()
         elo = dataRepository.getElo()
         listElo = dataRepository.getElos()
     }

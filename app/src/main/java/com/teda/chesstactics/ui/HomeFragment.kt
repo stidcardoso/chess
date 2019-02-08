@@ -61,15 +61,14 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
 
         })
         chessPieces.setChessCallbackListener(this)
-        imageRetry.setOnClickListener { v ->
-            //            startProblem()
-//            positionViewModel.getNewPosition(1500, 2000)
-            currentPosition?.let { startProblem(it) }
-            chronometer.base = SystemClock.elapsedRealtime() + timeStopped
-            chronometer.start()
+        imageRetry.setOnClickListener {
+            groupResult.visibility = View.GONE
+            cardView2.visibility = View.VISIBLE
+            chessPieces.retryProblem()
+            resumeTime()
         }
         imageNext.setOnClickListener {
-            if (problemStarted)
+            if (calculateElo)
                 showDialogContinue()
             else
                 positionViewModel.getNewPosition(currentElo)
@@ -77,17 +76,17 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         imageHint.setOnClickListener {
             chessPieces.showHighlight()
         }
-        chronometer.start()
     }
 
     private fun showDialogContinue() {
         val dialog = AlertDialog.Builder(context!!)
-        dialog.setTitle("Quieres cancelar ")
-                .setMessage("Si continua esté ejercicio se dará como perdido")
+        dialog.setTitle(R.string.confirm)
+                .setMessage(R.string.desc_quit_exercise)
                 .setPositiveButton(
                         getString(android.R.string.ok))
                 { _, _ ->
-                    calculateNewElo()
+                    stopTimer()
+                    calculateNewElo(0.0)
                     currentPosition?.lastSolution = Date()
                     positionViewModel.updatePosition(currentPosition!!)
                     positionViewModel.getNewPosition(currentElo)
@@ -100,31 +99,27 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
                 .show()
     }
 
+    private fun resumeTime() {
+        chronometer.base = SystemClock.elapsedRealtime() + timeStopped
+        chronometer.start()
+    }
+
     private fun startProblem(position: Position) {
         groupResult.visibility = View.GONE
         cardView2.visibility = View.VISIBLE
-        if (problemStarted)
-            chessPieces.retryProblem()
-        else {
-            calculateElo = true
-            chessPieces.setChessProblem(position)
-            problemStarted = true
-        }
+        calculateElo = true
+        chessPieces.setChessProblem(position)
+        problemStarted = true
+        resumeTime()
     }
 
-/*
-    fun problem(): Position {
-        var problem = Position()
-        problem.whiteToPlay = true
-        problem.initialPosition = "2k5/ppp4p/2n5/3N2B1/3P4/2n2PPK/P1r5/4R3"
-        problem.pgn = "30. Re8+ Kd7 31. Nf6+ Kd6 32. Bf4+"
-        problem.setMovements()
-//        var movements = arrayListOf<Movement>(Movement("d3","b5"))
-//        var answers = arrayListOf<Movement>()
-//        problem.solutions
-        return problem
+    private fun calculateNewElo(result: Double) {
+        if (calculateElo) {
+            calculateElo = false
+            val elo = Utilities.calculateNewElo(currentElo!!, currentPosition!!.elo.toDouble(), result)
+            positionViewModel.insertOrUpdateElo(elo)
+        }
     }
-*/
 
     private fun animateColor(newColor: Int) {
         val colorFrom = ContextCompat.getColor(activity!!, R.color.transparent)
@@ -142,17 +137,9 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         chronometer.stop()
     }
 
-    private fun calculateNewElo() {
-        if (calculateElo) {
-            calculateElo = false
-            val elo = Utilities.calculateNewElo(currentElo!!, currentPosition!!.elo.toDouble(), 0.0)
-            positionViewModel.insertOrUpdateElo(elo)
-        }
-    }
-
     override fun onMoveError() {
         problemStarted = false
-        calculateNewElo()
+        calculateNewElo(0.0)
         groupResult.visibility = View.VISIBLE
         cardView2.visibility = View.INVISIBLE
         stopTimer()
@@ -162,17 +149,13 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
 
     override fun onProblemSolved() {
         problemStarted = false
-        if (calculateElo) {
-            calculateElo = false
-            val elo = Utilities.calculateNewElo(currentElo!!, currentPosition!!.elo.toDouble(), 1.0)
-            positionViewModel.insertOrUpdateElo(elo)
-        }
+        calculateNewElo(1.0)
         currentPosition?.lastSolution = Date()
         positionViewModel.updatePosition(currentPosition!!)
         animateColor(R.color.greenSuccess)
         groupResult.visibility = View.VISIBLE
         cardView2.visibility = View.INVISIBLE
-        chronometer.stop()
+        stopTimer()
         imageResult.setImageResource(R.drawable.ic_check_24dp)
     }
 

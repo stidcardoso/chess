@@ -32,7 +32,7 @@ class DataRepository(db: CDatabase) {
     }
 
     fun getPosition(minElo: Int, maxElo: Int, livePosition: MutableLiveData<Position>) {
-        thread {
+        thread(start = true) {
             //            livePosition.postValue(db?.positionDao()?.getPosition(minElo, maxElo))
             val format = SimpleDateFormat("dd/MM/yyyy")
             val date = format.parse(format.format(Date()))
@@ -42,7 +42,14 @@ class DataRepository(db: CDatabase) {
             calendar.time = date
             calendar.add(Calendar.DATE, 1)
             val lDate = calendar.time.time
-            livePosition.postValue(db?.positionDao()?.getPositionDate(iDate, lDate))
+            val position = db?.positionDao()?.getPositionDate(iDate, lDate)
+            val value = livePosition.value
+            if (value?.id == position?.id || value == null) {
+                db?.positionDao()?.resetLastSolution()
+                livePosition.postValue(db?.positionDao()?.getPositionDate(iDate, lDate))
+            } else
+                livePosition.postValue(position)
+//            livePosition.postValue(db?.positionDao()?.getPositionDate(iDate, lDate))
         }
     }
 
@@ -61,9 +68,8 @@ class DataRepository(db: CDatabase) {
     }
 
     fun resetPositions(livePosition: MutableLiveData<Position>) {
-        thread {
+        thread(start = true) {
             db?.positionDao()?.resetLastSolution()
-            getPosition(1500, 2000, livePosition)
         }
     }
 
@@ -89,7 +95,7 @@ class DataRepository(db: CDatabase) {
 
         val calendar = Calendar.getInstance()
         calendar.time = date
-        thread {
+        thread(start = true) {
             days?.let {
                 calendar.add(Calendar.DATE, -it)
                 val lDate = calendar.time.time

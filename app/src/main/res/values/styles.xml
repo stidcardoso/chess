@@ -22,4 +22,9 @@
         <item name="android:textColor">@color/textPrimary</item>
     </style>
 
+    <style name="buttonIcon">
+        <item name="backgroundTint">#595959</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+
 </resources>
