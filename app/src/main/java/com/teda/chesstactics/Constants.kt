@@ -8,4 +8,5 @@ object Constants {
     var EXTRAS_POSITION = "EXTRAS_POSITION"
 
     var INITIAL_GROUPS = "initialGroups.json"
+    var PURCHASE_GROUPS = "purchaseGroups.json"
 }

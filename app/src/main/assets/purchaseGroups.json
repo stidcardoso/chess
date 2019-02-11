@@ -1,7 +1,7 @@
 {
-  "name": "Mate en 2",
+  "name": "Mate en 3",
   "image": 0,
-  "available": true,
+  "available": false,
   "positions": [
     {
       "initialPosition": "2nk1r1q/8/1p1b1N2/8/2QN3B/8/K7/4R3",

@@ -103,6 +103,19 @@
         app:layout_constraintStart_toStartOf="@id/imageCircle"
         app:layout_constraintTop_toTopOf="@id/imageCircle" />
 
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3816401306300496~2590187282"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/chessPieces" />
+
+
     <android.support.constraint.Group
         android:id="@+id/groupResult"
         android:layout_width="wrap_content"
