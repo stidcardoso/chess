@@ -51,6 +51,7 @@ abstract class CDatabase : RoomDatabase() {
                                     insertAll(getInstance(context)!!, DataGenerator.generatePositions())
                                     insertElo(getInstance(context)!!)
                                     insertGroups(context)
+                                    insertPurchaseGroups(context)
                                 }
                             }
                         }
@@ -89,6 +90,13 @@ abstract class CDatabase : RoomDatabase() {
                 }
                 getInstance(context)?.positionDao()?.insertAll(group.positions!!)
             }
+        }
+
+        fun insertPurchaseGroups(context: Context) {
+            val json = Utilities.loadJSONFromAsset(context, Constants.PURCHASE_GROUPS)
+            val gson = Gson()
+            val group = gson.fromJson(json, Group::class.java)
+            val id = group?.let { getInstance(context)?.groupDao()?.insertGroup(it) }?.toInt()
         }
 
     }

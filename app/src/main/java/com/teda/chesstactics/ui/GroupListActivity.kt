@@ -33,7 +33,10 @@ class GroupListActivity : AppCompatActivity(), ChessPieces.ChessCallback {
             groupPositions = it
             adapter.positions = it?.positions!!
             adapter.notifyDataSetChanged()
-            mToolbar.title = it.group?.name
+            val f = supportFragmentManager.findFragmentById(R.id.frameContainer)
+            if (f == null) {
+                setTitle()
+            }
         })
         groupListViewModel.currentPosition.observe(this, Observer { position ->
             position?.let { setSubtitle(it) }

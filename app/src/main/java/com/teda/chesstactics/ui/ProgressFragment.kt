@@ -56,6 +56,7 @@ class ProgressFragment : Fragment() {
             }
             chip?.isClickable = false
         }
+        chipWeek.isClickable = false
 
         chipWeek.setOnClickListener {
             model?.getElosByDate(7)
