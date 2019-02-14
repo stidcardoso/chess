@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.ads.AdRequest
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.GridSpace
 import com.teda.chesstactics.R
@@ -36,6 +37,8 @@ class CategoriesFragment : Fragment() {
         /*cardEasy.setOnClickListener { }
         cardMedium.setOnClickListener { }
         cardHard.setOnClickListener { }*/
+        val request = AdRequest.Builder().build()
+        adView.loadAd(request)
         recyclerPackages.layoutManager = GridLayoutManager(activity, 3)
         recyclerPackages.addItemDecoration(GridSpace(8))
         mAdapter = MAdapter(arrayListOf())
