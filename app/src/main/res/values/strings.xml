@@ -34,5 +34,8 @@
     <!--Buttons-->
     <string name="btn_continue">Continue</string>
 
+    <!--Preferences-->
+    <string name="sound">Sound</string>
+    <string name="screen_on">Keep screen on while playing</string>
 
 </resources>

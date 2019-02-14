@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import com.teda.chesstactics.ui.CategoriesFragment
 import com.teda.chesstactics.ui.HomeFragment
 import com.teda.chesstactics.ui.ProgressFragment
+import com.teda.chesstactics.ui.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
                     ft.commit()
                 }
                 R.id.action_categories -> {
-                    var ft = supportFragmentManager.beginTransaction()
+                    val ft = supportFragmentManager.beginTransaction()
                     ft.replace(R.id.container, CategoriesFragment.newInstance())
                     ft.commit()
                 }
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity() {
                     ft.commit()
                 }
                 R.id.action_profile -> {
+                    val ft = supportFragmentManager.beginTransaction()
+                    ft.replace(R.id.container, SettingsFragment())
+                    ft.commit()
                 }
                 else -> {
                 }

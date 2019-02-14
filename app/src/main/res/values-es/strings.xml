@@ -34,4 +34,8 @@
     <!--Buttons-->
     <string name="btn_continue">Continuar</string>
 
+    <!--Preferences-->
+    <string name="sound">Sonido</string>
+    <string name="screen_on">Mantener la pantalla encedida mientras se juega</string>
+
 </resources>
