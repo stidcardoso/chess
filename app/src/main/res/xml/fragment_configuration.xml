@@ -3,12 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.preference.CheckBoxPreference
+        android:defaultValue=""
         android:key="keySound"
         android:title="@string/sound"
         app:iconSpaceReserved="false" />
 
+    <Preference android:layout="@layout/item_divider" />
+
     <android.support.v7.preference.CheckBoxPreference
-        android:key="keyScreenxOn"
+        android:defaultValue=""
+        android:key="keyScreenOn"
         android:title="@string/screen_on"
         app:iconSpaceReserved="false" />
 
