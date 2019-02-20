@@ -37,5 +37,8 @@
     <!--Preferences-->
     <string name="sound">Sonido</string>
     <string name="screen_on">Mantener la pantalla encedida mientras se juega</string>
+    <string name="flip_board">Girar el tablero para negras</string>
+    <string name="next_puzzle">Ir al siguiente problema</string>
+    <string name="next_puzzle_description">Solo después de resolver el problema</string>
 
 </resources>

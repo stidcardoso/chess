@@ -1,11 +1,8 @@
-package com.teda.chesstactics
+package com.teda.chesstactics.ui
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.teda.chesstactics.ui.CategoriesFragment
-import com.teda.chesstactics.ui.HomeFragment
-import com.teda.chesstactics.ui.ProgressFragment
-import com.teda.chesstactics.ui.SettingsFragment
+import com.teda.chesstactics.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.action_profile -> {
                     val ft = supportFragmentManager.beginTransaction()
-                    ft.replace(R.id.container, SettingsFragment())
+                    ft.replace(R.id.container, ConfigurationFragment())
                     ft.commit()
                 }
                 else -> {

@@ -37,5 +37,8 @@
     <!--Preferences-->
     <string name="sound">Sound</string>
     <string name="screen_on">Keep screen on while playing</string>
+    <string name="flip_board">Flip board for black</string>
+    <string name="next_puzzle">Go to next puzzle automatically</string>
+    <string name="next_puzzle_description">Only after solving the puzzle </string>
 
 </resources>
