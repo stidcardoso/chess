@@ -13,6 +13,13 @@ object DataGenerator {
         problem.pgn = "30. Re8+ Kd7 31. Nf6+ Kd6 32. Bf4+"
         problem.setMovements()
         positions.add(problem)
+        var problem2 = Position()
+        problem.elo = 1600
+        problem.whiteToPlay = false
+        problem.initialPosition = "2kr3r/1pp4p/p7/2P2p2/N2qp1n1/3P4/PP2BPP1/R2QR1K1"
+        problem.pgn = "22. Qxf2+ 23. Kh1 Qh4+ 24. Kg1 Qh2+ 25. Kf1 Qh1#"
+        problem.setMovements()
+        positions.add(problem)
         /* var position = Position("1", "1", 1600, true)
          var position2 = Position("2", "2", 1700, true)
          var position3 = Position("3", "3", 1800, true)

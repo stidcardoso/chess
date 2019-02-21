@@ -111,6 +111,10 @@ class ChessPieces : View {
     private fun drawMovementHighlight(canvas: Canvas?) {
         var resultPiece = Piece()
         val hPiece = pgnToPiece(problem.movements[move])
+        if (!problem.whiteToPlay)
+            hPiece.position = Pair(Math.abs(hPiece.position!!.first - 7),
+                    Math.abs(hPiece.position!!.second - 7))
+
         val pieces = pieces.filter {
             it.isWhite == problem.whiteToPlay
         }.filter {
@@ -170,7 +174,9 @@ class ChessPieces : View {
     private fun movePiece(x: Float, y: Float) {
         if (move < problem.movements.size) {
             val destiny = pgnToPiece(problem.movements[move])
-            val position = getChessPosition(x, y)
+            var position = getChessPosition(x, y)
+            if (!problem.whiteToPlay)
+                destiny.position = Pair(Math.abs(destiny.position!!.first - 7), Math.abs(destiny.position!!.second - 7))
             if (destiny.pieceType == selectedPiece?.pieceType && destiny.position == position) {
                 Movements.movePiece(position)
                 move += 1
@@ -194,6 +200,10 @@ class ChessPieces : View {
     private fun moveAnswer() {
         if (move < problem.movements.size) {
             val pngPiece = pgnToPiece(problem.movements[move])
+            if (!problem.whiteToPlay)
+                pngPiece.position = Pair(Math.abs(pngPiece.position!!.first - 7),
+                        Math.abs(pngPiece.position!!.second - 7))
+
             val filteredPieces = pieces.filter { it.pieceType == pngPiece.pieceType }
                     .filter { it.isWhite != problem.whiteToPlay }
             var pieceToMove: Piece

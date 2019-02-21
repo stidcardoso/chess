@@ -18,13 +18,6 @@
 
     <Preference android:layout="@layout/item_divider" />
 
-    <android.support.v7.preference.CheckBoxPreference
-        android:defaultValue=""
-        android:key="keyFlipBoard"
-        android:title="@string/flip_board"
-        app:iconSpaceReserved="false" />
-
-    <Preference android:layout="@layout/item_divider" />
 
     <android.support.v7.preference.CheckBoxPreference
         android:defaultValue=""
@@ -32,6 +25,14 @@
         android:title="@string/next_puzzle"
         app:iconSpaceReserved="false"
         app:summary="@string/next_puzzle_description" />
+
+    <Preference android:layout="@layout/item_divider" />
+
+    <android.support.v7.preference.CheckBoxPreference
+        android:defaultValue="true"
+        android:key="keyFlipBoard"
+        android:title="@string/flip_board"
+        app:iconSpaceReserved="false" />
 
 
 </android.support.v7.preference.PreferenceScreen>

@@ -5,13 +5,16 @@ import android.animation.ObjectAnimator
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.preference.PreferenceManager
 import android.support.v7.widget.Toolbar
 import android.view.View
+import android.view.WindowManager
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
 import com.teda.chesstactics.data.model.Result
@@ -35,6 +38,7 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
     private val animation by lazy { ObjectAnimator.ofInt(progressBar, "progress", 1000, 0) }
     private lateinit var countDownViewModel: CountDownViewModel
     lateinit var mToolbar: Toolbar
+    lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,19 +65,23 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
         animateProgressBar()*/
     }
 
-    override fun onPause() {
-        super.onPause()
-        currentTime = animation.currentPlayTime
-        animation.cancel()
-        countDown.cancel()
-    }
-
     override fun onResume() {
         super.onResume()
         animation.duration = time * 1000L
         animation.start()
         animation.currentPlayTime = currentTime
         startCountDown()
+        preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        if (preferences.getBoolean("keyScreenOn", false))
+            window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        currentTime = animation.currentPlayTime
+        animation.cancel()
+        countDown.cancel()
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     private fun startCountDown() {
