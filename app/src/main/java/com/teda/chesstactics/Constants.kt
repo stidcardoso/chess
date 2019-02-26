@@ -9,4 +9,10 @@ object Constants {
 
     var INITIAL_GROUPS = "initialGroups.json"
     var PURCHASE_GROUPS = "purchaseGroups.json"
+
+    // preferences
+    var KEY_SOUND = "keySound"
+    var KEY_SCREEN_ON = "keyScreenOn"
+    var KEY_GO_TO_NEXT_PUZZLE = "keyGoToNextPuzzle"
+    var KEY_FLIP_BOARD = "keyFlipBoard"
 }

@@ -9,11 +9,11 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.support.v7.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import com.teda.chesstactics.App
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
 import com.teda.chesstactics.data.entity.GroupPositions
@@ -39,7 +39,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
     private var currentPosition = 0
     private var positions: List<Position>? = null
     private var timeStopped: Long = 0
-    lateinit var preferences: SharedPreferences
+//    private lateinit var preferences: SharedPreferences
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.activity_position, container, false)
@@ -90,8 +90,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
 
     override fun onResume() {
         super.onResume()
-        preferences = PreferenceManager.getDefaultSharedPreferences(activity)
-        if (preferences.getBoolean("keyScreenOn", false))
+        if (App.prefs!!.getBoolean("keyScreenOn", false))
             activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 

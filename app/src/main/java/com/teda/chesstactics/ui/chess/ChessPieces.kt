@@ -7,6 +7,8 @@ import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.teda.chesstactics.App
+import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
 import com.teda.chesstactics.Utilities
 import com.teda.chesstactics.data.entity.Position
@@ -28,6 +30,8 @@ class ChessPieces : View {
     private var move = 0
     private var chessCallback: ChessCallback? = null
     private var movementPosition: Pair<Int, Int>? = null
+    private var FLIP_VALUE = 7
+    private var flip: Boolean = false
 
     constructor(context: Context?) : super(context) {
         init()
@@ -93,8 +97,8 @@ class ChessPieces : View {
         highlights.forEach {
             val left = squareWidth!! * (it.first).toFloat()
             val top = squareWidth!! * (it.second).toFloat()
-            val right = left + squareWidth!!
-            val bottom = top + squareWidth!!
+//            val right = left + squareWidth!!
+//            val bottom = top + squareWidth!!
             canvas?.drawCircle(left + squareWidth!! / 2, top + squareWidth!! / 2, squareWidth!! * 0.2F, paint)
         }
         drawSquareHighlight(canvas)
@@ -111,9 +115,9 @@ class ChessPieces : View {
     private fun drawMovementHighlight(canvas: Canvas?) {
         var resultPiece = Piece()
         val hPiece = pgnToPiece(problem.movements[move])
-        if (!problem.whiteToPlay)
-            hPiece.position = Pair(Math.abs(hPiece.position!!.first - 7),
-                    Math.abs(hPiece.position!!.second - 7))
+        if (flip)
+            hPiece.position = Pair(Math.abs(hPiece.position!!.first - FLIP_VALUE),
+                    Math.abs(hPiece.position!!.second - FLIP_VALUE))
 
         val pieces = pieces.filter {
             it.isWhite == problem.whiteToPlay
@@ -174,9 +178,9 @@ class ChessPieces : View {
     private fun movePiece(x: Float, y: Float) {
         if (move < problem.movements.size) {
             val destiny = pgnToPiece(problem.movements[move])
-            var position = getChessPosition(x, y)
-            if (!problem.whiteToPlay)
-                destiny.position = Pair(Math.abs(destiny.position!!.first - 7), Math.abs(destiny.position!!.second - 7))
+            val position = getChessPosition(x, y)
+            if (flip)
+                destiny.position = Pair(Math.abs(destiny.position!!.first - FLIP_VALUE), Math.abs(destiny.position!!.second - FLIP_VALUE))
             if (destiny.pieceType == selectedPiece?.pieceType && destiny.position == position) {
                 Movements.movePiece(position)
                 move += 1
@@ -200,13 +204,13 @@ class ChessPieces : View {
     private fun moveAnswer() {
         if (move < problem.movements.size) {
             val pngPiece = pgnToPiece(problem.movements[move])
-            if (!problem.whiteToPlay)
-                pngPiece.position = Pair(Math.abs(pngPiece.position!!.first - 7),
-                        Math.abs(pngPiece.position!!.second - 7))
+            if (flip)
+                pngPiece.position = Pair(Math.abs(pngPiece.position!!.first - FLIP_VALUE),
+                        Math.abs(pngPiece.position!!.second - FLIP_VALUE))
 
             val filteredPieces = pieces.filter { it.pieceType == pngPiece.pieceType }
                     .filter { it.isWhite != problem.whiteToPlay }
-            var pieceToMove: Piece
+//            var pieceToMove: Piece
             for (p in filteredPieces) {
                 Movements.getHighLights(p, false)
                 if (highlights.contains(pngPiece.position)) {
@@ -289,9 +293,14 @@ class ChessPieces : View {
         this.problem.setMovements()
         val pieces = Utilities.getPieces(problem.initialPosition)
         if (!problem.whiteToPlay) {
-            pieces.forEach {
-                it.position = Pair(Math.abs(it.position!!.first - 7), Math.abs(it.position!!.second - 7))
+            flip = App.prefs!!.getBoolean(Constants.KEY_FLIP_BOARD, true)
+            if (flip) {
+                pieces.forEach {
+                    it.position = Pair(Math.abs(it.position!!.first - FLIP_VALUE), Math.abs(it.position!!.second - FLIP_VALUE))
+                }
             }
+        } else {
+            flip = false
         }
         setChessPieces(pieces)
         saveLastPosition()
@@ -347,84 +356,4 @@ class ChessPieces : View {
         fun onProblemSolved()
 
     }
-
-    //    fun setFen(fen: String) {
-//        this.fenGame = fen
-//        val fenList = fen.split("""/""")
-//        for (i in 0..7) {
-//            var mPosition = 0
-//            for (j in 0..((fenList[i].length - 1))) {
-//                val character = fenList[i][j]
-//                if (character.isLetter()) {
-//                    val piece = getPieceType(character.toString())
-//                    val position = Pair(mPosition, i)
-//                    piece.position = position
-//                    mPosition += 1
-//                    pieces.add(piece)
-//                } else {
-//                    mPosition += (character.toInt() - 1)
-//                }
-//            }
-//        }
-//        invalidate()
-//    }
-
-//    private fun getPieceType(type: String): Piece {
-//        val piece = Piece()
-//        when (type) {
-//            PieceFEN.WKING -> {
-//                piece.pieceType = PieceType.WKING
-//                piece.drawable = PieceFEN.IMAGE_WKING
-//            }
-//            PieceFEN.WQUEEN -> {
-//                piece.pieceType = PieceType.WQUEEN
-//                piece.drawable = PieceFEN.IMAGE_WQUEEN
-//            }
-//            PieceFEN.WROOK -> {
-//                piece.pieceType = PieceType.WROOK
-//                piece.drawable = PieceFEN.IMAGE_WROOK
-//            }
-//            PieceFEN.WBISHOP -> {
-//                piece.pieceType = PieceType.WBISHOP
-//                piece.drawable = PieceFEN.IMAGE_WBISHOP
-//            }
-//            PieceFEN.WKNIGHT -> {
-//                piece.pieceType = PieceType.WKNIGHT
-//                piece.drawable = PieceFEN.IMAGE_WKNIGHT
-//            }
-//            PieceFEN.WPAWN -> {
-//                piece.pieceType = PieceType.WPAWN
-//                piece.drawable = PieceFEN.IMAGE_WPAWN
-//            }
-//            PieceFEN.BKING -> {
-//                piece.pieceType = PieceType.BKING
-//                piece.drawable = PieceFEN.IMAGE_BKING
-//            }
-//            PieceFEN.BQUEEN -> {
-//                piece.pieceType = PieceType.BQUEEN
-//                piece.drawable = PieceFEN.IMAGE_BQUEEN
-//            }
-//            PieceFEN.BROOK -> {
-//                piece.pieceType = PieceType.BROOK
-//                piece.drawable = PieceFEN.IMAGE_BROOK
-//            }
-//            PieceFEN.BBISHOP -> {
-//                piece.pieceType = PieceType.BBISHOP
-//                piece.drawable = PieceFEN.IMAGE_BBISHOP
-//            }
-//            PieceFEN.BKNIGHT -> {
-//                piece.pieceType = PieceType.BKNIGHT
-//                piece.drawable = PieceFEN.IMAGE_BKNIGHT
-//            }
-//            PieceFEN.BPAWN -> {
-//                piece.pieceType = PieceType.BPAWN
-//                piece.drawable = PieceFEN.IMAGE_BPAWN
-//            }
-//            else -> {
-//                PieceType.WPAWN
-//            }
-//        }
-//        return piece
-//    }
-
 }
