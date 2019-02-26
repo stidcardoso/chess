@@ -149,7 +149,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         val colorFrom = ContextCompat.getColor(activity!!, R.color.transparent)
         val colorTo = ContextCompat.getColor(activity!!, newColor)
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo)
-        colorAnimation.duration = 400 // milliseconds
+        colorAnimation.duration = 800 // milliseconds
         colorAnimation.addUpdateListener {
             imageBackgroundResult.setBackgroundColor(it.animatedValue as Int)
         }
@@ -186,7 +186,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         imageResult.setImageResource(R.drawable.ic_check_24dp)
     }
 
-    val endListener = object : AnimatorListenerAdapter() {
+    private val endListener = object : AnimatorListenerAdapter() {
         override fun onAnimationEnd(animation: Animator?) {
             super.onAnimationEnd(animation)
             if (goToNextPuzzle)

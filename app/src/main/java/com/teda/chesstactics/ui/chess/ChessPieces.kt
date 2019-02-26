@@ -305,6 +305,7 @@ class ChessPieces : View {
         setChessPieces(pieces)
         saveLastPosition()
         highlights.clear()
+        drawHighlight = false
         selectedPiece = null
         move = 0
     }
