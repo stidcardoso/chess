@@ -85,7 +85,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
             else
                 positionViewModel.getNewPosition(currentElo)
         }
-        imageHint.setOnClickListener {
+        imageHint.setOnClickListener { _ ->
             chessPieces.showHighlight()
         }
     }
@@ -95,6 +95,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         if (App.prefs!!.getBoolean(Constants.KEY_SCREEN_ON, false))
             activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         nextPuzzleAutomatically = App.prefs!!.getBoolean(Constants.KEY_GO_TO_NEXT_PUZZLE, false)
+        chessPieces.sound = App.prefs!!.getBoolean(Constants.KEY_SOUND, false)
     }
 
     override fun onPause() {
@@ -151,7 +152,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo)
         colorAnimation.duration = 800 // milliseconds
         colorAnimation.addUpdateListener {
-            imageBackgroundResult.setBackgroundColor(it.animatedValue as Int)
+            imageBackgroundResult?.setBackgroundColor(it.animatedValue as Int)
         }
         colorAnimation.addListener(endListener)
         colorAnimation.start()

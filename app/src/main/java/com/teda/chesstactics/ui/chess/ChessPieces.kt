@@ -3,6 +3,7 @@ package com.teda.chesstactics.ui.chess
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.media.MediaPlayer
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -13,6 +14,7 @@ import com.teda.chesstactics.R
 import com.teda.chesstactics.Utilities
 import com.teda.chesstactics.data.entity.Position
 import com.teda.chesstactics.ui.Piece
+
 
 class ChessPieces : View {
 
@@ -32,7 +34,9 @@ class ChessPieces : View {
     private var movementPosition: Pair<Int, Int>? = null
     private var FLIP_VALUE = 7
     private var flip: Boolean = false
+    var sound: Boolean = false
 
+    //    sounds
     constructor(context: Context?) : super(context) {
         init()
     }
@@ -187,10 +191,12 @@ class ChessPieces : View {
                 selectedPiece = null
                 highlights.clear()
                 invalidate()
+                playSound()
                 saveLastPosition()
                 moveAnswer()
             } else {
                 if (highlights.filter { it == position }.isNotEmpty()) {
+                    playSound()
                     Movements.movePiece(position)
                     chessCallback?.onMoveError()
                 }
@@ -244,7 +250,6 @@ class ChessPieces : View {
         piece.position = Pair(x, y)
         return piece
     }
-
 
     private fun getChessPosition(x: Float, y: Float): Pair<Int, Int> {
         val positionX = (x / squareWidth!!).toInt()
@@ -347,6 +352,23 @@ class ChessPieces : View {
             highlights.clear()
             drawHighlight = true
             invalidate()
+        }
+    }
+
+    private fun playSound() {
+        if (sound) {
+            val mp = MediaPlayer.create(context, R.raw.ma2)
+            mp.setOnCompletionListener {
+                it.reset()
+                it.release()
+            }
+            mp.start()
+            /*val assetFileDescriptor = context.resources.openRawResourceFd(R.raw.move) ?: return
+            mediaPlayer.run {
+                reset()
+                setDataSource(assetFileDescriptor.fileDescriptor, assetFileDescriptor.startOffset, assetFileDescriptor.declaredLength)
+                prepareAsync()
+        }*/
         }
     }
 

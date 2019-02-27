@@ -71,6 +71,7 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
         startCountDown()
         if (App.prefs!!.getBoolean("keyScreenOn", false))
             window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        chessPieces.sound = App.prefs!!.getBoolean(Constants.KEY_SOUND, false)
     }
 
     override fun onPause() {

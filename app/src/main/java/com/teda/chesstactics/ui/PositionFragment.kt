@@ -54,6 +54,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         chessPieces.setChessCallbackListener(this)
         groupListViewModel = activity?.run {
@@ -115,6 +116,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         if (App.prefs!!.getBoolean("keyScreenOn", false))
             activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         nextPuzzleAutomatically = App.prefs!!.getBoolean(Constants.KEY_GO_TO_NEXT_PUZZLE, false)
+        chessPieces.sound = App.prefs!!.getBoolean(Constants.KEY_SOUND, false)
     }
 
     override fun onPause() {
