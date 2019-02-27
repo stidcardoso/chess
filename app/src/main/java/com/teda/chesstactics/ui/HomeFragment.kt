@@ -1,5 +1,7 @@
 package com.teda.chesstactics.ui
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.arch.lifecycle.Observer
@@ -12,6 +14,9 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import com.teda.chesstactics.App
+import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
 import com.teda.chesstactics.Utilities
 import com.teda.chesstactics.data.entity.Elo
@@ -36,6 +41,8 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
     private var currentPosition: Position? = null
     private var currentElo: Elo? = null
     private var calculateElo = true
+    private var nextPuzzleAutomatically = false
+    var goToNextPuzzle = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -49,8 +56,12 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
                 problemStarted = false
                 currentPosition = it
                 startProblem(it)
+                if (position.whiteToPlay)
+                    imagePlay.setImageResource(R.drawable.ic_wking)
+                else
+                    imagePlay.setImageResource(R.drawable.ic_bking)
             } ?: run {
-                positionViewModel.resetLastSolution()
+                //                positionViewModel.resetLastSolution()
             }
         })
         positionViewModel.elo?.observe(this, Observer {
@@ -68,6 +79,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
             resumeTime()
         }
         imageNext.setOnClickListener {
+            goToNextPuzzle = false
             if (calculateElo)
                 showDialogContinue()
             else
@@ -76,6 +88,18 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         imageHint.setOnClickListener {
             chessPieces.showHighlight()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (App.prefs!!.getBoolean(Constants.KEY_SCREEN_ON, false))
+            activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        nextPuzzleAutomatically = App.prefs!!.getBoolean(Constants.KEY_GO_TO_NEXT_PUZZLE, false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     private fun showDialogContinue() {
@@ -125,10 +149,11 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         val colorFrom = ContextCompat.getColor(activity!!, R.color.transparent)
         val colorTo = ContextCompat.getColor(activity!!, newColor)
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo)
-        colorAnimation.duration = 400 // milliseconds
+        colorAnimation.duration = 800 // milliseconds
         colorAnimation.addUpdateListener {
             imageBackgroundResult.setBackgroundColor(it.animatedValue as Int)
         }
+        colorAnimation.addListener(endListener)
         colorAnimation.start()
     }
 
@@ -152,11 +177,21 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         calculateNewElo(1.0)
         currentPosition?.lastSolution = Date()
         positionViewModel.updatePosition(currentPosition!!)
+        if (nextPuzzleAutomatically)
+            goToNextPuzzle = true
         animateColor(R.color.greenSuccess)
         groupResult.visibility = View.VISIBLE
         cardView2.visibility = View.INVISIBLE
         stopTimer()
         imageResult.setImageResource(R.drawable.ic_check_24dp)
+    }
+
+    private val endListener = object : AnimatorListenerAdapter() {
+        override fun onAnimationEnd(animation: Animator?) {
+            super.onAnimationEnd(animation)
+            if (goToNextPuzzle)
+                positionViewModel.getNewPosition(currentElo)
+        }
     }
 
 }

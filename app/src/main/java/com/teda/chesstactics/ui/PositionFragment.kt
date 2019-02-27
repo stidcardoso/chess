@@ -1,19 +1,20 @@
 package com.teda.chesstactics.ui
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.SystemClock
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.support.v7.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import com.teda.chesstactics.App
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
 import com.teda.chesstactics.data.entity.GroupPositions
@@ -39,7 +40,9 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
     private var currentPosition = 0
     private var positions: List<Position>? = null
     private var timeStopped: Long = 0
-    lateinit var preferences: SharedPreferences
+    private var nextPuzzleAutomatically = false
+    var goToNextPuzzle = false
+//    private lateinit var preferences: SharedPreferences
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.activity_position, container, false)
@@ -64,19 +67,13 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         groupListViewModel?.group?.observe(this, observer)
 
         imagePrevious.setOnClickListener {
-            if (currentPosition > 0) {
-                currentPosition -= 1
-                groupListViewModel?.setCurrentPosition(currentPosition)
-                startProblem(positions!![currentPosition])
-            }
+            goToNextPuzzle = false
+            goPreviousPuzzle()
         }
 
         imageNext.setOnClickListener {
-            if (currentPosition < positions!!.size - 1) {
-                currentPosition += 1
-                groupListViewModel?.setCurrentPosition(currentPosition)
-                startProblem(positions!![currentPosition])
-            }
+            goToNextPuzzle = false
+            goNextPuzzle()
         }
 
         imageRetry.setOnClickListener {
@@ -88,11 +85,36 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         }
     }
 
+    private fun goPreviousPuzzle() {
+        if (currentPosition > 0) {
+            currentPosition -= 1
+            groupListViewModel?.setCurrentPosition(currentPosition)
+            updateKingIcon()
+            startProblem(positions!![currentPosition])
+        }
+    }
+
+    private fun goNextPuzzle() {
+        if (currentPosition < positions!!.size - 1) {
+            currentPosition += 1
+            groupListViewModel?.setCurrentPosition(currentPosition)
+            updateKingIcon()
+            startProblem(positions!![currentPosition])
+        }
+    }
+
+    private fun updateKingIcon() {
+        if (!positions!![currentPosition].whiteToPlay)
+            imagePlay.setImageResource(R.drawable.ic_bking)
+        else
+            imagePlay.setImageResource(R.drawable.ic_wking)
+    }
+
     override fun onResume() {
         super.onResume()
-        preferences = PreferenceManager.getDefaultSharedPreferences(activity)
-        if (preferences.getBoolean("keyScreenOn", false))
+        if (App.prefs!!.getBoolean("keyScreenOn", false))
             activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        nextPuzzleAutomatically = App.prefs!!.getBoolean(Constants.KEY_GO_TO_NEXT_PUZZLE, false)
     }
 
     override fun onPause() {
@@ -131,6 +153,8 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         cardView2.visibility = View.INVISIBLE
         chronometer.stop()
         imageResult.setImageResource(R.drawable.ic_check_24dp)
+        if (nextPuzzleAutomatically)
+            goToNextPuzzle = true
         animateColor(R.color.greenSuccess)
         positions?.get(currentPosition)?.groupSolved = true
         groupListViewModel?.updatePosition(positions!![currentPosition])
@@ -140,16 +164,25 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         val colorFrom = ContextCompat.getColor(activity!!, R.color.transparent)
         val colorTo = ContextCompat.getColor(activity!!, newColor)
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo)
-        colorAnimation.duration = 400 // milliseconds
+        colorAnimation.duration = 700 // milliseconds
         colorAnimation.addUpdateListener {
             imageBackgroundResult.setBackgroundColor(it.animatedValue as Int)
         }
+        colorAnimation.addListener(endListener)
         colorAnimation.start()
     }
 
     private fun stopTimer() {
         timeStopped = chronometer.base - SystemClock.elapsedRealtime()
         chronometer.stop()
+    }
+
+    private val endListener = object : AnimatorListenerAdapter() {
+        override fun onAnimationEnd(animation: Animator?) {
+            super.onAnimationEnd(animation)
+            if (goToNextPuzzle)
+                goNextPuzzle()
+        }
     }
 
 }

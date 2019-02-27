@@ -1,20 +1,18 @@
 package com.teda.chesstactics.ui
 
-import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.preference.PreferenceManager
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.WindowManager
+import com.teda.chesstactics.App
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
 import com.teda.chesstactics.data.model.Result
@@ -37,8 +35,8 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
     private lateinit var countDown: CountDownTimer
     private val animation by lazy { ObjectAnimator.ofInt(progressBar, "progress", 1000, 0) }
     private lateinit var countDownViewModel: CountDownViewModel
-    lateinit var mToolbar: Toolbar
-    lateinit var preferences: SharedPreferences
+    private lateinit var mToolbar: Toolbar
+//    lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,8 +69,7 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
         animation.start()
         animation.currentPlayTime = currentTime
         startCountDown()
-        preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        if (preferences.getBoolean("keyScreenOn", false))
+        if (App.prefs!!.getBoolean("keyScreenOn", false))
             window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
@@ -106,6 +103,7 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
         }.start()
     }
 
+/*
     private fun animateProgressBar() {
         animation.duration = time * 1000L
         animation.addListener(object : Animator.AnimatorListener {
@@ -120,10 +118,11 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
         })
         animation.start()
     }
+*/
 
     private fun showPositionResult(error: Boolean) {
-        var color = 0
-        var image = 0
+        val color: Int
+        val image: Int
         if (error) {
             color = ContextCompat.getColor(this, R.color.colorAccent)
             image = R.drawable.ic_close_24dp
