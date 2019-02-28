@@ -170,6 +170,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         cardView2.visibility = View.INVISIBLE
         stopTimer()
         imageResult.setImageResource(R.drawable.ic_close_24dp)
+        goToNextPuzzle = false
         animateColor(R.color.colorAccent)
     }
 

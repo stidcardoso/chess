@@ -23,6 +23,7 @@ class ChessPieces : View {
     private val squarePaint by lazy { Paint() }
     private var padding: Int = 0
     private var drawHighlight = false
+    private var onFinished = false
 
     private var pieces = ArrayList<Piece>()
     private var lastValidPieces = ArrayList<Piece>()
@@ -32,6 +33,7 @@ class ChessPieces : View {
     private var move = 0
     private var chessCallback: ChessCallback? = null
     private var movementPosition: Pair<Int, Int>? = null
+
     private var FLIP_VALUE = 7
     private var flip: Boolean = false
     var sound: Boolean = false
@@ -199,6 +201,7 @@ class ChessPieces : View {
                     playSound()
                     Movements.movePiece(position)
                     chessCallback?.onMoveError()
+                    onFinished = true
                 }
                 selectedPiece = null
                 highlights.clear()
@@ -231,6 +234,7 @@ class ChessPieces : View {
             }
             saveLastPosition()
         } else {
+            onFinished = true
             chessCallback?.onProblemSolved()
         }
     }
@@ -260,17 +264,19 @@ class ChessPieces : View {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         super.onTouchEvent(event)
-        if (event?.action == MotionEvent.ACTION_DOWN) {
-            if (selectedPiece?.position != getChessPosition(event.x, event.y)) {
+        if (onFinished)
+            return false
+        when (event?.action) {
+            MotionEvent.ACTION_DOWN -> if (selectedPiece?.position != getChessPosition(event.x, event.y)) {
                 drawHighlight = false
                 getPiece(event.x, event.y)
             }
-        } else if (event?.action == MotionEvent.ACTION_UP) {
-            movementPosition = null
-            if (selectedPiece?.position != getChessPosition(event.x, event.y) && selectedPiece != null)
-                getPiece(event.x, event.y)
-        } else if (event?.action == MotionEvent.ACTION_MOVE) {
-            if (selectedPiece != null && highlights.isNotEmpty()) {
+            MotionEvent.ACTION_UP -> {
+                movementPosition = null
+                if (selectedPiece?.position != getChessPosition(event.x, event.y) && selectedPiece != null)
+                    getPiece(event.x, event.y)
+            }
+            MotionEvent.ACTION_MOVE -> if (selectedPiece != null && highlights.isNotEmpty()) {
                 val position = getChessPosition(event.x, event.y)
                 val check = highlights.filter {
                     it == position
@@ -312,10 +318,12 @@ class ChessPieces : View {
         highlights.clear()
         drawHighlight = false
         selectedPiece = null
+        onFinished = false
         move = 0
     }
 
     fun retryProblem() {
+        onFinished = false
         pieces.clear()
         lastValidPieces.forEach {
             val piece = Piece()
@@ -357,7 +365,7 @@ class ChessPieces : View {
 
     private fun playSound() {
         if (sound) {
-            val mp = MediaPlayer.create(context, R.raw.ma2)
+            val mp = MediaPlayer.create(context, R.raw.move)
             mp.setOnCompletionListener {
                 it.reset()
                 it.release()
