@@ -106,8 +106,14 @@ class DataRepository(db: CDatabase) {
         }
     }
 
-    fun getGroups(): LiveData<List<Group>>? {
-        return db?.groupDao()?.getGroups()
+    fun getGroups(groupsData: MutableLiveData<List<Group>>) {
+        thread(start = true) {
+            val groups = db?.groupDao()?.getGroups()
+            groups?.forEach {
+                it.percentage = db?.groupDao()?.getSolutionPercentage(it.id) ?: 0
+            }
+            groupsData.postValue(groups)
+        }
     }
 
     fun getNewGroups(): LiveData<List<Group>>? {

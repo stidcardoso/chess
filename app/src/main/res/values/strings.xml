@@ -41,4 +41,6 @@
     <string name="next_puzzle">Go to next puzzle automatically</string>
     <string name="next_puzzle_description">Only after solving the puzzle </string>
 
+    <!--general-->
+
 </resources>

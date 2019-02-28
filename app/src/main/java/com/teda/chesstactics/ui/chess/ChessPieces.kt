@@ -264,7 +264,7 @@ class ChessPieces : View {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         super.onTouchEvent(event)
-        if (onFinished)
+        if (false)
             return false
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> if (selectedPiece?.position != getChessPosition(event.x, event.y)) {
@@ -378,6 +378,11 @@ class ChessPieces : View {
                 prepareAsync()
         }*/
         }
+    }
+
+    fun setFlip(flip: Boolean) {
+        this.flip = flip
+        Movements.flip = this.flip
     }
 
     interface ChessCallback {

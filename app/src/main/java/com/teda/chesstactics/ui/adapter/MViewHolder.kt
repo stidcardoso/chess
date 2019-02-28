@@ -4,9 +4,10 @@ import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.teda.chesstactics.Constants
+import com.teda.chesstactics.R
 import com.teda.chesstactics.data.entity.Group
 import com.teda.chesstactics.ui.GroupListActivity
-import kotlinx.android.synthetic.main.item.view.*
+import kotlinx.android.synthetic.main.item_group.view.*
 
 class MViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -23,6 +24,7 @@ class MViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bind(group: Group) {
         this.group = group
         itemView.textGroupName.text = group.name
+        itemView.textPercent.text = group.percentage.toString() + "%"
     }
 
 }

@@ -96,6 +96,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
             activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         nextPuzzleAutomatically = App.prefs!!.getBoolean(Constants.KEY_GO_TO_NEXT_PUZZLE, false)
         chessPieces.sound = App.prefs!!.getBoolean(Constants.KEY_SOUND, false)
+        chessPieces.setFlip(App.prefs!!.getBoolean(Constants.KEY_FLIP_BOARD, true))
     }
 
     override fun onPause() {

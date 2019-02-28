@@ -126,7 +126,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
 
     private fun startProblem(position: Position) {
         groupResult.visibility = View.GONE
-        cardView2.visibility = View.VISIBLE
+//        cardView2.visibility = View.VISIBLE
         /*if (problemStarted)
             chessPieces.retryProblem()
         else {*/
@@ -139,6 +139,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
     }
 
     private fun restartProblem() {
+        groupResult.visibility = View.GONE
         chessPieces.retryProblem()
     }
 

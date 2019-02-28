@@ -13,5 +13,7 @@ class Group {
     var image: Int = 0
     var available = false
     @Ignore
+    var percentage: Int = 0
+    @Ignore
     var positions: List<Position>? = null
 }

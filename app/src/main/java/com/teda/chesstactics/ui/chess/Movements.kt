@@ -10,6 +10,7 @@ object Movements {
     lateinit var pos: Pair<Int, Int>
     var king: Piece? = Piece()
     private var attackedSquares = ArrayList<Pair<Int, Int>>()
+    var flip = true
 
     fun getHighLights(selectedPiece: Piece?, check: Boolean) {
         this.pos = selectedPiece?.position
@@ -47,7 +48,7 @@ object Movements {
             getBishopHighlights()
         if (selectedPiece.pieceType!! == PieceType.ROOK)
             getRookHighlights()
-            if (selectedPiece.pieceType!! == PieceType.QUEEN) {
+        if (selectedPiece.pieceType!! == PieceType.QUEEN) {
             getBishopHighlights()
             getRookHighlights()
         }
@@ -59,29 +60,42 @@ object Movements {
         val pos = selectedPiece?.position
                 ?: run { Pair(0, 0) }
 
-        if (selectedPiece!!.isWhite || true ) {
+        if(attacked) {
+            if(!selectedPiece!!.isWhite && !flip) {
+                highlights.add(Pair(pos.first + 1, pos.second + 1))
+                highlights.add(Pair(pos.first - 1, pos.second + 1))
+            } else {
+                highlights.add(Pair(pos.first + 1, pos.second - 1))
+                highlights.add(Pair(pos.first - 1, pos.second - 1))
+            }
+            return
+        }
+
+        if (selectedPiece!!.isWhite || (!selectedPiece!!.isWhite && flip)) {
+           /* if (attacked) {
+                highlights.add(Pair(pos.first + 1, pos.second - 1))
+                highlights.add(Pair(pos.first - 1, pos.second - 1))
+                return
+            }*/
             if (!getSinglePiece(pos.first, pos.second - 1)) {
                 highlights.add(Pair(pos.first, pos.second - 1))
                 if (pos.second == 6 && !getSinglePiece(pos.first, pos.second - 2)) {
                     highlights.add(Pair(pos.first, pos.second - 2))
                 }
             }
-            if (attacked) {
-                highlights.add(Pair(pos.first + 1, pos.second - 1))
-                highlights.add(Pair(pos.first - 1, pos.second - 1))
-            }
             attackPiece(pos.first + 1, pos.second - 1)
             attackPiece(pos.first - 1, pos.second - 1)
         } else {
+            /*if (attacked) {
+                highlights.add(Pair(pos.first + 1, pos.second + 1))
+                highlights.add(Pair(pos.first - 1, pos.second + 1))
+                return
+            }*/
             if (!getSinglePiece(pos.first, pos.second + 1)) {
                 highlights.add(Pair(pos.first, pos.second + 1))
                 if (pos.second == 1 && !getSinglePiece(pos.first, pos.second + 2)) {
                     highlights.add(Pair(pos.first, pos.second + 2))
                 }
-            }
-            if (attacked) {
-                highlights.add(Pair(pos.first + 1, pos.second + 1))
-                highlights.add(Pair(pos.first - 1, pos.second + 1))
             }
             attackPiece(pos.first + 1, pos.second + 1)
             attackPiece(pos.first - 1, pos.second + 1)

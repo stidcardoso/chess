@@ -3,7 +3,7 @@ package com.teda.chesstactics.ui.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.teda.chesstactics.data.entity.Group
-import kotlinx.android.synthetic.main.item.view.*
+import kotlinx.android.synthetic.main.item_buy_package.view.*
 
 class BuyGroupViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 

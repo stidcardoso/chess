@@ -44,7 +44,7 @@ class CategoriesFragment : Fragment() {
         mAdapter = MAdapter(arrayListOf())
         recyclerPackages.adapter = mAdapter
         categoriesViewModel = ViewModelProviders.of(this).get(CategoriesViewModel::class.java)
-        categoriesViewModel.groups?.observe(this, Observer {
+        categoriesViewModel.groups.observe(this, Observer {
             mAdapter.list = ArrayList(it)
             mAdapter.notifyDataSetChanged()
         })
@@ -61,6 +61,11 @@ class CategoriesFragment : Fragment() {
             startActivity(Intent(activity, BuyGroupsActivity::class.java))
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        categoriesViewModel.getGroups()
     }
 
     private fun startCountDownActivity(minutes: Int) {

@@ -9,7 +9,7 @@ import com.teda.chesstactics.data.entity.Group
 class MAdapter(var list: ArrayList<Group>) : RecyclerView.Adapter<MViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_group, parent, false)
         return MViewHolder(v)
     }
 

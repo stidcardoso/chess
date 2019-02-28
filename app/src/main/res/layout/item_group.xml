@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardElevation="4dp"
-    android:id="@+id/cardItem"
     app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout
@@ -22,6 +23,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/textPercent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/imageGroup"
+            app:layout_constraintEnd_toEndOf="@+id/imageGroup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="20%" />
+
+        <TextView
             android:id="@+id/textGroupName"
             style="@style/textSubtitle"
             android:layout_width="0dp"
@@ -32,10 +47,12 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="Titulo!!"
+            android:gravity="center_horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageGroup" />
+            app:layout_constraintTop_toBottomOf="@+id/imageGroup"
+            tools:text="Titulo!!" />
 
         <Button
             android:id="@+id/btnBuy"
