@@ -264,7 +264,7 @@ class ChessPieces : View {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         super.onTouchEvent(event)
-        if (false)
+        if (onFinished)
             return false
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> if (selectedPiece?.position != getChessPosition(event.x, event.y)) {

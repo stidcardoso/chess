@@ -60,23 +60,23 @@ object Movements {
         val pos = selectedPiece?.position
                 ?: run { Pair(0, 0) }
 
-        if(attacked) {
-            if(!selectedPiece!!.isWhite && !flip) {
-                highlights.add(Pair(pos.first + 1, pos.second + 1))
-                highlights.add(Pair(pos.first - 1, pos.second + 1))
-            } else {
+        if (attacked) {
+            if (selectedPiece!!.isWhite && !flip) {
                 highlights.add(Pair(pos.first + 1, pos.second - 1))
                 highlights.add(Pair(pos.first - 1, pos.second - 1))
+            } else {
+                highlights.add(Pair(pos.first + 1, pos.second + 1))
+                highlights.add(Pair(pos.first - 1, pos.second + 1))
             }
             return
         }
 
         if (selectedPiece!!.isWhite || (!selectedPiece!!.isWhite && flip)) {
-           /* if (attacked) {
-                highlights.add(Pair(pos.first + 1, pos.second - 1))
-                highlights.add(Pair(pos.first - 1, pos.second - 1))
-                return
-            }*/
+            /* if (attacked) {
+                 highlights.add(Pair(pos.first + 1, pos.second - 1))
+                 highlights.add(Pair(pos.first - 1, pos.second - 1))
+                 return
+             }*/
             if (!getSinglePiece(pos.first, pos.second - 1)) {
                 highlights.add(Pair(pos.first, pos.second - 1))
                 if (pos.second == 6 && !getSinglePiece(pos.first, pos.second - 2)) {
