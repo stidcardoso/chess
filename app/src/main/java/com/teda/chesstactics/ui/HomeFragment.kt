@@ -69,12 +69,11 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
                 positionViewModel.getNewPosition(it)
             currentElo = it
             textElo.text = currentElo?.elo?.toInt().toString()
-
         })
         chessPieces.setChessCallbackListener(this)
         imageRetry.setOnClickListener {
             groupResult.visibility = View.GONE
-            cardView2.visibility = View.VISIBLE
+            cardView.visibility = View.VISIBLE
             chessPieces.retryProblem()
             resumeTime()
         }
@@ -92,6 +91,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
 
     override fun onResume() {
         super.onResume()
+        resumeTime()
         if (App.prefs!!.getBoolean(Constants.KEY_SCREEN_ON, false))
             activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         nextPuzzleAutomatically = App.prefs!!.getBoolean(Constants.KEY_GO_TO_NEXT_PUZZLE, false)
@@ -101,6 +101,8 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
 
     override fun onPause() {
         super.onPause()
+        timeStopped = chronometer.base - SystemClock.elapsedRealtime()
+        stopTimer()
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
@@ -132,7 +134,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
 
     private fun startProblem(position: Position) {
         groupResult.visibility = View.GONE
-        cardView2.visibility = View.VISIBLE
+        cardView.visibility = View.VISIBLE
         calculateElo = true
         chessPieces.setChessProblem(position)
         problemStarted = true
@@ -168,7 +170,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
         problemStarted = false
         calculateNewElo(0.0)
         groupResult.visibility = View.VISIBLE
-        cardView2.visibility = View.INVISIBLE
+        cardView.visibility = View.INVISIBLE
         stopTimer()
         imageResult.setImageResource(R.drawable.ic_close_24dp)
         goToNextPuzzle = false
@@ -184,7 +186,7 @@ class HomeFragment : Fragment(), ChessPieces.ChessCallback {
             goToNextPuzzle = true
         animateColor(R.color.greenSuccess)
         groupResult.visibility = View.VISIBLE
-        cardView2.visibility = View.INVISIBLE
+        cardView.visibility = View.INVISIBLE
         stopTimer()
         imageResult.setImageResource(R.drawable.ic_check_24dp)
     }

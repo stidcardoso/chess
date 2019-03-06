@@ -78,6 +78,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         }
 
         imageRetry.setOnClickListener {
+            resumeTime()
             restartProblem()
         }
 
@@ -87,6 +88,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
     }
 
     private fun goPreviousPuzzle() {
+        restartTime()
         if (currentPosition > 0) {
             currentPosition -= 1
             groupListViewModel?.setCurrentPosition(currentPosition)
@@ -96,6 +98,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
     }
 
     private fun goNextPuzzle() {
+        restartTime()
         if (currentPosition < positions!!.size - 1) {
             currentPosition += 1
             groupListViewModel?.setCurrentPosition(currentPosition)
@@ -113,6 +116,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
 
     override fun onResume() {
         super.onResume()
+        resumeTime()
         if (App.prefs!!.getBoolean("keyScreenOn", false))
             activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         nextPuzzleAutomatically = App.prefs!!.getBoolean(Constants.KEY_GO_TO_NEXT_PUZZLE, false)
@@ -121,6 +125,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
 
     override fun onPause() {
         super.onPause()
+        stopTimer()
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
@@ -130,10 +135,9 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         /*if (problemStarted)
             chessPieces.retryProblem()
         else {*/
+        resumeTime()
         val copyPosition = Position()
         copyPosition.copy(position)
-        chronometer.stop()
-        chronometer.start()
         chessPieces.setChessProblem(copyPosition)
         problemStarted = true
     }
@@ -154,7 +158,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
     override fun onProblemSolved() {
         groupResult.visibility = View.VISIBLE
         cardView2.visibility = View.INVISIBLE
-        chronometer.stop()
+        stopTimer()
         imageResult.setImageResource(R.drawable.ic_check_24dp)
         if (nextPuzzleAutomatically)
             goToNextPuzzle = true
@@ -173,6 +177,16 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         }
         colorAnimation.addListener(endListener)
         colorAnimation.start()
+    }
+
+    private fun resumeTime() {
+        chronometer.base = SystemClock.elapsedRealtime() + timeStopped
+        chronometer.start()
+    }
+
+    private fun restartTime() {
+        timeStopped = 0
+        chronometer.start()
     }
 
     private fun stopTimer() {

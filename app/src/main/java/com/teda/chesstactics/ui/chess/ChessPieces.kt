@@ -202,7 +202,6 @@ class ChessPieces : View {
         } else
             validatePawnPromotion = true
         if (destiny.pieceType == selectedPiece?.pieceType && destiny.position == position) {
-
             Movements.movePiece(position)
             move += 1
             selectedPiece = null
@@ -253,18 +252,23 @@ class ChessPieces : View {
         }
     }
 
-    private fun pgnToPiece(move: String): Piece {
+    private fun pgnToPiece(initMove: String): Piece {
+        var move = initMove
         val piece = Piece()
-        var x: Int
-        var y: Int
+        val x: Int
+        val y: Int
         if (!move[0].isUpperCase()) {
             var size = move.length - 1
             piece.pieceType = PieceType.PAWN
+            if (move.contains("""=""")) {
+                val position = move.indexOf("""=""")
+                piece.pieceType = PieceFEN.pngPieceMap[move[position + 1].toString()]
+                move = move.substring(0, size - 1)
+                size = move.length - 1
+            }
             x = PieceFEN.pngLetterMap[move[size - 1].toString()]!!
             y = PieceFEN.pngLetterMap[move[size].toString()]!!
-            if(move[0].toString().contains("""=""")) {
 
-            }
         } else {
             piece.pieceType = PieceFEN.pngPieceMap[move[0].toString()]
             x = PieceFEN.pngLetterMap[move[1].toString()]!!

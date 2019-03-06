@@ -22,7 +22,7 @@ object DataGenerator {
         positions.add(problem)
         positions.add(problem2)
         val problem3 = Position()
-        problem3.elo = 1600
+        problem3.elo = 1900
         problem3.whiteToPlay = true
         problem3.initialPosition = "4kr2/q4N1N/2p1P1Q1/1P2R3/p7/8/Kn6/8"
         problem3.pgn = "1. e7 Qf2 2. exf8=N"
