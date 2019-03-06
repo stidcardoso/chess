@@ -21,6 +21,13 @@ object DataGenerator {
         problem2.setMovements()
         positions.add(problem)
         positions.add(problem2)
+        val problem3 = Position()
+        problem3.elo = 1600
+        problem3.whiteToPlay = true
+        problem3.initialPosition = "4kr2/q4N1N/2p1P1Q1/1P2R3/p7/8/Kn6/8"
+        problem3.pgn = "1. e7 Qf2 2. exf8=N"
+        problem3.setMovements()
+        positions.add(problem3)
         /* var position = Position("1", "1", 1600, true)
          var position2 = Position("2", "2", 1700, true)
          var position3 = Position("3", "3", 1800, true)

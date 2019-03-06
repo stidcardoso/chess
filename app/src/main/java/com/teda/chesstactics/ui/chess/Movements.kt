@@ -255,8 +255,11 @@ object Movements {
             if (removePieces.isNotEmpty())
                 pieces.remove(removePieces.first())
             for (piece in pieces) {
-                if (piece.position?.first == selectedPiece?.position?.first && piece.position?.second == selectedPiece?.position?.second)
+                if (piece.position?.first == selectedPiece?.position?.first && piece.position?.second == selectedPiece?.position?.second) {
+                    piece.pieceType = selectedPiece?.pieceType
+                    piece.drawable = selectedPiece?.drawable
                     piece.position = position
+                }
             }
         }
 

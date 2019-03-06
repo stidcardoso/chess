@@ -1,5 +1,6 @@
 package com.teda.chesstactics.ui.chess
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -14,6 +15,7 @@ import com.teda.chesstactics.R
 import com.teda.chesstactics.Utilities
 import com.teda.chesstactics.data.entity.Position
 import com.teda.chesstactics.ui.Piece
+import kotlinx.android.synthetic.main.dialog_piece_promotion.view.*
 
 
 class ChessPieces : View {
@@ -33,10 +35,13 @@ class ChessPieces : View {
     private var move = 0
     private var chessCallback: ChessCallback? = null
     private var movementPosition: Pair<Int, Int>? = null
-
     private var FLIP_VALUE = 7
+
     private var flip: Boolean = false
     var sound: Boolean = false
+    private var validatePawnPromotion = true
+
+    private var dialog: AlertDialog? = null
 
     //    sounds
     constructor(context: Context?) : super(context) {
@@ -160,8 +165,9 @@ class ChessPieces : View {
             if (piece != null && piece != selectedPiece && piece.isWhite == problem.whiteToPlay) {
                 selectedPiece = piece
                 invalidate()
-            } else
+            } else {
                 movePiece(x, y)
+            }
         } ?: run {
             val piece = getPieceByPosition(x, y)
             if (piece != null)
@@ -182,31 +188,39 @@ class ChessPieces : View {
     }
 
     private fun movePiece(x: Float, y: Float) {
-        if (move < problem.movements.size) {
-            val destiny = pgnToPiece(problem.movements[move])
-            val position = getChessPosition(x, y)
-            if (flip)
-                destiny.position = Pair(Math.abs(destiny.position!!.first - FLIP_VALUE), Math.abs(destiny.position!!.second - FLIP_VALUE))
-            if (destiny.pieceType == selectedPiece?.pieceType && destiny.position == position) {
-                Movements.movePiece(position)
-                move += 1
-                selectedPiece = null
-                highlights.clear()
-                invalidate()
-                playSound()
-                saveLastPosition()
-                moveAnswer()
-            } else {
-                if (highlights.filter { it == position }.isNotEmpty()) {
-                    playSound()
-                    Movements.movePiece(position)
-                    chessCallback?.onMoveError()
-                    onFinished = true
-                }
-                selectedPiece = null
-                highlights.clear()
-                invalidate()
+        if (move >= problem.movements.size)
+            return
+        val destiny = pgnToPiece(problem.movements[move])
+        val position = getChessPosition(x, y)
+        if (flip)
+            destiny.position = Pair(Math.abs(destiny.position!!.first - FLIP_VALUE), Math.abs(destiny.position!!.second - FLIP_VALUE))
+        if (validatePawnPromotion) {
+            if (selectedPiece?.pieceType == PieceType.PAWN && (position.second == 7 || position.second == 0)) {
+                showPromotionDialog(x, y)
+                return
             }
+        } else
+            validatePawnPromotion = true
+        if (destiny.pieceType == selectedPiece?.pieceType && destiny.position == position) {
+
+            Movements.movePiece(position)
+            move += 1
+            selectedPiece = null
+            highlights.clear()
+            invalidate()
+            playSound()
+            saveLastPosition()
+            moveAnswer()
+        } else {
+            if (highlights.filter { it == position }.isNotEmpty()) {
+                playSound()
+                Movements.movePiece(position)
+                chessCallback?.onMoveError()
+                onFinished = true
+            }
+            selectedPiece = null
+            highlights.clear()
+            invalidate()
         }
     }
 
@@ -244,13 +258,18 @@ class ChessPieces : View {
         var x: Int
         var y: Int
         if (!move[0].isUpperCase()) {
+            var size = move.length - 1
             piece.pieceType = PieceType.PAWN
-            x = PieceFEN.pngLetterMap[move[0].toString()]!!
-            y = PieceFEN.pngLetterMap[move[1].toString()]!!
-        } else
+            x = PieceFEN.pngLetterMap[move[size - 1].toString()]!!
+            y = PieceFEN.pngLetterMap[move[size].toString()]!!
+            if(move[0].toString().contains("""=""")) {
+
+            }
+        } else {
             piece.pieceType = PieceFEN.pngPieceMap[move[0].toString()]
-        x = PieceFEN.pngLetterMap[move[1].toString()]!!
-        y = PieceFEN.pngLetterMap[move[2].toString()]!!
+            x = PieceFEN.pngLetterMap[move[1].toString()]!!
+            y = PieceFEN.pngLetterMap[move[2].toString()]!!
+        }
         piece.position = Pair(x, y)
         return piece
     }
@@ -264,7 +283,7 @@ class ChessPieces : View {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         super.onTouchEvent(event)
-        if (onFinished)
+        if (false)
             return false
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> if (selectedPiece?.position != getChessPosition(event.x, event.y)) {
@@ -383,6 +402,36 @@ class ChessPieces : View {
     fun setFlip(flip: Boolean) {
         this.flip = flip
         Movements.flip = this.flip
+    }
+
+    private fun showPromotionDialog(x: Float, y: Float) {
+        if (dialog != null && dialog!!.isShowing)
+            return
+        val builder = AlertDialog.Builder(context)
+        val view = inflate(context, R.layout.dialog_piece_promotion, null)
+        view.linearQueen.setOnClickListener {
+            updatePawn(x, y, PieceType.QUEEN, dialog)
+        }
+        view.linearRook.setOnClickListener {
+            updatePawn(x, y, PieceType.ROOK, dialog)
+        }
+        view.linearBishop.setOnClickListener {
+            updatePawn(x, y, PieceType.BISHOP, dialog)
+        }
+        view.linearKnight.setOnClickListener {
+            updatePawn(x, y, PieceType.KNIGHT, dialog)
+        }
+        builder.setTitle(R.string.select_piece)
+        dialog = builder.setView(view).create()
+        dialog?.show()
+    }
+
+    private fun updatePawn(x: Float, y: Float, type: PieceType, dialog: AlertDialog?) {
+        validatePawnPromotion = false
+        selectedPiece?.pieceType = type
+        selectedPiece?.drawable = Utilities.getPieceDrawable(selectedPiece!!.isWhite, selectedPiece!!.pieceType!!)
+        movePiece(x, y)
+        dialog?.dismiss()
     }
 
     interface ChessCallback {

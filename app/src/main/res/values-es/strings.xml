@@ -20,11 +20,12 @@
     <string name="elo">Elo</string>
     <string name="confirm">Confirmar</string>
     <string name="desc_quit_exercise">Si te saltas este problema contará como perdido</string>
+    <string name="select_piece">Selecciona una pieza</string>
 
     <!--Menu-->
     <string name="home">Inicio</string>
     <string name="categories">Categorías</string>
-    <string name="progress">Progress</string>
+    <string name="progress">Progreso</string>
     <string name="profile">Perfil</string>
 
     <!--Pie-->
@@ -40,5 +41,11 @@
     <string name="flip_board">Girar el tablero para negras</string>
     <string name="next_puzzle">Ir al siguiente problema</string>
     <string name="next_puzzle_description">Solo después de resolver el problema</string>
+
+    <!--pieces-->
+    <string name="queen">Dama</string>
+    <string name="rook">Torre</string>
+    <string name="bishop">Alfil</string>
+    <string name="knight">Caballo</string>
 
 </resources>

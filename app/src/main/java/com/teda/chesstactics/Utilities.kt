@@ -96,6 +96,47 @@ object Utilities {
         return piece
     }
 
+    fun getPieceDrawable(isWhite: Boolean, type: PieceType): Int {
+        if (isWhite) {
+            return when (type) {
+                PieceType.QUEEN -> {
+                    PieceFEN.IMAGE_WQUEEN
+                }
+                PieceType.ROOK -> {
+                    PieceFEN.IMAGE_WROOK
+                }
+                PieceType.BISHOP -> {
+                    PieceFEN.IMAGE_WBISHOP
+                }
+                PieceType.KNIGHT -> {
+                    PieceFEN.IMAGE_WKNIGHT
+                }
+                else -> {
+                    PieceFEN.IMAGE_WQUEEN
+                }
+            }
+        } else {
+            return when (type) {
+                PieceType.QUEEN -> {
+                    PieceFEN.IMAGE_BQUEEN
+                }
+                PieceType.ROOK -> {
+                    PieceFEN.IMAGE_BROOK
+                }
+                PieceType.BISHOP -> {
+                    PieceFEN.IMAGE_BBISHOP
+                }
+                PieceType.KNIGHT -> {
+                    PieceFEN.IMAGE_BKNIGHT
+                }
+                else -> {
+                    PieceFEN.IMAGE_BQUEEN
+                }
+            }
+        }
+
+    }
+
     fun getStringDate(): String {
         val format = SimpleDateFormat("dd/MM/yyyy")
         return format.format(Date())

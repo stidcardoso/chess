@@ -20,6 +20,7 @@
     <string name="elo">Elo</string>
     <string name="confirm">Confirm</string>
     <string name="desc_quit_exercise">If you skip this puzzle it will count as lost</string>
+    <string name="select_piece">Select a piece</string>
 
     <!--Menu-->
     <string name="home">Home</string>
@@ -42,5 +43,9 @@
     <string name="next_puzzle_description">Only after solving the puzzle </string>
 
     <!--general-->
+    <string name="queen">Queen</string>
+    <string name="rook">Rook</string>
+    <string name="bishop">Bishop</string>
+    <string name="knight">Knight</string>
 
 </resources>
