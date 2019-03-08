@@ -2,7 +2,7 @@ package com.teda.chesstactics.ui.chess
 
 import com.teda.chesstactics.ui.Piece
 
-object Movements {
+class Movements {
 
     var pieces = ArrayList<Piece>()
     var highlights = ArrayList<Pair<Int, Int>>()

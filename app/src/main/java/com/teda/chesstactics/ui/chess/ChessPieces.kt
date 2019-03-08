@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.dialog_piece_promotion.view.*
 
 class ChessPieces : View {
 
+    private var movements = Movements()
+
     private var squareWidth: Int? = 0
     private val paint by lazy { Paint() }
     private val squarePaint by lazy { Paint() }
@@ -57,7 +59,7 @@ class ChessPieces : View {
     }
 
     fun init() {
-        Movements.highlights = highlights
+        movements.highlights = highlights
         paint.color = ContextCompat.getColor(context, R.color.blackAlpha)
         squarePaint.color = ContextCompat.getColor(context, R.color.squareHighlight)
     }
@@ -104,7 +106,7 @@ class ChessPieces : View {
 
     private fun drawHighLights(canvas: Canvas?) {
         highlights.clear()
-        Movements.getHighLights(selectedPiece, true)
+        movements.getHighLights(selectedPiece, true)
         highlights.forEach {
             val left = squareWidth!! * (it.first).toFloat()
             val top = squareWidth!! * (it.second).toFloat()
@@ -136,8 +138,8 @@ class ChessPieces : View {
             it.pieceType == hPiece.pieceType
         }
         for (piece in pieces) {
-            Movements.getHighLights(piece, false)
-            val highlights = Movements.highlights
+            movements.getHighLights(piece, false)
+            val highlights = movements.highlights
             val result = highlights.filter {
                 it == hPiece.position
             }
@@ -202,7 +204,7 @@ class ChessPieces : View {
         } else
             validatePawnPromotion = true
         if (destiny.pieceType == selectedPiece?.pieceType && destiny.position == position) {
-            Movements.movePiece(position)
+            movements.movePiece(position)
             move += 1
             selectedPiece = null
             highlights.clear()
@@ -213,7 +215,7 @@ class ChessPieces : View {
         } else {
             if (highlights.filter { it == position }.isNotEmpty()) {
                 playSound()
-                Movements.movePiece(position)
+                movements.movePiece(position)
                 chessCallback?.onMoveError()
                 onFinished = true
             }
@@ -234,10 +236,10 @@ class ChessPieces : View {
                     .filter { it.isWhite != problem.whiteToPlay }
 //            var pieceToMove: Piece
             for (p in filteredPieces) {
-                Movements.getHighLights(p, false)
+                movements.getHighLights(p, false)
                 if (highlights.contains(pngPiece.position)) {
                     selectedPiece = p
-                    Movements.movePiece(pngPiece.position!!)
+                    movements.movePiece(pngPiece.position!!)
                     move += 1
                     selectedPiece = null
                     highlights.clear()
@@ -286,8 +288,8 @@ class ChessPieces : View {
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        super.onTouchEvent(event)
-        if (false)
+            super.onTouchEvent(event)
+        if (onFinished)
             return false
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> if (selectedPiece?.position != getChessPosition(event.x, event.y)) {
@@ -318,7 +320,7 @@ class ChessPieces : View {
 
     private fun setChessPieces(pieces: ArrayList<Piece>) {
         this.pieces = ArrayList(pieces)
-        Movements.pieces = this.pieces
+        movements.pieces = this.pieces
         invalidate()
     }
 
@@ -405,7 +407,7 @@ class ChessPieces : View {
 
     fun setFlip(flip: Boolean) {
         this.flip = flip
-        Movements.flip = this.flip
+        movements.flip = this.flip
     }
 
     private fun showPromotionDialog(x: Float, y: Float) {
