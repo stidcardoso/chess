@@ -9,7 +9,7 @@ import com.google.android.gms.ads.AdRequest
 import com.teda.chesstactics.R
 import kotlinx.android.synthetic.main.fragment_categories.*
 
-class ConfigurationFragment : Fragment() {
+class ConfigurationFragment() : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_configuration, container, false)

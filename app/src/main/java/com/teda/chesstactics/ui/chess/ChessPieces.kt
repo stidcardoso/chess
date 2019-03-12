@@ -128,7 +128,7 @@ class ChessPieces : View {
     private fun drawMovementHighlight(canvas: Canvas?) {
         var resultPiece = Piece()
         val hPiece = pgnToPiece(problem.movements[move])
-        if (flip)
+        if (flip && !problem.whiteToPlay)
             hPiece.position = Pair(Math.abs(hPiece.position!!.first - FLIP_VALUE),
                     Math.abs(hPiece.position!!.second - FLIP_VALUE))
 
@@ -194,7 +194,7 @@ class ChessPieces : View {
             return
         val destiny = pgnToPiece(problem.movements[move])
         val position = getChessPosition(x, y)
-        if (flip)
+        if (flip && !problem.whiteToPlay)
             destiny.position = Pair(Math.abs(destiny.position!!.first - FLIP_VALUE), Math.abs(destiny.position!!.second - FLIP_VALUE))
         if (validatePawnPromotion) {
             if (selectedPiece?.pieceType == PieceType.PAWN && (position.second == 7 || position.second == 0)) {
@@ -228,7 +228,7 @@ class ChessPieces : View {
     private fun moveAnswer() {
         if (move < problem.movements.size) {
             val pngPiece = pgnToPiece(problem.movements[move])
-            if (flip)
+            if (flip && !problem.whiteToPlay)
                 pngPiece.position = Pair(Math.abs(pngPiece.position!!.first - FLIP_VALUE),
                         Math.abs(pngPiece.position!!.second - FLIP_VALUE))
 
@@ -330,7 +330,7 @@ class ChessPieces : View {
         val pieces = Utilities.getPieces(problem.initialPosition)
         if (!problem.whiteToPlay) {
             flip = App.prefs!!.getBoolean(Constants.KEY_FLIP_BOARD, true)
-            if (flip) {
+            if (flip && !problem.whiteToPlay) {
                 pieces.forEach {
                     it.position = Pair(Math.abs(it.position!!.first - FLIP_VALUE), Math.abs(it.position!!.second - FLIP_VALUE))
                 }

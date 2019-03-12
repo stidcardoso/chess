@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ProgressFragment : Fragment() {
+class ProgressFragment() : Fragment() {
 
     var model: ProgressViewModel? = null
     lateinit var preferences: SharedPreferences

@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
 
 
-class HomeFragment : Fragment(), ChessPieces.ChessCallback {
+class HomeFragment() : Fragment(), ChessPieces.ChessCallback {
 
     companion object {
         fun newInstance(): HomeFragment {

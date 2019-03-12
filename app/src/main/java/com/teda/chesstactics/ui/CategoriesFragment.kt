@@ -17,7 +17,7 @@ import com.teda.chesstactics.ui.adapter.MAdapter
 import com.teda.chesstactics.ui.viewmodel.CategoriesViewModel
 import kotlinx.android.synthetic.main.fragment_categories.*
 
-class CategoriesFragment : Fragment() {
+class CategoriesFragment() : Fragment() {
 
     companion object {
         fun newInstance(): CategoriesFragment {
