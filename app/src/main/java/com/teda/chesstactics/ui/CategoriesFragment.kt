@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_categories.*
 class CategoriesFragment() : Fragment() {
 
     companion object {
+        const val TAG = "CATEGORIES_FRAGMENT"
         fun newInstance(): CategoriesFragment {
             return CategoriesFragment()
         }

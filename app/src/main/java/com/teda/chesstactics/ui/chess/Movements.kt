@@ -34,7 +34,7 @@ class Movements {
             getKingHighlights(check)
     }
 
-    fun getAttackedSquares(selectedPiece: Piece?) {
+    private fun getAttackedSquares(selectedPiece: Piece?) {
         this.pos = selectedPiece?.position
                 ?: run { Pair(0, 0) }
 

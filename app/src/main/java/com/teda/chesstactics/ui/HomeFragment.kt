@@ -30,6 +30,7 @@ import java.util.*
 class HomeFragment() : Fragment(), ChessPieces.ChessCallback {
 
     companion object {
+        const val TAG = "HOME_FRAGMENT"
         fun newInstance(): HomeFragment {
             return HomeFragment()
         }
@@ -85,7 +86,9 @@ class HomeFragment() : Fragment(), ChessPieces.ChessCallback {
                 positionViewModel.getNewPosition(currentElo)
         }
         imageHint.setOnClickListener { _ ->
-            chessPieces.showHighlight()
+            if (problemStarted)
+                chessPieces.showHighlight()
+
         }
     }
 
@@ -104,6 +107,21 @@ class HomeFragment() : Fragment(), ChessPieces.ChessCallback {
         timeStopped = chronometer.base - SystemClock.elapsedRealtime()
         stopTimer()
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    fun pause() {
+        timeStopped = chronometer.base - SystemClock.elapsedRealtime()
+        stopTimer()
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    fun resume() {
+        resumeTime()
+        if (App.prefs!!.getBoolean(Constants.KEY_SCREEN_ON, false))
+            activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        nextPuzzleAutomatically = App.prefs!!.getBoolean(Constants.KEY_GO_TO_NEXT_PUZZLE, false)
+        chessPieces.sound = App.prefs!!.getBoolean(Constants.KEY_SOUND, false)
+        chessPieces.setFlip(App.prefs!!.getBoolean(Constants.KEY_FLIP_BOARD, true))
     }
 
     private fun showDialogContinue() {

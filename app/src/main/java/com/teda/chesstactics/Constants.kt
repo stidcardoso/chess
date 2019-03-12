@@ -6,6 +6,7 @@ object Constants {
     var EXTRAS_RESULT = "EXTRAS_RESULT"
     var EXTRAS_GROUP_ID = "EXTRAS_GROUP_ID"
     var EXTRAS_POSITION = "EXTRAS_POSITION"
+    var EXTRAS_CURRENT_FRAGMENT = "EXTRAS_CURRENT_FRAGMENT"
 
     var INITIAL_GROUPS = "initialGroups.json"
     var PURCHASE_GROUPS = "purchaseGroups.json"
