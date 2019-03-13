@@ -148,11 +148,13 @@ class ChessPieces : View {
                 break
             }
         }
-        val left = squareWidth!! * (resultPiece.position!!.first).toFloat()
-        val top = squareWidth!! * (resultPiece.position!!.second).toFloat()
-        val right = left + squareWidth!!
-        val bottom = top + squareWidth!!
-        canvas?.drawRect(left, top, right, bottom, squarePaint)
+        if (resultPiece.position != null) {
+            val left = squareWidth!! * (resultPiece.position!!.first).toFloat()
+            val top = squareWidth!! * (resultPiece.position!!.second).toFloat()
+            val right = left + squareWidth!!
+            val bottom = top + squareWidth!!
+            canvas?.drawRect(left, top, right, bottom, squarePaint)
+        }
     }
 
     private fun drawMovementCircle(canvas: Canvas?) {
@@ -288,7 +290,7 @@ class ChessPieces : View {
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-            super.onTouchEvent(event)
+        super.onTouchEvent(event)
         if (onFinished)
             return false
         when (event?.action) {
@@ -380,7 +382,7 @@ class ChessPieces : View {
     }
 
     fun showHighlight() {
-        if (move < problem.movements.size) {
+        if (move < problem.movements.size && !onFinished) {
             selectedPiece = null
             highlights.clear()
             drawHighlight = true

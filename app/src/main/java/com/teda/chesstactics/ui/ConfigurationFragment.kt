@@ -11,6 +11,10 @@ import kotlinx.android.synthetic.main.fragment_categories.*
 
 class ConfigurationFragment() : Fragment() {
 
+    companion object {
+        const val TAG = "CONFIGURATION_FRAGMENT"
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_configuration, container, false)
     }

@@ -7,12 +7,10 @@ import android.os.Bundle
 import android.support.design.chip.Chip
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.support.v7.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -29,6 +27,11 @@ class ProgressFragment() : Fragment() {
 
     var model: ProgressViewModel? = null
     lateinit var preferences: SharedPreferences
+    private var currentTime: Int? = 7
+
+    companion object {
+        const val TAG = "PROGRESS_FRAGMENT"
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_progress, container, false)
@@ -73,17 +76,10 @@ class ProgressFragment() : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        preferences = PreferenceManager.getDefaultSharedPreferences(activity)
-        if (preferences.getBoolean("keyScreenOn", false))
-            activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    fun resume() {
+        model?.getElosByDate(currentTime)
     }
 
-    override fun onPause() {
-        super.onPause()
-        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-    }
 
     private fun styleLineChart() {
         lineChart.description = null
