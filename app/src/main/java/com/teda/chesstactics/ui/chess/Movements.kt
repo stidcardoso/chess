@@ -11,6 +11,7 @@ class Movements {
     var king: Piece? = Piece()
     private var attackedSquares = ArrayList<Pair<Int, Int>>()
     var flip = true
+    var move = 0
 
     fun getHighLights(selectedPiece: Piece?, check: Boolean) {
         this.pos = selectedPiece?.position
@@ -263,6 +264,13 @@ class Movements {
             }
         }
 
+    }
+
+    fun isUpSide(): Boolean {
+      /*  return if(selectedPiece!!.isWhite && ((move % 2) == 0))
+            true
+        else
+            false*/
     }
 
 }

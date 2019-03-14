@@ -8,6 +8,8 @@ object Constants {
     var EXTRAS_POSITION = "EXTRAS_POSITION"
     var EXTRAS_CURRENT_FRAGMENT = "EXTRAS_CURRENT_FRAGMENT"
 
+    // json
+    var GENERAL_PUZZLES = "generalPuzzles.json"
     var INITIAL_GROUPS = "initialGroups.json"
     var PURCHASE_GROUPS = "purchaseGroups.json"
 

@@ -16,6 +16,7 @@ import com.teda.chesstactics.data.dao.PositionDao
 import com.teda.chesstactics.data.entity.Elo
 import com.teda.chesstactics.data.entity.Group
 import com.teda.chesstactics.data.entity.Position
+import com.teda.chesstactics.data.model.Positions
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.thread
@@ -48,7 +49,7 @@ abstract class CDatabase : RoomDatabase() {
                             override fun onCreate(db: SupportSQLiteDatabase) {
                                 super.onCreate(db)
                                 thread {
-                                    insertAll(getInstance(context)!!, DataGenerator.generatePositions())
+                                    insertAll(context)
                                     insertElo(getInstance(context)!!)
                                     insertGroups(context)
                                     insertPurchaseGroups(context)
@@ -63,9 +64,12 @@ abstract class CDatabase : RoomDatabase() {
             INSTANCE = null
         }
 
-        fun insertAll(database: CDatabase, positions: ArrayList<Position>) {
+        fun insertAll(context: Context) {
 //            database.runInTransaction {
-            database.positionDao().insertAll(positions)
+            val positionsJson = Utilities.loadJSONFromAsset(context, Constants.GENERAL_PUZZLES)
+            val gson = Gson()
+            val positions = gson.fromJson(positionsJson, Positions::class.java)
+            getInstance(context)?.positionDao()?.insertAll(positions.positions)
 //            }
         }
 

@@ -26,9 +26,10 @@ class Position : Serializable {
 
     fun setMovements() {
         val nMovements = pgn.split(" ")
+        val re = Regex("[x+#?!]")
         for (mov in nMovements) {
-            if (!mov.toString().contains("""."""))
-                movements.add(mov.replace("x", ""))
+            if (!mov.contains("""."""))
+                movements.add(mov.replace(re, ""))
         }
     }
 

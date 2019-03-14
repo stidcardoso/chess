@@ -169,4 +169,18 @@ object Utilities {
         return elo
     }
 
+    /*,
+    {
+      "initialPosition": "",
+      "pgn": "",
+      "elo": 1800,
+      "whiteToPlay": true
+    },
+    {
+      "initialPosition": "",
+      "pgn": "",
+      "elo": 1800,
+      "whiteToPlay": true
+    }*/
+
 }

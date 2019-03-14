@@ -1,6 +1,23 @@
 {
   "positions": [
-    //from here  12/03/2019 #4
+    {
+      "initialPosition": "2k5/ppp4p/2n5/3N2B1/3P4/2n2PPK/P1r5/4R3",
+      "pgn": "30. Re8+ Kd7 31. Nf6+ Kd6 32. Bf4+",
+      "elo": 1600,
+      "whiteToPlay": true
+    },
+    {
+      "initialPosition": "2kr3r/1pp4p/p7/2P2p2/N2qp1n1/3P4/PP2BPP1/R2QR1K1",
+      "pgn": "22... Qxf2+ 23. Kh1 Qh4+ 24. Kg1 Qh2+ 25. Kf1 Qh1#",
+      "elo": 1600,
+      "whiteToPlay": false
+    },
+    {
+      "initialPosition": "4kr2/q4N1N/2p1P1Q1/1P2R3/p7/8/Kn6/8",
+      "pgn": "1. e7 Qf2 2. exf8=N",
+      "elo": 1900,
+      "whiteToPlay": true
+    },
     {
       "initialPosition": "3r1bkr/1p3q2/p1np1p2/4pP1p/4P1pR/1PP5/P2QB1PP/3R1N1K",
       "pgn": "28. Bc4 d5 29. Bxd5",
@@ -9,7 +26,7 @@
     },
     {
       "initialPosition": "6k1/pp4np/3p1qp1/2pP4/2P1r3/3B3b/PP1Q2NP/4R2K",
-      "pgn": "28. Bxg2+ 29. Kxg2 Rg4 30. Kh1 Qf3",
+      "pgn": "28... Bxg2+ 29. Kxg2 Rg4 30. Kh1 Qf3",
       "elo": 1950,
       "whiteToPlay": false
     },
@@ -21,22 +38,10 @@
     },
     {
       "initialPosition": "2k5/1bp5/pp1p4/3Pp3/PKB1Q3/6q1/1PP2r2/5R2",
-      "pgn": "36. a5+ Kb5 37. Qg8 Bd3 38. Bxd5",
+      "pgn": "36... a5+ 37. Kb5 Qg8 38. Bd3 Bxd5",
       "elo": 2300,
       "whiteToPlay": false
-    }/*,
-    {
-      "initialPosition": "",
-      "pgn": "",
-      "elo": 1800,
-      "whiteToPlay": true
-    },
-    {
-      "initialPosition": "",
-      "pgn": "",
-      "elo": 1800,
-      "whiteToPlay": true
-    }*/
+    }
   ]
 }
 

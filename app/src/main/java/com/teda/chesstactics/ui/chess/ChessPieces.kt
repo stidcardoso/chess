@@ -60,6 +60,7 @@ class ChessPieces : View {
 
     fun init() {
         movements.highlights = highlights
+        movements.move = move
         paint.color = ContextCompat.getColor(context, R.color.blackAlpha)
         squarePaint.color = ContextCompat.getColor(context, R.color.squareHighlight)
     }
@@ -236,7 +237,6 @@ class ChessPieces : View {
 
             val filteredPieces = pieces.filter { it.pieceType == pngPiece.pieceType }
                     .filter { it.isWhite != problem.whiteToPlay }
-//            var pieceToMove: Piece
             for (p in filteredPieces) {
                 movements.getHighLights(p, false)
                 if (highlights.contains(pngPiece.position)) {
@@ -285,8 +285,7 @@ class ChessPieces : View {
     private fun getChessPosition(x: Float, y: Float): Pair<Int, Int> {
         val positionX = (x / squareWidth!!).toInt()
         val positionY = (y / squareWidth!!).toInt()
-        val position = Pair(positionX, positionY)
-        return position
+        return Pair(positionX, positionY)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
