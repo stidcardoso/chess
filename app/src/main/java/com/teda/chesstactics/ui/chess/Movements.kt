@@ -11,7 +11,7 @@ class Movements {
     var king: Piece? = Piece()
     private var attackedSquares = ArrayList<Pair<Int, Int>>()
     var flip = true
-    var move = 0
+    var isWhitePuzzle = true
 
     fun getHighLights(selectedPiece: Piece?, check: Boolean) {
         this.pos = selectedPiece?.position
@@ -60,7 +60,7 @@ class Movements {
     private fun getPawnHighlights(attacked: Boolean) {
         val pos = selectedPiece?.position
                 ?: run { Pair(0, 0) }
-
+        val upSide = isUpSide()
         if (attacked) {
             if (selectedPiece!!.isWhite && !flip) {
                 highlights.add(Pair(pos.first + 1, pos.second - 1))
@@ -72,7 +72,7 @@ class Movements {
             return
         }
 
-        if (selectedPiece!!.isWhite || (!selectedPiece!!.isWhite && flip)) {
+        if (!upSide) {
             /* if (attacked) {
                  highlights.add(Pair(pos.first + 1, pos.second - 1))
                  highlights.add(Pair(pos.first - 1, pos.second - 1))
@@ -266,11 +266,16 @@ class Movements {
 
     }
 
-    fun isUpSide(): Boolean {
-      /*  return if(selectedPiece!!.isWhite && ((move % 2) == 0))
-            true
-        else
-            false*/
+    private fun isUpSide(): Boolean {
+        return if (isWhitePuzzle) {
+            !selectedPiece!!.isWhite
+        } else {
+            (selectedPiece!!.isWhite == flip)
+        }
+        /*  return if(selectedPiece!!.isWhite && ((move % 2) == 0))
+              true
+          else
+              false*/
     }
 
 }

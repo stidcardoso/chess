@@ -60,7 +60,6 @@ class ChessPieces : View {
 
     fun init() {
         movements.highlights = highlights
-        movements.move = move
         paint.color = ContextCompat.getColor(context, R.color.blackAlpha)
         squarePaint.color = ContextCompat.getColor(context, R.color.squareHighlight)
     }
@@ -346,6 +345,7 @@ class ChessPieces : View {
         selectedPiece = null
         onFinished = false
         move = 0
+        movements.isWhitePuzzle = problem.whiteToPlay
     }
 
     fun retryProblem() {
