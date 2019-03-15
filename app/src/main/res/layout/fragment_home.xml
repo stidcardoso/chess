@@ -220,6 +220,7 @@
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:layout_marginStart="2dp"
+        android:enabled="false"
         android:visibility="visible"
         app:icon="@drawable/ic_replay"
         app:layout_constraintEnd_toStartOf="@+id/imageNext"

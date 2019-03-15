@@ -159,9 +159,14 @@ object Utilities {
     }
 
     fun calculateNewElo(elo: Elo, problemElo: Double, result: Double): Elo {
+        val k = when {
+            elo.elo < 2000 -> 40
+            elo.elo < 2250 -> 20
+            else -> 10
+        }
         val currentElo = elo.elo
         val eA = 1 / (1 + (Math.pow(10.0, (problemElo - currentElo) / 400)))
-        val rA = currentElo + (20 * (result - eA))
+        val rA = currentElo + (k * (result - eA))
         elo.let {
             it.elo = rA
             it.id = null
