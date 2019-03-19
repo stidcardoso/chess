@@ -73,10 +73,8 @@ class ChessPieces : View {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-//        squareWidth = width / 8
-        if (movementPosition != null) {
+        if (movementPosition != null)
             drawMovementCircle(canvas)
-        }
         if (selectedPiece != null)
             drawHighLights(canvas)
         if (drawHighlight)
@@ -93,15 +91,7 @@ class ChessPieces : View {
             val drawable = ContextCompat.getDrawable(context, it.drawable!!)
             drawable?.setBounds(left, top, right, bottom)
             drawable?.draw(canvas)
-            /*    var anim = ObjectAnimator.ofPropertyValuesHolder(drawable, PropertyValuesHolder.ofInt("alpha", 255))
-                anim.target = drawable
-                anim.duration = 10000
-                anim.start()
-             canvas?.drawRect(left, top, right, bottom, paint)*/
         }
-//        for(i in 0..pieces.size) {
-
-//        }
     }
 
     private fun drawHighLights(canvas: Canvas?) {
@@ -215,7 +205,7 @@ class ChessPieces : View {
             saveLastPosition()
             moveAnswer()
         } else {
-            if (highlights.filter { it == position }.isNotEmpty()) {
+            if (highlights.any { it == position }) {
                 playSound()
                 movements.movePiece(position)
                 chessCallback?.onMoveError()
@@ -229,18 +219,18 @@ class ChessPieces : View {
 
     private fun moveAnswer() {
         if (move < problem.movements.size) {
-            val pngPiece = pgnToPiece(problem.movements[move])
+            val pgnPiece = pgnToPiece(problem.movements[move])
             if (flip && !problem.whiteToPlay)
-                pngPiece.position = Pair(Math.abs(pngPiece.position!!.first - FLIP_VALUE),
-                        Math.abs(pngPiece.position!!.second - FLIP_VALUE))
+                pgnPiece.position = Pair(Math.abs(pgnPiece.position!!.first - FLIP_VALUE),
+                        Math.abs(pgnPiece.position!!.second - FLIP_VALUE))
 
-            val filteredPieces = pieces.filter { it.pieceType == pngPiece.pieceType }
+            val filteredPieces = pieces.filter { it.pieceType == pgnPiece.pieceType }
                     .filter { it.isWhite != problem.whiteToPlay }
             for (p in filteredPieces) {
                 movements.getHighLights(p, false)
-                if (highlights.contains(pngPiece.position)) {
+                if (highlights.contains(pgnPiece.position)) {
                     selectedPiece = p
-                    movements.movePiece(pngPiece.position!!)
+                    movements.movePiece(pgnPiece.position!!)
                     move += 1
                     selectedPiece = null
                     highlights.clear()
@@ -327,7 +317,7 @@ class ChessPieces : View {
     fun setChessProblem(problem: Position) {
         this.problem = problem
         this.problem.setMovements()
-        val pieces = Utilities.getPieces(problem.initialPosition)
+        val pieces = Utilities.getPieces(context, problem.initialPosition)
         if (!problem.whiteToPlay) {
             flip = App.prefs!!.getBoolean(Constants.KEY_FLIP_BOARD, true)
             if (flip && !problem.whiteToPlay) {

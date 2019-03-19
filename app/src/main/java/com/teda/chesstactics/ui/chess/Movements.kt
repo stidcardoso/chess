@@ -7,7 +7,7 @@ class Movements {
     var pieces = ArrayList<Piece>()
     var highlights = ArrayList<Pair<Int, Int>>()
     private var selectedPiece: Piece? = null
-    lateinit var pos: Pair<Int, Int>
+    private lateinit var pos: Pair<Int, Int>
     var king: Piece? = Piece()
     private var attackedSquares = ArrayList<Pair<Int, Int>>()
     var flip = true
@@ -234,7 +234,7 @@ class Movements {
         return true
     }
 
-    fun getEnemyAttackedSquares() {
+    private fun getEnemyAttackedSquares() {
         pieces.forEach {
             if (king!!.isWhite != it.isWhite) {
                 getAttackedSquares(it)

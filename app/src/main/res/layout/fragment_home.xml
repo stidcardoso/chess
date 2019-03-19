@@ -186,7 +186,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-    <com.teda.chesstactics.ui.chess.ChessPieces
+    <com.teda.chesstactics.ui.chess.ChessPieces2
         android:id="@+id/chessPieces"
         android:layout_width="0dp"
         android:layout_height="0dp"

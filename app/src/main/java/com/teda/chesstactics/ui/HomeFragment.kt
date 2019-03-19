@@ -6,6 +6,7 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.PixelFormat
 import android.os.Bundle
 import android.os.SystemClock
 import android.support.v4.app.Fragment
@@ -22,12 +23,14 @@ import com.teda.chesstactics.Utilities
 import com.teda.chesstactics.data.entity.Elo
 import com.teda.chesstactics.data.entity.Position
 import com.teda.chesstactics.ui.chess.ChessPieces
+import com.teda.chesstactics.ui.chess.ChessPieces2
+import com.teda.chesstactics.ui.chess.ChessSurface
 import com.teda.chesstactics.ui.viewmodel.PositionViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
 
 
-class HomeFragment() : Fragment(), ChessPieces.ChessCallback {
+class HomeFragment() : Fragment(), ChessPieces2.ChessCallback {
 
     companion object {
         const val TAG = "HOME_FRAGMENT"
@@ -51,6 +54,8 @@ class HomeFragment() : Fragment(), ChessPieces.ChessCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /*chessPieces.setZOrderOnTop(true)
+        chessPieces.holder.setFormat(PixelFormat.TRANSPARENT)*/
         positionViewModel = ViewModelProviders.of(this).get(PositionViewModel::class.java)
         positionViewModel.getPosition().observe(this, Observer { position ->
             position?.let {
@@ -96,6 +101,7 @@ class HomeFragment() : Fragment(), ChessPieces.ChessCallback {
 
     override fun onResume() {
         super.onResume()
+//        chessPieces.resume()
         resumeTime()
         if (App.prefs!!.getBoolean(Constants.KEY_SCREEN_ON, false))
             activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -106,6 +112,7 @@ class HomeFragment() : Fragment(), ChessPieces.ChessCallback {
 
     override fun onPause() {
         super.onPause()
+//        chessPieces.pause()
         timeStopped = chronometer.base - SystemClock.elapsedRealtime()
         stopTimer()
         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

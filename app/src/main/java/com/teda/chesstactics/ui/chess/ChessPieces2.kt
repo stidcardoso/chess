@@ -1,20 +1,19 @@
 package com.teda.chesstactics.ui.chess
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.PorterDuff
 import android.media.MediaPlayer
 import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
-import android.view.SurfaceHolder
-import android.view.SurfaceView
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import com.teda.chesstactics.App
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
@@ -24,11 +23,7 @@ import com.teda.chesstactics.ui.Piece
 import kotlinx.android.synthetic.main.dialog_piece_promotion.view.*
 
 
-class ChessSurface : SurfaceView, Runnable {
-
-    private lateinit var mHolder: SurfaceHolder
-    private lateinit var thread: Thread
-    private var mRunning = true
+class ChessPieces2 : View {
 
     private var movements = Movements()
 
@@ -60,9 +55,11 @@ class ChessSurface : SurfaceView, Runnable {
     private var flip: Boolean = false
     var sound: Boolean = false
     private var validatePawnPromotion = true
+    private var currentAnimationTime: Double = 0.0
 
     private var dialog: AlertDialog? = null
 
+    //    sounds
     constructor(context: Context?) : super(context) {
         init()
     }
@@ -76,11 +73,11 @@ class ChessSurface : SurfaceView, Runnable {
     }
 
     fun init() {
-        mHolder = holder
+        movements.highlights = highlights
         paint.color = ContextCompat.getColor(context, R.color.blackAlpha)
         squarePaint.color = ContextCompat.getColor(context, R.color.squareHighlight)
-//        mHolder.addCallback(this)
     }
+
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -89,42 +86,20 @@ class ChessSurface : SurfaceView, Runnable {
         setMeasuredDimension(widthMeasureSpec, widthMeasureSpec)
     }
 
-    override fun run() {
-        while (mRunning) {
-            if (mHolder.surface.isValid) {
-                val canvas = mHolder.lockCanvas()
-                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-                if (animActive) {
-                    animatePieceMovement(canvas)
-                    mHolder.unlockCanvasAndPost(canvas)
-                    return
-                }
-                if (movementPosition != null)
-                    drawMovementCircle(canvas)
-                if (selectedPiece != null)
-                    drawHighLights(canvas)
-                /*if (drawHighlight)
-                    drawMovementHighlight(canvas)*/
-                drawPieces(canvas)
-                mHolder.unlockCanvasAndPost(canvas)
-            }
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        if (animActive) {
+            animatePieceMovement(canvas)
+            return
         }
+        if (movementPosition != null)
+            drawMovementCircle(canvas)
+        if (selectedPiece != null)
+            drawHighLights(canvas)
+        if (drawHighlight)
+            drawMovementHighlight(canvas)
+        drawPieces(canvas)
     }
-
-    /* override fun surfaceCreated(p0: SurfaceHolder?) {
-         val canvas = holder.lockCanvas()
-         canvas?.let {
-             drawPieces(it)
-             holder.unlockCanvasAndPost(it)
-         }
-     }
-
-     override fun surfaceChanged(p0: SurfaceHolder?, p1: Int, p2: Int, p3: Int) {
-
-     }
-
-     override fun surfaceDestroyed(p0: SurfaceHolder?) {
-     }*/
 
     private fun drawPieces(canvas: Canvas?) {
         pieces.forEach {
@@ -209,38 +184,26 @@ class ChessSurface : SurfaceView, Runnable {
                 drawable?.draw(canvas)
             }
         }
-        val now = System.currentTimeMillis()
-        var current = ((100 - (endTime - now) * 100 / (ANIMATION_TIME)) / 100.0)
-        Log.d("current", current.toString())
-        if (current >= 1) {
+//        val now = System.currentTimeMillis()
+//        var current = ((100 - (endTime - now) * 100 / (ANIMATION_TIME)) / 100.0)
+       /* if (current >= 1) {
             current = 1.0
             animActive = false
-        }
-        /*handler.postDelayed({
-            invalidate()
-        }, 100)*/
+        }*/
+//        val time = System.nanoTime()
         val endLeft = (squareWidth!! * (positionDestiny!!.first)) + padding
         val endTop = (squareWidth!! * (positionDestiny!!.second)) + padding
         val left = (squareWidth!! * (selectedPiece!!.position!!.first)) + padding
         val top = (squareWidth!! * (selectedPiece!!.position!!.second)) + padding
-        val increaseLeft = (left + ((endLeft - left) * current)).toInt()
-        val increaseTop = (top + ((endTop - top) * current)).toInt()
+        val increaseLeft = (left + ((endLeft - left) * currentAnimationTime)).toInt()
+        val increaseTop = (top + ((endTop - top) * currentAnimationTime)).toInt()
         val right = (increaseLeft + squareWidth!!) - (padding * 2)
         val bottom = (increaseTop + squareWidth!!) - (padding * 2)
         val drawable = selectedPiece!!.rDrawable!!
+//        Log.d("takeTime", (System.nanoTime() - time).toString())
         drawable?.setBounds(increaseLeft, increaseTop, right, bottom)
         drawable?.draw(canvas)
-        if (!animActive) {
-            movements.movePiece(positionDestiny!!)
-            move += 1
-            selectedPiece = null
-            positionDestiny = null
-            highlights.clear()
-            invalidate()
-            return
-        }
-        invalidate()
-        /*mHandler.postDelayed({
+       /* mHandler.postDelayed({
             invalidate()
         }, 10)*/
     }
@@ -326,7 +289,10 @@ class ChessSurface : SurfaceView, Runnable {
                     startTime = System.currentTimeMillis()
                     endTime = startTime + ANIMATION_TIME
                     positionDestiny = pgnPiece.position
-                    invalidate()
+//                    mHandler.postDelayed({
+                        startMovementAnimation()
+//                    }, 200)
+
                     /*selectedPiece = p
                     movements.movePiece(pgnPiece.position!!)
                     move += 1
@@ -506,7 +472,7 @@ class ChessSurface : SurfaceView, Runnable {
         if (dialog != null && dialog!!.isShowing)
             return
         val builder = AlertDialog.Builder(context)
-        val view = View.inflate(context, R.layout.dialog_piece_promotion, null)
+        val view = inflate(context, R.layout.dialog_piece_promotion, null)
         view.linearQueen.setOnClickListener {
             updatePawn(x, y, PieceType.QUEEN, dialog)
         }
@@ -533,6 +499,32 @@ class ChessSurface : SurfaceView, Runnable {
         dialog?.dismiss()
     }
 
+    private fun startMovementAnimation() {
+        val valueAnimator = ValueAnimator.ofInt()
+        valueAnimator.setIntValues(0, 100)
+        valueAnimator.duration = ANIMATION_TIME.toLong()
+        valueAnimator.interpolator = DecelerateInterpolator()
+        valueAnimator.addUpdateListener { animation ->
+            currentAnimationTime = animation.animatedValue as Int / 100.0
+            invalidate()
+        }
+        valueAnimator.start()
+        valueAnimator.addListener(endListener)
+    }
+
+    private val endListener = object : AnimatorListenerAdapter() {
+        override fun onAnimationEnd(animation: Animator?) {
+            super.onAnimationEnd(animation)
+            animActive = false
+            movements.movePiece(positionDestiny!!)
+            move += 1
+            selectedPiece = null
+            positionDestiny = null
+            highlights.clear()
+            invalidate()
+        }
+    }
+
     interface ChessCallback {
 
         fun onMoveError()
@@ -540,24 +532,4 @@ class ChessSurface : SurfaceView, Runnable {
         fun onProblemSolved()
 
     }
-
-    fun pause() {
-        mRunning = false
-        try {
-            // Stop the thread == rejoin the main thread.
-            thread.join()
-        } catch (e: InterruptedException) {
-        }
-    }
-
-    /**
-     * Called by MainActivity.onResume() to start a thread.
-     */
-    fun resume() {
-        mRunning = true
-        thread = Thread(this)
-        thread.start()
-    }
-
-
 }

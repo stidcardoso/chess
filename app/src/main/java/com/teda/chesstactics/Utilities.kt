@@ -1,6 +1,7 @@
 package com.teda.chesstactics
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import com.teda.chesstactics.data.entity.Elo
 import com.teda.chesstactics.ui.Piece
 import com.teda.chesstactics.ui.chess.PieceFEN
@@ -11,7 +12,7 @@ import java.util.*
 
 object Utilities {
 
-    fun getPieces(fen: String): ArrayList<Piece> {
+    fun getPieces(context: Context, fen: String): ArrayList<Piece> {
         val pieces = arrayListOf<Piece>()
         val fenList = fen.split("""/""")
         for (i in 0..7) {
@@ -19,7 +20,7 @@ object Utilities {
             for (j in 0..((fenList[i].length - 1))) {
                 val character = fenList[i][j]
                 if (character.isLetter()) {
-                    val piece = getPieceType(character.toString())
+                    val piece = getPieceType(context, character.toString())
                     val position = Pair(mPosition, i)
                     piece.position = position
                     mPosition += 1
@@ -32,7 +33,7 @@ object Utilities {
         return pieces
     }
 
-    private fun getPieceType(type: String): Piece {
+    private fun getPieceType(context: Context, type: String): Piece {
         val piece = Piece()
         when (type) {
             PieceFEN.WKING -> {
@@ -93,6 +94,7 @@ object Utilities {
                 PieceType.PAWN
             }
         }
+        piece.rDrawable = ContextCompat.getDrawable(context, piece.drawable!!)
         return piece
     }
 
