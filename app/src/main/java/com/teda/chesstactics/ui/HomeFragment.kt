@@ -76,6 +76,8 @@ class HomeFragment() : Fragment(), ChessPieces.ChessCallback {
             groupResult.visibility = View.GONE
             cardView.visibility = View.VISIBLE
             chessPieces.retryProblem()
+            imageRetry.isEnabled = false
+            problemStarted = true
             resumeTime()
         }
         imageNext.setOnClickListener {
@@ -151,6 +153,7 @@ class HomeFragment() : Fragment(), ChessPieces.ChessCallback {
     }
 
     private fun startProblem(position: Position) {
+        imageRetry.isEnabled = false
         groupResult.visibility = View.GONE
         cardView.visibility = View.VISIBLE
         calculateElo = true
@@ -185,6 +188,7 @@ class HomeFragment() : Fragment(), ChessPieces.ChessCallback {
     }
 
     override fun onMoveError() {
+        imageRetry.isEnabled = true
         problemStarted = false
         calculateNewElo(0.0)
         groupResult.visibility = View.VISIBLE
