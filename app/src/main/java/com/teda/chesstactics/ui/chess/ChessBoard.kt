@@ -10,7 +10,7 @@ import com.teda.chesstactics.R
 
 class ChessBoard : View {
 
-    val paint = Paint()
+    private val paint = Paint()
 
     constructor(context: Context?) : super(context) {
         init(null)
