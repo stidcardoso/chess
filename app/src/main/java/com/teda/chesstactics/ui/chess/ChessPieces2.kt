@@ -5,14 +5,17 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.media.MediaPlayer
 import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import com.teda.chesstactics.App
 import com.teda.chesstactics.Constants
@@ -46,11 +49,15 @@ class ChessPieces2 : View {
     private var ANIMATION_TIME = 350
 
     //    animation
+    private lateinit var valueAnimator: ValueAnimator
     private var animActive = false
     private var positionDestiny: Pair<Int, Int>? = null
     private var startTime: Long = -1
     private var endTime: Long = -1
     private val mHandler = Handler()
+    private lateinit var animationBitmap: Bitmap
+    private lateinit var animationCanvas: Canvas
+    private var copied = false
 
     private var flip: Boolean = false
     var sound: Boolean = false
@@ -76,6 +83,15 @@ class ChessPieces2 : View {
         movements.highlights = highlights
         paint.color = ContextCompat.getColor(context, R.color.blackAlpha)
         squarePaint.color = ContextCompat.getColor(context, R.color.squareHighlight)
+        valueAnimator = ValueAnimator.ofInt()
+        valueAnimator.setIntValues(0, 100)
+        valueAnimator.duration = ANIMATION_TIME.toLong()
+//        valueAnimator.interpolator = AccelerateInterpolator()
+        valueAnimator.addUpdateListener { animation ->
+            currentAnimationTime = animation.animatedValue as Int / 100.0
+            invalidate()
+        }
+        valueAnimator.addListener(endListener)
     }
 
 
@@ -173,23 +189,29 @@ class ChessPieces2 : View {
     }
 
     private fun animatePieceMovement(canvas: Canvas?) {
-        pieces.forEach {
-            if (it.position != selectedPiece!!.position) {
-                val left = (squareWidth!! * (it.position!!.first)) + padding
-                val top = (squareWidth!! * (it.position!!.second)) + padding
-                val right = (left + squareWidth!!) - (padding * 2)
-                val bottom = (top + squareWidth!!) - (padding * 2)
-                val drawable = it.rDrawable!!
-                drawable?.setBounds(left, top, right, bottom)
-                drawable?.draw(canvas)
+        if (!copied) {
+            animationBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            animationCanvas = Canvas(animationBitmap)
+            pieces.forEach {
+                if (it.position != selectedPiece!!.position) {
+                    val left = (squareWidth!! * (it.position!!.first)) + padding
+                    val top = (squareWidth!! * (it.position!!.second)) + padding
+                    val right = (left + squareWidth!!) - (padding * 2)
+                    val bottom = (top + squareWidth!!) - (padding * 2)
+                    val drawable = it.rDrawable!!
+                    drawable?.setBounds(left, top, right, bottom)
+                    drawable?.draw(animationCanvas)
+                }
             }
+            copied = true
         }
+        canvas?.drawBitmap(animationBitmap, 0f, 0f, null)
 //        val now = System.currentTimeMillis()
 //        var current = ((100 - (endTime - now) * 100 / (ANIMATION_TIME)) / 100.0)
-       /* if (current >= 1) {
-            current = 1.0
-            animActive = false
-        }*/
+        /* if (current >= 1) {
+             current = 1.0
+             animActive = false
+         }*/
 //        val time = System.nanoTime()
         val endLeft = (squareWidth!! * (positionDestiny!!.first)) + padding
         val endTop = (squareWidth!! * (positionDestiny!!.second)) + padding
@@ -200,12 +222,8 @@ class ChessPieces2 : View {
         val right = (increaseLeft + squareWidth!!) - (padding * 2)
         val bottom = (increaseTop + squareWidth!!) - (padding * 2)
         val drawable = selectedPiece!!.rDrawable!!
-//        Log.d("takeTime", (System.nanoTime() - time).toString())
-        drawable?.setBounds(increaseLeft, increaseTop, right, bottom)
-        drawable?.draw(canvas)
-       /* mHandler.postDelayed({
-            invalidate()
-        }, 10)*/
+        drawable.setBounds(increaseLeft, increaseTop, right, bottom)
+        drawable.draw(canvas)
     }
 
     private fun getPiece(x: Float, y: Float) {
@@ -290,7 +308,7 @@ class ChessPieces2 : View {
                     endTime = startTime + ANIMATION_TIME
                     positionDestiny = pgnPiece.position
 //                    mHandler.postDelayed({
-                        startMovementAnimation()
+                    startMovementAnimation()
 //                    }, 200)
 
                     /*selectedPiece = p
@@ -392,6 +410,8 @@ class ChessPieces2 : View {
         } else {
             flip = false
         }
+        if (animActive)
+            valueAnimator.cancel()
         /* for (piece in pieces) {
              piece.rDrawable = ContextCompat.getDrawable(context, piece.drawable!!)
          }*/
@@ -438,7 +458,7 @@ class ChessPieces2 : View {
     }
 
     fun showHighlight() {
-        if (move < problem.movements.size && !onFinished) {
+        if (move < problem.movements.size && !onFinished && !animActive) {
             selectedPiece = null
             highlights.clear()
             drawHighlight = true
@@ -500,28 +520,25 @@ class ChessPieces2 : View {
     }
 
     private fun startMovementAnimation() {
-        val valueAnimator = ValueAnimator.ofInt()
-        valueAnimator.setIntValues(0, 100)
-        valueAnimator.duration = ANIMATION_TIME.toLong()
-        valueAnimator.interpolator = DecelerateInterpolator()
-        valueAnimator.addUpdateListener { animation ->
-            currentAnimationTime = animation.animatedValue as Int / 100.0
-            invalidate()
-        }
         valueAnimator.start()
-        valueAnimator.addListener(endListener)
     }
 
     private val endListener = object : AnimatorListenerAdapter() {
         override fun onAnimationEnd(animation: Animator?) {
             super.onAnimationEnd(animation)
             animActive = false
+            copied = false
             movements.movePiece(positionDestiny!!)
             move += 1
             selectedPiece = null
             positionDestiny = null
             highlights.clear()
             invalidate()
+        }
+
+        override fun onAnimationCancel(animation: Animator?) {
+            animActive = false
+            copied = false
         }
     }
 

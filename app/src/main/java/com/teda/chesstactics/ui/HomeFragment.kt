@@ -6,7 +6,6 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.graphics.PixelFormat
 import android.os.Bundle
 import android.os.SystemClock
 import android.support.v4.app.Fragment
@@ -22,9 +21,7 @@ import com.teda.chesstactics.R
 import com.teda.chesstactics.Utilities
 import com.teda.chesstactics.data.entity.Elo
 import com.teda.chesstactics.data.entity.Position
-import com.teda.chesstactics.ui.chess.ChessPieces
 import com.teda.chesstactics.ui.chess.ChessPieces2
-import com.teda.chesstactics.ui.chess.ChessSurface
 import com.teda.chesstactics.ui.viewmodel.PositionViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
