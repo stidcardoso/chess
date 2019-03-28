@@ -17,6 +17,7 @@ class Piece() {
         this.pieceType = piece.pieceType
         this.position = piece.position
         this.drawable = piece.drawable
+        this.rDrawable = piece.rDrawable
         this.isWhite = piece.isWhite
     }
 }

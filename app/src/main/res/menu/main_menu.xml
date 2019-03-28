@@ -22,7 +22,7 @@
 
     <item
         android:id="@+id/action_profile"
-        android:icon="@drawable/ic_person_24dp"
+        android:icon="@drawable/ic_settings"
         android:title="@string/profile"
         app:showAsAction="ifRoom" />
 
