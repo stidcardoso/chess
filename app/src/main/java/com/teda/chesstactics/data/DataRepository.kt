@@ -13,7 +13,7 @@ import kotlin.concurrent.thread
 
 class DataRepository(db: CDatabase) {
 
-    var db: CDatabase? = null
+    private var db: CDatabase? = null
 
     init {
         this.db = db
@@ -33,7 +33,6 @@ class DataRepository(db: CDatabase) {
 
     fun getPosition(minElo: Int, maxElo: Int, livePosition: MutableLiveData<Position>) {
         thread(start = true) {
-            //            livePosition.postValue(db?.positionDao()?.getPosition(minElo, maxElo))
             val format = SimpleDateFormat("dd/MM/yyyy")
             val date = format.parse(format.format(Date()))
             val iDate = date.time
@@ -49,7 +48,6 @@ class DataRepository(db: CDatabase) {
                 livePosition.postValue(db?.positionDao()?.getPositionDate(iDate, lDate))
             } else
                 livePosition.postValue(position)
-//            livePosition.postValue(db?.positionDao()?.getPositionDate(iDate, lDate))
         }
     }
 
@@ -61,6 +59,13 @@ class DataRepository(db: CDatabase) {
 
     fun getPositions(): List<Position>? {
         return db?.positionDao()?.getPositions()
+    }
+
+    fun getPositionsRange(minElo: Int, maxElo: Int, livePosition: MutableLiveData<List<Position>>) {
+        thread(start = true) {
+            val positions = db?.positionDao()?.getPositionsRange(minElo, maxElo)
+            livePosition.postValue(positions)
+        }
     }
 
     fun getLikedPositions(): LiveData<List<Position>>? {

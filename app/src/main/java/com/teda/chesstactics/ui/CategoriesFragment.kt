@@ -58,6 +58,9 @@ class CategoriesFragment() : Fragment() {
         btnFiveMinute.setOnClickListener {
             startCountDownActivity(5)
         }
+        btnEasy.setOnClickListener { goToDifficultyActivity(Constants.EASY) }
+        btnMedium.setOnClickListener { goToDifficultyActivity(Constants.MEDIUM) }
+        btnHard.setOnClickListener { goToDifficultyActivity(Constants.HARD) }
         fabBuy.setOnClickListener {
             startActivity(Intent(activity, BuyGroupsActivity::class.java))
         }
@@ -73,5 +76,11 @@ class CategoriesFragment() : Fragment() {
         val i = Intent(activity!!, CountDownActivity::class.java)
         i.putExtra(Constants.EXTRAS_TIME_COUNT_DOWN, minutes)
         startActivity(i)
+    }
+
+    private fun goToDifficultyActivity(difficulty: String) {
+        val intent = Intent(activity, DifficultyActivity::class.java)
+        intent.putExtra(Constants.EXTRAS_DIFFICULTY, difficulty)
+        startActivity(intent)
     }
 }

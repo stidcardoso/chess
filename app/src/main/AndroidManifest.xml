@@ -33,6 +33,8 @@
 
         <activity android:name=".ui.BuyGroupsActivity" />
 
+        <activity android:name=".ui.DifficultyActivity" />
+
     </application>
 
 </manifest>

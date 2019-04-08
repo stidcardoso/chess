@@ -86,7 +86,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/difficulty"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/adView" />
+        app:layout_constraintTop_toBottomOf="@id/btnOneMinute" />
 
     <android.support.design.button.MaterialButton
         android:id="@+id/btnEasy"
@@ -100,10 +100,10 @@
         android:text="@string/easy"
         android:textColor="#ffffff"
         app:backgroundTint="@color/colorPrimary"
-        app:layout_constraintEnd_toStartOf="@+id/btnThreeMinute"
+        app:layout_constraintEnd_toStartOf="@+id/btnMedium"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textDifficulty" />
 
     <!--<android.support.design.button.MaterialButton-->
     <android.support.design.button.MaterialButton
@@ -117,10 +117,10 @@
         android:text="@string/medium"
         android:textColor="#ffffff"
         app:backgroundTint="@color/colorPrimary"
-        app:layout_constraintEnd_toStartOf="@+id/btnFiveMinute"
+        app:layout_constraintEnd_toStartOf="@+id/btnHard"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnOneMinute"
-        app:layout_constraintTop_toTopOf="@+id/btnOneMinute" />
+        app:layout_constraintStart_toEndOf="@+id/btnEasy"
+        app:layout_constraintTop_toTopOf="@+id/btnEasy" />
 
     <!--<android.support.design.button.MaterialButton-->
     <android.support.design.button.MaterialButton
@@ -136,8 +136,8 @@
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnThreeMinute"
-        app:layout_constraintTop_toTopOf="@+id/btnOneMinute" />
+        app:layout_constraintStart_toEndOf="@+id/btnMedium"
+        app:layout_constraintTop_toTopOf="@+id/btnMedium" />
 
     <TextView
         android:id="@+id/textView9"
@@ -149,7 +149,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/packages"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnOneMinute" />
+        app:layout_constraintTop_toBottomOf="@+id/btnEasy" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerPackages"

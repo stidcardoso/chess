@@ -25,6 +25,9 @@ interface PositionDao {
     @Query("Select * from position where (elo between :minElo and :maxElo) order by random() limit 1")
     fun getPosition(minElo: Int, maxElo: Int): Position
 
+    @Query("Select * from position where (elo between :minElo and :maxElo) order by elo ASC")
+    fun getPositionsRange(minElo: Int, maxElo: Int): List<Position>
+
     @Query("Select * from position where (lastSolution is null) or (lastSolution < :iDate or lastSolution > :lDate) order by random() limit 1")
     fun getPositionDate(iDate: Long, lDate: Long): Position
 

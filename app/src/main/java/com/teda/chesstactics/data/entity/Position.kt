@@ -20,6 +20,7 @@ class Position : Serializable {
     var liked: Boolean = false
     var groupId: Int? = null
     var groupSolved = false
+    var difficultySolved = false
     @Ignore
     var movements = arrayListOf<String>()
 //    var solutions: ArrayList<Solution> = arrayListOf()
@@ -44,5 +45,6 @@ class Position : Serializable {
         this.liked = position.liked
         this.groupId = position.groupId
         this.groupSolved = position.groupSolved
+        this.difficultySolved = position.difficultySolved
     }
 }
