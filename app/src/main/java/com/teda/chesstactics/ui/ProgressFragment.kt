@@ -2,7 +2,6 @@ package com.teda.chesstactics.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.chip.Chip
 import android.support.v4.app.Fragment
@@ -23,10 +22,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ProgressFragment() : Fragment() {
+class ProgressFragment : Fragment() {
 
-    var model: ProgressViewModel? = null
-    lateinit var preferences: SharedPreferences
+    private var model: ProgressViewModel? = null
+    //    lateinit var preferences: SharedPreferences
     private var currentTime: Int? = 7
 
     companion object {
@@ -34,8 +33,7 @@ class ProgressFragment() : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_progress, container, false)
-        return v
+        return inflater.inflate(R.layout.fragment_progress, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,17 +51,19 @@ class ProgressFragment() : Fragment() {
             elo?.let { textElo.text = it.elo.toInt().toString() }
         })
         chipGroup.setOnCheckedChangeListener { chipGroup, _ ->
-            var chip = chipGroup.getChildAt(chipGroup.checkedChipId)
+            /*var chip = chipGroup.getChildAt(chipGroup.checkedChipId)
             chip?.let {
                 chip = it as Chip
-            }
+            }*/
             for (i in 0 until chipGroup.childCount) {
-                val chip = chipGroup.getChildAt(i)
-                chip.isClickable = chip.id != chipGroup.checkedChipId
+                val mChip = chipGroup.getChildAt(i) as Chip
+                mChip.isCheckable = mChip.id != chipGroup.checkedChipId
+                mChip.isChecked = mChip.id == chipGroup.checkedChipId
             }
-            chip?.isClickable = false
+//            chip?.isClickable = false
         }
-        chipWeek.isClickable = false
+        chipGroup.check(chipWeek.id)
+//        chipWeek.isClickable = false
 
         chipWeek.setOnClickListener {
             model?.getElosByDate(7)

@@ -14,10 +14,15 @@ class GroupListViewModel(application: Application) : AndroidViewModel(applicatio
     private val dataRepository: DataRepository by lazy { (application as App).getRepository() }
     var group: LiveData<GroupPositions>? = null
     var currentPosition: MutableLiveData<Int> = MutableLiveData()
+    val positions: MutableLiveData<List<Position>> = MutableLiveData()
 
     fun getGroup(id: Int): LiveData<GroupPositions>? {
         group = dataRepository.getGroupDetails(id)
         return group
+    }
+
+    fun getPositionsRange(minElo: Int, maxElo: Int) {
+        dataRepository.getPositionsRange(minElo, maxElo, positions)
     }
 
     fun setCurrentPosition(position: Int) {

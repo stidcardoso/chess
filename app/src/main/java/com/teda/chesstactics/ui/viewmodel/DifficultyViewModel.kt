@@ -11,9 +11,14 @@ class DifficultyViewModel(application: Application) : AndroidViewModel(applicati
 
     private val dataRepository: DataRepository by lazy { (application as App).getRepository() }
     val positions: MutableLiveData<List<Position>> = MutableLiveData()
+    private var currentPosition: MutableLiveData<Int> = MutableLiveData()
 
     fun getPositionsRange(minElo: Int, maxElo: Int) {
         dataRepository.getPositionsRange(minElo, maxElo, positions)
+    }
+
+    fun setCurrentPosition(position: Int) {
+        currentPosition.postValue(position)
     }
 
 }

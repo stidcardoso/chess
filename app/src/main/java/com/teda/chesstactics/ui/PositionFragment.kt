@@ -26,10 +26,11 @@ import kotlinx.android.synthetic.main.activity_position.*
 class PositionFragment : Fragment(), ChessPieces.ChessCallback {
 
     companion object {
-        fun newInstance(position: Int): PositionFragment {
+        fun newInstance(position: Int, fromDifficulty: Boolean): PositionFragment {
             val fragment = PositionFragment()
             val args = Bundle()
             args.putInt(Constants.EXTRAS_POSITION, position)
+            args.putBoolean(Constants.EXTRAS_FROM_DIFFICULTY, fromDifficulty)
             fragment.arguments = args
             return fragment
         }
@@ -42,11 +43,13 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
     private var timeStopped: Long = 0
     private var nextPuzzleAutomatically = false
     var goToNextPuzzle = false
+    private var fromDifficulty = false
 //    private lateinit var preferences: SharedPreferences
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.activity_position, container, false)
-        currentPosition = arguments!!.getInt(Constants.EXTRAS_POSITION, 0)
+        currentPosition = arguments?.getInt(Constants.EXTRAS_POSITION) ?: 0
+        fromDifficulty = arguments?.getBoolean(Constants.EXTRAS_FROM_DIFFICULTY) ?: false
         return v
 //        val position = intent.extras.getSerializable(Constants.EXTRAS_POSITION) as Position
 //        position.setMovements()
@@ -57,16 +60,7 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
 
         super.onViewCreated(view, savedInstanceState)
         chessPieces.setChessCallbackListener(this)
-        groupListViewModel = activity?.run {
-            ViewModelProviders.of(this).get(GroupListViewModel::class.java)
-        } ?: throw Exception("Invalid activity")
-        val observer = Observer<GroupPositions?> {
-            positions = it?.positions
-            startProblem(it?.positions!![currentPosition])
-            groupListViewModel?.group?.removeObservers(this)
-        }
-        groupListViewModel?.group?.observe(this, observer)
-
+        setupViewModel()
         imagePrevious.setOnClickListener {
             goToNextPuzzle = false
             goPreviousPuzzle()
@@ -94,6 +88,28 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
             groupListViewModel?.setCurrentPosition(currentPosition)
             updateKingIcon()
             startProblem(positions!![currentPosition])
+        }
+    }
+
+    private fun setupViewModel() {
+        groupListViewModel = activity?.run {
+            ViewModelProviders.of(this).get(GroupListViewModel::class.java)
+        } ?: throw Exception("Invalid activity")
+        if (fromDifficulty) {
+            val observer = Observer<List<Position>?> {
+                this.positions = it
+                startProblem(positions!![currentPosition])
+                groupListViewModel?.group?.removeObservers(this)
+            }
+            groupListViewModel?.positions?.observe(this, observer)
+        } else {
+            val observer = Observer<GroupPositions?> {
+                positions = it?.positions
+                startProblem(it?.positions!![currentPosition])
+                groupListViewModel?.group?.removeObservers(this)
+            }
+            groupListViewModel?.group?.observe(this, observer)
+
         }
     }
 

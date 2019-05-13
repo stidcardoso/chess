@@ -47,7 +47,7 @@ class GroupListActivity : AppCompatActivity(), ChessPieces.ChessCallback {
         recyclerNumbers.adapter = adapter
         adapter.clickSubject.subscribe {
             val ft = supportFragmentManager.beginTransaction()
-            positionFragment = PositionFragment.newInstance(it)
+            positionFragment = PositionFragment.newInstance(it, false)
             groupListViewModel.setCurrentPosition(it)
             ft.replace(R.id.frameContainer, positionFragment!!)
             ft.addToBackStack(null)
