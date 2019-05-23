@@ -66,7 +66,7 @@
         app:layout_constraintStart_toEndOf="@id/constraintLayout"
         app:layout_constraintTop_toBottomOf="@+id/textCountDown" />
 
-    <com.teda.chesstactics.ui.chess.ChessPieces
+    <com.teda.chesstactics.ui.chess.ChessPieces2
         android:id="@+id/chessPieces"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

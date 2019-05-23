@@ -19,11 +19,12 @@ import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
 import com.teda.chesstactics.data.entity.GroupPositions
 import com.teda.chesstactics.data.entity.Position
-import com.teda.chesstactics.ui.chess.ChessPieces
+import com.teda.chesstactics.ui.chess.ChessPieces2
 import com.teda.chesstactics.ui.viewmodel.GroupListViewModel
 import kotlinx.android.synthetic.main.activity_position.*
+import kotlinx.android.synthetic.main.component_chess_buttons.*
 
-class PositionFragment : Fragment(), ChessPieces.ChessCallback {
+class PositionFragment : Fragment(), ChessPieces2.ChessCallback {
 
     companion object {
         fun newInstance(position: Int, fromDifficulty: Boolean): PositionFragment {
@@ -61,22 +62,22 @@ class PositionFragment : Fragment(), ChessPieces.ChessCallback {
         super.onViewCreated(view, savedInstanceState)
         chessPieces.setChessCallbackListener(this)
         setupViewModel()
-        imagePrevious.setOnClickListener {
+        btnPreviousBoard.setOnClickListener {
             goToNextPuzzle = false
             goPreviousPuzzle()
         }
 
-        imageNext.setOnClickListener {
+        btnNextBoard.setOnClickListener {
             goToNextPuzzle = false
             goNextPuzzle()
         }
 
-        imageRetry.setOnClickListener {
+        btnRetryBoard.setOnClickListener {
             resumeTime()
             restartProblem()
         }
 
-        imageHint.setOnClickListener {
+        btnHintBoard.setOnClickListener {
             chessPieces.showHighlight()
         }
     }

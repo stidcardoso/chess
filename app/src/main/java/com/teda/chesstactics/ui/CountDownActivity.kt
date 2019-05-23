@@ -15,15 +15,16 @@ import android.view.WindowManager
 import com.teda.chesstactics.App
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
+import com.teda.chesstactics.data.entity.Position
 import com.teda.chesstactics.data.model.Result
-import com.teda.chesstactics.ui.chess.ChessPieces
+import com.teda.chesstactics.ui.chess.ChessPieces2
 import com.teda.chesstactics.ui.viewmodel.CountDownViewModel
 import kotlinx.android.synthetic.main.activity_count_down.*
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
 
-class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
+class CountDownActivity : AppCompatActivity(), ChessPieces2.ChessCallback {
 
     private var countPositions = 0
     private var countSuccess = 0
@@ -36,6 +37,8 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
     private val animation by lazy { ObjectAnimator.ofInt(progressBar, "progress", 1000, 0) }
     private lateinit var countDownViewModel: CountDownViewModel
     private lateinit var mToolbar: Toolbar
+    private var positions = ArrayList<Position>()
+    private var currentPosition = -1
 //    lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +51,7 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         time = intent.getIntExtra(Constants.EXTRAS_TIME_COUNT_DOWN, 1) * 60
         countDownViewModel = ViewModelProviders.of(this).get(CountDownViewModel::class.java)
+/*
         countDownViewModel.getPosition().observe(this, Observer { position ->
             position?.let {
                 chessPieces.setChessProblem(it)
@@ -57,7 +61,13 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
                 countDownViewModel.getNewPosition(1600, 2000)
             }
         })
-        countDownViewModel.getNewPosition(1600, 2000)
+*/
+        countDownViewModel.positions.observe(this, Observer {
+            this.positions = ArrayList(it)
+            positions.shuffle()
+        })
+        nextPosition()
+//        countDownViewModel.getNewPosition(1600, 2000)
         chessPieces.setChessCallbackListener(this)
         /*startCountDown()
         animateProgressBar()*/
@@ -136,28 +146,47 @@ class CountDownActivity : AppCompatActivity(), ChessPieces.ChessCallback {
         groupResult.visibility = View.VISIBLE
     }
 
+    private fun nextPosition() {
+        currentPosition += 1
+        countPositions += 1
+        if (currentPosition >= positions.size) {
+            positions.shuffle()
+            currentPosition = 0
+        }
+        thread(start = true) {
+            Thread.sleep(500)
+            runOnUiThread {
+                chessPieces.setChessProblem(positions[currentPosition])
+                averageElo = ((averageElo * (countPositions - 1)) + positions[currentPosition].elo) / countPositions
+                groupResult.visibility = View.GONE
+            }
+        }
+    }
+
     override fun onMoveError() {
         showPositionResult(true)
         countError += 1
-        thread {
-            Thread.sleep(500)
-            runOnUiThread {
-                groupResult.visibility = View.GONE
-                countDownViewModel.getNewPosition(1600, 2000)
-            }
-        }
+//        groupResult.visibility = View.GONE
+        nextPosition()
+        /* thread {
+             Thread.sleep(500)
+             runOnUiThread {
+                 countDownViewModel.getNewPosition(1600, 2000)
+             }
+         }*/
     }
 
     override fun onProblemSolved() {
         showPositionResult(false)
         countSuccess += 1
-        thread {
-            Thread.sleep(500)
-            runOnUiThread {
-                groupResult.visibility = View.GONE
-                countDownViewModel.getNewPosition(1600, 2000)
-            }
-        }
+//        groupResult.visibility = View.GONE
+        nextPosition()
+        /* thread {
+             Thread.sleep(500)
+             runOnUiThread {
+                 countDownViewModel.getNewPosition(1600, 2000)
+             }
+         }*/
     }
 
     override fun onSupportNavigateUp(): Boolean {

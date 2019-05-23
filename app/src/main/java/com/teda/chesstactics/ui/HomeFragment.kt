@@ -6,15 +6,18 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.SystemClock
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import com.google.android.gms.ads.AdRequest
 import com.teda.chesstactics.App
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
@@ -23,6 +26,7 @@ import com.teda.chesstactics.data.entity.Elo
 import com.teda.chesstactics.data.entity.Position
 import com.teda.chesstactics.ui.chess.ChessPieces2
 import com.teda.chesstactics.ui.viewmodel.PositionViewModel
+import kotlinx.android.synthetic.main.component_chess_buttons.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
 
@@ -53,6 +57,8 @@ class HomeFragment() : Fragment(), ChessPieces2.ChessCallback {
         super.onViewCreated(view, savedInstanceState)
         /*chessPieces.setZOrderOnTop(true)
         chessPieces.holder.setFormat(PixelFormat.TRANSPARENT)*/
+        showAds()
+        btnPreviousBoard.visibility = View.GONE
         positionViewModel = ViewModelProviders.of(this).get(PositionViewModel::class.java)
         positionViewModel.getPosition().observe(this, Observer { position ->
             position?.let {
@@ -74,26 +80,62 @@ class HomeFragment() : Fragment(), ChessPieces2.ChessCallback {
             textElo.text = currentElo?.elo?.toInt().toString()
         })
         chessPieces.setChessCallbackListener(this)
-        imageRetry.setOnClickListener {
+        btnRetryBoard.setOnClickListener {
             groupResult.visibility = View.GONE
             cardView.visibility = View.VISIBLE
             chessPieces.retryProblem()
-            imageRetry.isEnabled = false
+            btnRetryBoard.isEnabled = false
             problemStarted = true
             resumeTime()
         }
-        imageNext.setOnClickListener {
+        btnNextBoard.setOnClickListener {
             goToNextPuzzle = false
             if (calculateElo)
                 showDialogContinue()
             else
                 positionViewModel.getNewPosition(currentElo)
         }
-        imageHint.setOnClickListener { _ ->
+        btnHintBoard.setOnClickListener { _ ->
             if (problemStarted)
                 chessPieces.showHighlight()
 
         }
+    }
+
+    private fun showAds() {
+//        adView.post {
+//            val rect = Rect()
+//            adView.getGlobalVisibleRect(rect)
+//            if (view?.height == rect.height() && view?.width == rect.width()) {
+//                adView.visibility = View.VISIBLE
+        adView.post {
+            if (isVisible(adView)) {
+                val request = AdRequest.Builder().build()
+                adView.loadAd(request)
+                adView.visibility = View.VISIBLE
+            } else {
+                adView.visibility = View.GONE
+            }
+        }
+//            } else adView.visibility = View.GONE
+//        }
+    }
+
+    private fun isVisible(view: View?): Boolean {
+        val metrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
+        val height = metrics.heightPixels
+        val width = metrics.widthPixels
+        if (view == null) {
+            return false
+        }
+        if (!view.isShown) {
+            return false
+        }
+        val actualPosition = Rect()
+        view.getGlobalVisibleRect(actualPosition)
+        val screen = Rect(0, 0, width, height)
+        return actualPosition.intersect(screen)
     }
 
     override fun onResume() {
@@ -157,7 +199,7 @@ class HomeFragment() : Fragment(), ChessPieces2.ChessCallback {
     }
 
     private fun startProblem(position: Position) {
-        imageRetry.isEnabled = false
+        btnRetryBoard.isEnabled = false
         groupResult.visibility = View.GONE
         cardView.visibility = View.VISIBLE
         calculateElo = true
@@ -192,7 +234,7 @@ class HomeFragment() : Fragment(), ChessPieces2.ChessCallback {
     }
 
     override fun onMoveError() {
-        imageRetry.isEnabled = true
+        btnRetryBoard.isEnabled = true
         problemStarted = false
         calculateNewElo(0.0)
         groupResult.visibility = View.VISIBLE

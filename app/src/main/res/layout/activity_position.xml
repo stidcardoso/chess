@@ -192,7 +192,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-    <com.teda.chesstactics.ui.chess.ChessPieces
+    <com.teda.chesstactics.ui.chess.ChessPieces2
         android:id="@+id/chessPieces"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -201,6 +201,16 @@
         app:layout_constraintStart_toStartOf="@+id/chessBoard"
         app:layout_constraintTop_toTopOf="@id/chessBoard" />
 
+    <include
+        android:id="@+id/chessButtons"
+        layout="@layout/component_chess_buttons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chessPieces" />
+
+<!--
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout5"
         android:layout_width="0dp"
@@ -212,7 +222,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chessBoard">
 
-        <ImageView
+
+
+&lt;!&ndash;        <ImageView
             android:id="@+id/imagePrevious"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -251,8 +263,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imageHint"
-            app:srcCompat="@drawable/ic_next" />
+            app:srcCompat="@drawable/ic_next" />&ndash;&gt;
 
     </android.support.constraint.ConstraintLayout>
+-->
 
 </android.support.constraint.ConstraintLayout>

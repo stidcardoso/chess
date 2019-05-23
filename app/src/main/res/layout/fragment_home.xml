@@ -180,7 +180,6 @@
         android:id="@+id/chessBoard"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
         app:layout_constraintDimensionRatio="W, 1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -192,55 +191,79 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@id/chessBoard"
         app:layout_constraintEnd_toEndOf="@id/chessBoard"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/chessBoard"
-        app:layout_constraintTop_toTopOf="@id/chessBoard" />
+        app:layout_constraintTop_toTopOf="@id/chessBoard"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <android.support.design.button.MaterialButton
-        android:id="@+id/imageHint"
-        style="@style/buttonIcon"
+    <include
+        android:id="@+id/chessButtons"
+        layout="@layout/component_chess_buttons"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginStart="4dp"
-        app:icon="@drawable/ic_lightbulb"
-        app:layout_constraintEnd_toStartOf="@+id/imageRetry"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chessBoard" />
-
-    <android.support.design.button.MaterialButton
-        android:id="@+id/imageRetry"
-        style="@style/buttonIcon"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginStart="2dp"
-        android:enabled="false"
-        android:visibility="visible"
-        app:icon="@drawable/ic_replay"
-        app:layout_constraintEnd_toStartOf="@+id/imageNext"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageHint"
-        app:layout_constraintTop_toBottomOf="@id/chessBoard" />
-
-    <android.support.design.button.MaterialButton
-        android:id="@+id/imageNext"
-        style="@style/buttonIcon"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginStart="2dp"
-        app:icon="@drawable/ic_next"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageRetry"
-        app:layout_constraintTop_toBottomOf="@id/chessBoard" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chessPieces" />
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@id/chessButtons" />
+
+
+    <!--  <android.support.design.button.MaterialButton
+          android:id="@+id/imageHint"
+          style="@style/buttonIcon"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="16dp"
+          android:layout_marginEnd="2dp"
+          android:layout_marginLeft="4dp"
+          android:layout_marginRight="2dp"
+          android:layout_marginStart="4dp"
+          app:icon="@drawable/ic_lightbulb"
+          app:layout_constraintEnd_toStartOf="@+id/imageRetry"
+          app:layout_constraintHorizontal_bias="0.5"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/chessBoard" />
+
+      <android.support.design.button.MaterialButton
+          android:id="@+id/imageRetry"
+          style="@style/buttonIcon"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="2dp"
+          android:layout_marginLeft="2dp"
+          android:layout_marginRight="2dp"
+          android:layout_marginStart="2dp"
+          android:enabled="false"
+          android:visibility="visible"
+          app:icon="@drawable/ic_replay"
+          app:layout_constraintEnd_toStartOf="@+id/imageNext"
+          app:layout_constraintHorizontal_bias="0.5"
+          app:layout_constraintStart_toEndOf="@+id/imageHint"
+          app:layout_constraintTop_toBottomOf="@id/chessBoard" />
+
+      <android.support.design.button.MaterialButton
+          android:id="@+id/imageNext"
+          style="@style/buttonIcon"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="4dp"
+          android:layout_marginLeft="2dp"
+          android:layout_marginRight="4dp"
+          android:layout_marginStart="2dp"
+          app:icon="@drawable/ic_next"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.5"
+          app:layout_constraintStart_toEndOf="@+id/imageRetry"
+          app:layout_constraintTop_toBottomOf="@id/chessBoard" />-->
 
 </android.support.constraint.ConstraintLayout>

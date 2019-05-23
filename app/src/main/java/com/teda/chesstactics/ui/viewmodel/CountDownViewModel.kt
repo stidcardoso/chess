@@ -12,6 +12,11 @@ class CountDownViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val dataRepository: DataRepository by lazy { (application as App).getRepository() }
     val position: MutableLiveData<Position> = MutableLiveData()
+    val positions: MutableLiveData<List<Position>> = MutableLiveData()
+
+    init {
+        getPositions()
+    }
 
     fun getPosition(): LiveData<Position> {
         return position
@@ -19,5 +24,9 @@ class CountDownViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun getNewPosition(minElo: Int, maxElo: Int) {
         dataRepository.getPosition(minElo, maxElo, position)
+    }
+
+    fun getPositions() {
+        dataRepository.getPositionsRange(0, 2100, positions)
     }
 }
