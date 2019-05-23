@@ -12,11 +12,8 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import com.teda.chesstactics.App
 import com.teda.chesstactics.Constants
 import com.teda.chesstactics.R
@@ -320,7 +317,6 @@ class ChessPieces2 : View {
                     break
                 }
             }
-            saveLastPosition()
         } else {
             onFinished = true
             chessCallback?.onProblemSolved()
@@ -533,12 +529,14 @@ class ChessPieces2 : View {
             selectedPiece = null
             positionDestiny = null
             highlights.clear()
+            saveLastPosition()
             invalidate()
         }
 
         override fun onAnimationCancel(animation: Animator?) {
             animActive = false
             copied = false
+            saveLastPosition()
         }
     }
 
